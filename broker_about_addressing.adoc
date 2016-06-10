@@ -1,0 +1,125 @@
+Messages sent to a {brokerName} are routed dependant on the address specified in the address which can differ depending on
+the protocol used. Since primarily the broker was written to support JMS there are some nuances as to how addressing works.
+
+=== Queue Addressing with JMS
+
+If you create a JMS Queue using the management console or via JMX, lets say `myQueue`, then this will create the JMS management
+ view of the JMS Queue will show it as called `myQueue`. However, since the JMS Management layer is just a facade built
+ on top of the Core management Layer it hides some of the details, specifically a prefix that is added to the core queues name.
+ Looking at a screenshot of the management console you can see the prefix `jms.queue.` has been added:
+
+image::queues.png[JMS Queue Management]
+
+==== Sending messages to Queues
+
+When using the {prodName} JMS client the same prefixing happens transparently. So for instance if you were sending a
+message to the JMS queue `myQueue` then this is the name that should be used. so for instance if you were using JNDI this
+would be an entry in the `jndi.properties` file like this:
+
+-----
+queue.queue/myQueue=myQueue
+-----
+
+The same name would be used programmatically, any message sent to this address would be prefixed with `jms.queue.` by the
+client before sending.
+
+When using the OpenWire client the jms name `myQueue` should also be used. The prefix `jms.queue.` will be added when the
+message arrives at the broker beofore it is routed.
+
+> **Note**
+>
+> Since the prefix is always added it is currently not possible to send messages to core queues that don't have the `jms.queue.` prefix
+
+For all other clients the prefix needs to be added by the client so in this case the address would be `jms.queue.myQueue`.
+
+==== Consuming messages from Queues
+
+When using the JMS client the same prefixing happens transparently. So for instance if you were consuming a
+message from the JMS queue `myQueue` then this is the name that should be used.
+
+When using the OpenWire client the jms name `myQueue` should also be used. The prefix `jms.queue.` will be added when the
+message arrives at the broker beofore it is routed.
+
+> **Note**
+>
+> Since the prefix is always added it is currently not possible to consume messages from core queues that don't have the `jms.queue.` prefix
+
+For all other clients the prefix needs to be added by the client so in this case the address would be `jms.queue.myQueue`.
+
+=== Topic Addressing with JMS
+
+If you create a JMS Topic using the management console or via JMX, lets say `myTopic`, then this will create the JMS management
+ view of the JMS Topic and will show it as called `myTopic`. However, since the JMS Management layer is just a facade built
+ on top of the Core management Layer it hides some of the details. Since there is no concept of topics at a core level
+ there will not be an associated core topic object, however there will be a core queue created using the prefix `jms.topic.`
+ which is just used for management purposes and no messages will ever be routed to it.
+
+image::topics.png[JMS Topic Management]
+
+Subscriptions on a topic are implemented as core queues so for every so for every subscription that exists there will an
+associated core queue named by connection ids and client ids (dependant on the protocol) or a randon UUID if the subscription
+is volatile.
+
+==== Sending messages to Topics
+
+When using the JMS client the same prefixing happens transparently. So for instance if you were sending a
+message to the JMS topic `myTopic` then this is the name that should be used. so for instance if you were using JNDI this
+would be an entry in the `jndi.properties` file like this:
+
+-----
+topic.topic/myTopic=myTopic
+-----
+
+The same name would be used programmatically, any message sent to this address would be prefixed with `jms.topic.` by the
+client before sending.
+
+==== Consuming messages from Topics
+
+Since there is no notion of topics at a core level on the broker, only the JMS facade, then how subscriptions are handled
+differs depending on the protocol used to receive messages.
+
+===== JMS Client
+
+When using the JMS client the `jms.topic.` prefixing is added transparently by the client. The Client itself will then create
+a subscription queue, using its connectionid and client id if durable or a random UUID if non durable, and bind it to the
+address `jms.topic.myTopic`.
+
+===== Openwire Clients
+
+When using the OpenWire client the same naming convention is used the only difference is this is applied at the broker side
+so the client should use the topic name `myTopic`. The subscription queues are created by the broker in this case rather
+than the client.
+
+===== AMQP Clients
+
+Any receiving link that attaches to an address with the prefix `jms.topic.` will be treated as a subscription and a
+subscription queue will be created by the broker. If the Terminus Durability is either UNSETTLED_STATE
+or CONFIGURATION then the queue will be made durable, similar to a JMS durable subscription and given a name made up from
+the container id and the link name, something like `my-container-id:my-link-name`. if the Terminus Durability is configured
+as NONE then a volatile queue will be created.
+
+The prefix used can be configured on the Acceptor.
+
+===== MQTT Clients
+
+The MQTT protocol only supports subscription based messaging.  The protocol manager always create subscription queues for clients, even if the address creator originally specified queue semantics.  For example, when using the JMS client to create and send messages to a queue named "foo", a single Queue is created with address "jms.queue.foo", JMS and other protocols that support queue semantics would consume in a queue fashion from jms.queue.foo.  When an MQTT client subscribes to the address "jms.queue.foo", it will set up a separate subscription queue for this client.  Therefore, JMS -> MQTT would behave in publish/subscribe fashion.
+
+===== STOMP Clients
+
+Since STOMP is subscription based then subscription queues are always created, if the following SUBSCRIBE frane is sent:
+
+-----
+SUBSCRIBE
+id:myId
+destination:jms.topic.myTopic
+ack:client
+
+^@
+-----
+
+Then the STOMP client will subscribe to the JMS Topic myTopic and the broker will create a subscription queue with the
+name `myId`.
+
+
+
+
