@@ -1,3 +1,21 @@
+=== Message routing
+
+Internally, {prodName} only deals with queues and addresses and has no specific internal representation of a subscriptions (or topics).  {prodName} queues have associated with them, an address filter, a unique name and a list of consumers.  When {prodName} receives a message, it is "routed" to all queues that have a matched address filter.  This results in each queue, that matches the message's address, receiving a reference to the original message.  Once a message reference is routed to a queue, it is forwarded to *one* of the queues consumers.
+
+Point to Point Routing
+
+In order to offer point to point semantics, a single queue is created with a particular address, say “jms.queue.foo”.  Clients that want to consume from this address are added to the queues consumer list.  When a messages is received,  that that matches the queue's address filter, it is routed this single queue.  The message on this queue is then forwarded to one of it's consumers (as described above) creating “point to point” style message semantics.  The key thing here is that, many consumers share a single queue, creating the following relationships:
+
+Address (1 → 1) Queue (1 → many) Consumers
+
+Subscription Routing
+
+Since {prodName} does not have an internal object representation of a subscription (or topic), subscriptions are typically layered on top of core queues, and are implemented in the protocol managers (or for JMS, in the {prodName} JMS client).  Subscription behaviour is typically acheived by creating dedicated consumer queues (vs shared queues as described above).  Each new client subscription results in the creation of a new queue (with the subscription address), a consumer is then associated with this dedicated queue.  The queue contains, the subscription address filter, a single associated consumer and a unique queue name (usually client-id : address) .   This creates the following relationships.
+
+Address (1→many) Queue (1 → 1) Consumers.
+
+=== JMS
+
 Messages sent to a {brokerName} are routed dependant on the address specified in the address which can differ depending on
 the protocol used. Since primarily the broker was written to support JMS there are some nuances as to how addressing works.
 
