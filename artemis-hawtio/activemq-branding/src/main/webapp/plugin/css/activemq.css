@@ -214,11 +214,11 @@ table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
 
 /*This is the original css from HawtIO 1,leaving as is as somemay be used*/
 * {
-  font-family: OpenSans;
+  font-family: "Open Sans;
 }
 
 body {
-  font-family: OpenSans;
+  font-family: "Open Sans";
 }
 
 #log-panel-statements li {
