@@ -23,8 +23,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.jms.TransactionRolledBackException;
-import javax.naming.InitialContext;
 
 import org.apache.activemq.artemis.api.core.Message;
 import org.apache.activemq.artemis.util.ServerUtil;
@@ -36,10 +34,6 @@ import org.apache.qpid.jms.JmsConnectionFactory;
  */
 public class DuplicateDetectionAmqpExample {
 
-   // You need to guarantee uniqueIDs when using duplicate detection
-   // It needs to be unique even after a restart
-   // as these IDs are stored on the journal for control
-   // We recommend some sort of UUID, but for this example the Current Time as string would be enough
    static String uniqueID = Long.toString(System.currentTimeMillis());
 
    private static Process server0;
@@ -52,7 +46,7 @@ public class DuplicateDetectionAmqpExample {
 
          String queueName = "exampleQueue";
          String url = "failover:(amqp://localhost:61616)?failover.maxReconnectAttempts=-1&failover.amqpOpenServerListAction=IGNORE&jms.prefetchPolicy.all=5&jms.forceSyncSend=true";
-         ConnectionFactory connectionFactory = new JmsConnectionFactory(url);
+         ConnectionFactory connectionFactory = new JmsConnectionFactory("amq","secret",url);
 
          // We create a JMS Connection
          connection = connectionFactory.createConnection();
@@ -61,26 +55,54 @@ public class DuplicateDetectionAmqpExample {
          Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
          Queue queue = session.createQueue(queueName);
 
+         // We create a *transacted* JMS Session
+         Session sessionTransacted = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+         Queue queueTransacted = sessionTransacted.createQueue(queueName);
+
          connection.start();
+
+         /***************
+          *  Non-transacted duplicated message send
+          ***************/
          MessageProducer producer = session.createProducer(queue);
          MessageConsumer consumer = session.createConsumer(queue);
+         MessageProducer producerTransacted = sessionTransacted.createProducer(queueTransacted);
 
          // Send 2 message with the same unique id
-         sendMessages(session, producer, 2);
-
-         // Consume onw message
-         TextMessage message0 = (TextMessage) consumer.receive(3000);
+         sendMessage(session, producer, uniqueID);
+         sendMessage(session, producer, uniqueID);
+         // Expect one message only
+         TextMessage message0 = (TextMessage) consumer.receive(5000);
          if (message0 == null) {
             throw new IllegalStateException("Example failed - message wasn't received");
          }
-         TextMessage message1 = (TextMessage) consumer.receive(3000);
+         TextMessage message1 = (TextMessage) consumer.receive(5000);
          if (message1 != null) {
-            throw new IllegalStateException("Example failed - duplicated message wasn't received");
+            throw new IllegalStateException("Example failed - duplicated message was received");
+         }
+
+         /***************
+          *  Transacted duplicated message send
+          ***************/
+
+         // Send 2 message with the same unique id
+         sendMessage(sessionTransacted, producerTransacted,uniqueID+"-transacted");
+         sessionTransacted.commit();
+         sendMessage(sessionTransacted, producerTransacted,uniqueID+"-transacted");
+         sessionTransacted.commit(); //Exception happens here: javax.jms.TransactionRolledBackException: Duplicate message detected
+
+         // Expect one message only
+         message0 = (TextMessage) consumer.receive(5000);
+         if (message0 == null) {
+            throw new IllegalStateException("Example failed - transacted message wasn't received");
+         }
+         message1 = (TextMessage) consumer.receive(5000);
+         if (message1 != null) {
+            throw new IllegalStateException("Example failed - transacted duplicated message was received");
          }
 
          System.out.println("Other message on the server? " + consumer.receive(5000));
       } finally {
-         // Step 13. Be sure to close our resources!
 
          if (connection != null) {
             connection.close();
@@ -90,19 +112,15 @@ public class DuplicateDetectionAmqpExample {
       }
    }
 
-   private static void sendMessages(final Session session,
-                                    final MessageProducer producer,
-                                    final int numMessages) throws Exception {
+   private static void sendMessage(final Session session,
+                                   final MessageProducer producer,
+                                   final String duplId) throws Exception {
 
-      for (int i = 0; i < numMessages; i++) {
-         TextMessage message = session.createTextMessage("This is text message " + i);
+         TextMessage message = session.createTextMessage("Hello " + duplId);
+         message.setStringProperty(Message.HDR_DUPLICATE_DETECTION_ID.toString(), duplId);
 
-         message.setStringProperty(Message.HDR_DUPLICATE_DETECTION_ID.toString(), uniqueID);
-
+         System.out.println("Sending message: " + message.getText());
          producer.send(message);
 
-         System.out.println("Sent message: " + message.getText());
-      }
-      
    }
 }

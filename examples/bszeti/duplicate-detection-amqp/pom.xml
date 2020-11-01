@@ -46,7 +46,8 @@ under the License.
       <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>0.53.0.redhat-00001</version>
+<!--            <version>0.53.0.redhat-00001</version>-->
+            <version>0.51.0.redhat-00002</version>
       </dependency>
    </dependencies>
 
