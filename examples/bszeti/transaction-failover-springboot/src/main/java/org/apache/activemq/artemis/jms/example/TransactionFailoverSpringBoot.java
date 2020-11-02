@@ -17,7 +17,6 @@
 package org.apache.activemq.artemis.jms.example;
 
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +27,6 @@ import javax.jms.QueueBrowser;
 import javax.jms.Session;
 
 import org.apache.activemq.artemis.util.ServerUtil;
-import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +42,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @EnableJms
 @EnableScheduling
@@ -68,14 +65,14 @@ public class TransactionFailoverSpringBoot implements CommandLineRunner {
    @Autowired
    private ConfigurableApplicationContext applicationContext;
 
-   @Value("${receive.queue}")
-   String receiveQueue;
+   @Value("${source.queue}")
+   String sourceQueue;
 
    @Value("${send.count}")
    Integer sendCount;
 
-   @Value("${receive.forward.queue}")
-   String forwardQueue;
+   @Value("${target.queue}")
+   String targetQueue;
 
    private AtomicInteger receiveCounter = new AtomicInteger();
    private AtomicInteger sendCounter = new AtomicInteger();
@@ -91,7 +88,7 @@ public class TransactionFailoverSpringBoot implements CommandLineRunner {
 
          //Send messages -
          for (int i=0; i< sendCount; i++) {
-            sendMessage(receiveQueue);
+            sendMessage(sourceQueue);
          }
 
          log.info("Total sent: {}",sendCounter.get());
@@ -118,7 +115,7 @@ public class TransactionFailoverSpringBoot implements CommandLineRunner {
 
          log.info("Counting...");
          
-         int targetCount = jmsTemplate.browse(forwardQueue, (Session session, QueueBrowser browser) ->{
+         int targetCount = jmsTemplate.browse(targetQueue, (Session session, QueueBrowser browser) ->{
             Enumeration enumeration = browser.getEnumeration();
             int counter = 0;
             while (enumeration.hasMoreElements()) {
@@ -170,7 +167,7 @@ public class TransactionFailoverSpringBoot implements CommandLineRunner {
 
    Map<String,String> amqDuplIds = new ConcurrentHashMap<>();
 
-   @JmsListener(destination = "${receive.queue}", concurrency="${receive.concurrentConsumers}")
+   @JmsListener(destination = "${source.queue}", concurrency="${receive.concurrentConsumers}")
    public void receiveMessage(String text, @Header("SEND_COUNTER") String counter, @Header("_AMQ_DUPL_ID") String amqDuplId) {
       //Receive is transactional
       log.debug("Received: {} - {}", amqDuplId, counter);
@@ -180,7 +177,7 @@ public class TransactionFailoverSpringBoot implements CommandLineRunner {
       }
 
       //Send also participates in the transaction
-      this.jmsTemplate.convertAndSend(forwardQueue, text, m -> {
+      this.jmsTemplate.convertAndSend(targetQueue, text, m -> {
          m.setStringProperty("SEND_COUNTER", counter);
          m.setStringProperty("_AMQ_DUPL_ID", amqDuplId);
          return m;

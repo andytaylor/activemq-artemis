@@ -1,3 +1,7 @@
+
+"Duplicate message detected" exception in transactions
+==================================
+
 This is example to test the unexpected exception "Duplicate message detected" error during transacted sending.
 
 To run the example set "activemq.basedir" property point to your $ARTEMIS_HOME. For example:
