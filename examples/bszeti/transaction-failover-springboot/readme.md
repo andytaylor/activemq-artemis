@@ -42,7 +42,7 @@ Actual outcome:
 Notes:
 - It's expected that some messages are redelivered again because the transactions are rolled back during a broker failover.
 - But it's not clear how a message can be redelivered from `source` while it was already delivered to `target` as both the "acknowledgement" and the "send" participates in the same transaction.
-- The extra redelivery should not even cause a problem - because of Duplicate Detection. It's usually a "silent" exception, but in transacted mode the exception reaches the client and causes message redelivery until _max-delivery-attempts_ is reached and the broker drops the message on the DLQ. See example https://github.com/bszeti/activemq-artemis/tree/bszeti-tests/examples/bszeti/duplicate-detection-amqp.
+- The extra redelivery should not even cause a problem - because of Duplicate Detection. It's usually a "silent" exception, but in transacted mode the exception reaches the client and causes message redelivery until _max-delivery-attempts_ is reached and the broker drops the message on the DLQ. See example `duplicate-detection-amqp` in the parent directory.
 - At the end - while all the messages were moved to `target` queue succesfully - we get some "false alarm" messages on the DLQ.
 
 See summary output of the application:
