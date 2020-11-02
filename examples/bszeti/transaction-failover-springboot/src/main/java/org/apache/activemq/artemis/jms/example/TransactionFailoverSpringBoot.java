@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.jms.Message;
@@ -167,7 +168,7 @@ public class TransactionFailoverSpringBoot implements CommandLineRunner {
 
    }
 
-   Map<String,String> amqDuplIds = new HashMap<>();
+   Map<String,String> amqDuplIds = new ConcurrentHashMap<>();
 
    @JmsListener(destination = "${receive.queue}", concurrency="${receive.concurrentConsumers}")
    public void receiveMessage(String text, @Header("SEND_COUNTER") String counter, @Header("_AMQ_DUPL_ID") String amqDuplId) {
