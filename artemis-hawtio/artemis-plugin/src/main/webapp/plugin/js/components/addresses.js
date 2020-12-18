@@ -28,6 +28,7 @@ var Artemis;
             </h1>
              <div ng-include="'plugin/artemistoolbar.html'"></div>
              <pf-table-view config="$ctrl.tableConfig"
+                            dt-options="$ctrl.dtOptions"
                             columns="$ctrl.tableColumns"
                             action-buttons="$ctrl.tableActionButtons"
                             items="$ctrl.addresses">
@@ -64,12 +65,16 @@ var Artemis;
         ctrl.addresses = [];
         ctrl.workspace = workspace;
         ctrl.refreshed = false;
+        ctrl.dtOptions = {
+           // turn of ordering as we do it ourselves
+           ordering: false
+        };
         ctrl.filter = {
             fieldOptions: [
-                {id: 'ID', name: 'ID'},
-                {id: 'NAME', name: 'Name'},
-                {id: 'ROUTING_TYPES', name: 'Queue Count'},
-                {id: 'QUEUE_COUNT', name: 'User'}
+                {id: 'id', name: 'ID'},
+                {id: 'name', name: 'Name'},
+                {id: 'routingTypes', name: 'Queue Count'},
+                {id: 'queueCount', name: 'User'}
             ],
             operationOptions: [
                 {id: 'EQUALS', name: 'Equals'},

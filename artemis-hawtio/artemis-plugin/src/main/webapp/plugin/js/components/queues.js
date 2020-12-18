@@ -28,6 +28,7 @@ var Artemis;
             </h1>
              <div ng-include="'plugin/artemistoolbar.html'"></div>
              <pf-table-view config="$ctrl.tableConfig"
+                            dt-options="$ctrl.dtOptions"
                             columns="$ctrl.tableColumns"
                             action-buttons="$ctrl.tableActionButtons"
                             items="$ctrl.queues">
@@ -64,23 +65,27 @@ var Artemis;
         ctrl.queues = [];
         ctrl.workspace = workspace;
         ctrl.refreshed = false;
+        ctrl.dtOptions = {
+           // turn of ordering as we do it ourselves
+           ordering: false
+        };
         ctrl.filter = {
             fieldOptions: [
-                {id: 'ID', name: 'ID'},
-                {id: 'NAME', name: 'Name'},
-                {id: 'CONSUMER_ID', name: 'Consumer ID'},
-                {id: 'ADDRESS', name: 'Address'},
-                {id: 'FILTER', name: 'Filter'},
-                {id: 'MAX_CONSUMERS', name: 'maxConsumers'},
-                {id: 'ROUTING_TYPE', name: 'Routing Type'},
-                {id: 'PURGE_ON_NO_CONSUMERS', name: 'Purge On No Consumers'},
-                {id: 'USER', name: 'User'},
-                {id: 'MESSAGE_COUNT', name: 'Message Count'},
-                {id: 'DELIVERING_COUNT', name: 'Delivering Count'},
-                {id: 'PAUSED', name: 'Paused'},
-                {id: 'TEMPORARY', name: 'Temporary'},
-                {id: 'AUTO_CREATED', name: 'Auto Created'},
-                {id: 'RATE', name: 'Rate'}
+                {id: 'id', name: 'ID'},
+                {id: 'name', name: 'Name'},
+                {id: 'consumerId', name: 'Consumer ID'},
+                {id: 'address', name: 'Address'},
+                {id: 'filter', name: 'Filter'},
+                {id: 'maxConsumers', name: 'maxConsumers'},
+                {id: 'routingType', name: 'Routing Type'},
+                {id: 'purgeOnNoConsumers', name: 'Purge On No Consumers'},
+                {id: 'user', name: 'User'},
+                {id: 'messageCount', name: 'Message Count'},
+                {id: 'deliveringCount', name: 'Delivering Count'},
+                {id: 'paused', name: 'Paused'},
+                {id: 'temporary', name: 'Temporary'},
+                {id: 'autoCreated', name: 'Auto Created'},
+                {id: 'rate', name: 'Rate'}
             ],
             operationOptions: [
                 {id: 'EQUALS', name: 'Equals'},
@@ -155,7 +160,7 @@ var Artemis;
 
         ctrl.refresh = function () {
             ctrl.refreshed = true;
-            loadTable();
+            ctrl.pagination.load();
         };
         ctrl.reset = function () {
             ctrl.filter.values.field = "";

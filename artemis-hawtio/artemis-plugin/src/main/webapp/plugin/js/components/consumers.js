@@ -27,6 +27,7 @@ var Artemis;
             </h1>
              <div ng-include="'plugin/artemistoolbar.html'"></div>
              <pf-table-view config="$ctrl.tableConfig"
+                            dt-options="$ctrl.dtOptions"
                             columns="$ctrl.tableColumns"
                             action-buttons="$ctrl.tableActionButtons"
                             items="$ctrl.consumers">
@@ -78,6 +79,10 @@ var Artemis;
         ctrl.consumerToDeletesSession = '';
         ctrl.consumerToDelete = '';
         ctrl.closeDialog = false;
+        ctrl.dtOptions = {
+           // turn of ordering as we do it ourselves
+           ordering: false
+        };
         ctrl.filter = {
             fieldOptions: [
                 {id: 'ID', name: 'ID'},

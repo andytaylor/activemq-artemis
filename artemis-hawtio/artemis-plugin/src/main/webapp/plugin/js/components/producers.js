@@ -28,6 +28,7 @@ var Artemis;
             </h1>
              <div ng-include="'plugin/artemistoolbar.html'"></div>
              <pf-table-view config="$ctrl.tableConfig"
+                            dt-options="$ctrl.dtOptions"
                             columns="$ctrl.tableColumns"
                             items="$ctrl.producers">
              </pf-table-view>
@@ -62,6 +63,10 @@ var Artemis;
         ctrl.pageNumber = 1;
         ctrl.workspace = workspace;
         ctrl.refreshed = false;
+        ctrl.dtOptions = {
+           // turn of ordering as we do it ourselves
+           ordering: false
+        };
         ctrl.filter = {
             fieldOptions: [
                 {id: 'ID', name: 'ID'},

@@ -29,6 +29,7 @@ var Artemis;
             </h1>
             <div ng-include="'plugin/artemistoolbar.html'"></div>
             <pf-table-view config="$ctrl.tableConfig"
+                            dt-options="$ctrl.dtOptions"
                             columns="$ctrl.tableColumns"
                             action-buttons="$ctrl.tableActionButtons"
                             items="$ctrl.connections">
@@ -79,16 +80,20 @@ var Artemis;
         ctrl.refreshed = false;
         ctrl.connectionToDelete = '';
         ctrl.closeDialog = false;
+        ctrl.dtOptions = {
+           // turn of ordering as we do it ourselves
+           ordering: false
+        };
         ctrl.filter = {
             fieldOptions: [
-                {id: 'CONNECTION_ID', name: 'ID'},
-                {id: 'CLIENT_ID', name: 'Client ID'},
-                {id: 'USERS', name: 'Users'},
-                {id: 'PROTOCOL', name: 'Protocol'},
-                {id: 'SESSION_COUNT', name: 'Session Count'},
-                {id: 'REMOTE_ADDRESS', name: 'Remote Address'},
-                {id: 'LOCAL_ADDRESS', name: 'Local Address'},
-                {id: 'SESSION_ID', name: 'Session ID'}
+                {id: 'connectionID', name: 'ID'},
+                {id: 'clientId', name: 'Client ID'},
+                {id: 'users', name: 'Users'},
+                {id: 'protocol', name: 'Protocol'},
+                {id: 'sessionCount', name: 'Session Count'},
+                {id: 'remoteAddress', name: 'Remote Address'},
+                {id: 'localAddress', name: 'Local Address'},
+                {id: 'sessionId', name: 'Session ID'}
             ],
             operationOptions: [
                 {id: 'EQUALS', name: 'Equals'},
@@ -106,6 +111,12 @@ var Artemis;
                 value: "",
                 sortOrder: "asc",
                 sortColumn: "connectionID"
+            },
+            text: {
+                fieldText: "Filter Field..",
+                operationText: "Operation..",
+                sortOrderText: "ascending",
+                sortByText: "ID"
             }
         };
 
@@ -180,7 +191,7 @@ var Artemis;
                     ctrl.pagination.reset();
                     ctrl.refreshed = false;
                 }
-                Artemis.log.debug(JSON.stringify(connectionsFilter));
+                Artemis.log.info(JSON.stringify(connectionsFilter));
                 jolokia.request({ type: 'exec', mbean: mbean, operation: method, arguments: [JSON.stringify(connectionsFilter), ctrl.pagination.pageNumber, ctrl.pagination.pageSize] }, Core.onSuccess(populateTable, { error: onError }));
             }
         };
