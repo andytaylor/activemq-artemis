@@ -240,7 +240,9 @@ var Artemis;
         }
 
         function navigateToQueuesAtts(action, item) {
-            $location.path("artemis/attributes").search({"tab": "artemis", "nid": getQueuesNid(item, $location)});
+            qnid = getQueuesNid(item, $location);
+            Artemis.log.info(qnid);
+            $location.path("artemis/attributes").search({"tab": "artemis", "nid": qnid });
         };
         function navigateToQueuesOps(action, item) {
             $location.path("artemis/operations").search({"tab": "artemis", "nid": getQueuesNid(item, $location)});
@@ -278,16 +280,17 @@ var Artemis;
             return targetNID;
         }
         function getRootNid($location) {
-            var currentNid = $location.search()['nid'];
-            Artemis.log.debug("current nid=" + currentNid);
             var firstDash = currentNid.indexOf('-');
             var secondDash = currentNid.indexOf('-', firstDash + 1);
             var thirdDash = currentNid.indexOf('-', secondDash + 1);
-            if (thirdDash < 0) {
-                return currentNid + "-";
-            }
-            var rootNID = currentNid.substring(0, thirdDash + 1);
-            return rootNID;
+            var mBean = Artemis.getBrokerMBean(workspace, jolokia);
+            var details = Core.parseMBean(mBean);
+            var properties = details['attributes'];
+            var brokerAddress = properties["broker"] || "unknown";
+            var artemisJmxDomain = localStorage['artemisJmxDomain'] || "org.apache.activemq.artemis";
+            //we have to remove the surrounding quotes
+            return "root-" + artemisJmxDomain + "-" + brokerAddress.replace(/^"|"$/g, '') + "-";
+
         }
         ctrl.loadOperation = function () {
             if (mbean) {
