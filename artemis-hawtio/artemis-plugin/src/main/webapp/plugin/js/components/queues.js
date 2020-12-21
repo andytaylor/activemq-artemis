@@ -67,8 +67,51 @@ var Artemis;
         ctrl.refreshed = false;
         ctrl.dtOptions = {
            // turn of ordering as we do it ourselves
-           ordering: false
+           ordering: false,
+           columns: [
+                  {name: "ID", visible: true},
+                  {name: "name", visible: true},
+                  {name: "Address", visible: true},
+                  {name: "Routing Type", visible: true},
+                  {name: "Filter", visible: true},
+                  {name: "Durable", visible: true},
+                  {name: "Max Consumers", visible: true},
+                  {name: "Purge On No Consumers", visible: true},
+                  {name: "Consumer Count", visible: true},
+                  {name: "Rate", visible: true},
+                  {name: "Message Count", visible: true},
+                  {name: "Paused", visible: false},
+                  {name: "Temporary", visible: false},
+                  {name: "Auto Created", visible: false},
+                  {name: "User", visible: false},
+                  {name: "Total Messages Added", visible: false},
+                  {name: "Total Messages Acked", visible: false},
+                  {name: "Delivering Count", visible: false},
+                  {name: "Messages Killed", visible: false},
+                  {name: "Direct Deliver", visible: false},
+                  {name: "Exclusive", visible: false},
+                  {name: "last value", visible: false},
+                  {name: "Scheduled Count", visible: false},
+                  {name: "Group Rebalance", visible: false},
+                  {name: "Group Rebalance Pause Dispatch", visible: false},
+                  {name: "Group Buckets", visible: false},
+                  {name: "Group First Key", visible: false}
+             ]
         };
+
+        Artemis.log.debug('localStorage: queuesColumnDefs =', localStorage.getItem('queuesColumnDefs'));
+        if (localStorage.getItem('queuesColumnDefs')) {
+              ctrl.dtOptions.columns = JSON.parse(localStorage.getItem('queuesColumnDefs'));
+        }
+
+        ctrl.updateColumns = function () {
+              var attributes = [];
+              ctrl.dtOptions.columns.forEach(function (column) {
+                  attributes.push({name: column.name, visible: column.visible});
+              });
+              Artemis.log.debug("saving columns " + JSON.stringify(attributes));
+              localStorage.setItem('queuesColumnDefs', JSON.stringify(attributes));
+        }
         ctrl.filter = {
             fieldOptions: [
                 {id: 'id', name: 'ID'},
@@ -76,7 +119,7 @@ var Artemis;
                 {id: 'consumerId', name: 'Consumer ID'},
                 {id: 'address', name: 'Address'},
                 {id: 'filter', name: 'Filter'},
-                {id: 'maxConsumers', name: 'maxConsumers'},
+                {id: 'maxConsumers', name: 'Max Consumers'},
                 {id: 'routingType', name: 'Routing Type'},
                 {id: 'purgeOnNoConsumers', name: 'Purge On No Consumers'},
                 {id: 'user', name: 'User'},
@@ -133,7 +176,6 @@ var Artemis;
             { header: 'Name', itemField: 'name',
               templateFn: function(value, item) { return '<a href="#" onclick="selectQueue(' + item.idx + ')">' + $sanitize(value) + '</a>' }
             },
-            { header: 'Routing Types', itemField: 'routingTypes' },
             { header: 'Address', itemField: 'address',
               templateFn: function(value, item) { return '<a href="#" onclick="selectAddress(' + item.idx + ')">' + $sanitize(value) + '</a>' }
             },
@@ -155,7 +197,14 @@ var Artemis;
             { header: 'Total Messages Acked', itemField: 'messagesAcked' },
             { header: 'Delivering Count', itemField: 'deliveringCount' },
             { header: 'Messages Killed', itemField: 'messagesKilled' },
-            { header: 'Direct Deliver', itemField: 'directDeliver' }
+            { header: 'Direct Deliver', itemField: 'directDeliver' },
+            { header: 'exclusive', itemField: 'exclusive' },
+            { header: 'Last Value', itemField: 'lastValue' },
+            { header: 'Scheduled Count', itemField: 'scheduledCount' },
+            { header: 'Group Rebalance', itemField: 'groupRebalance' },
+            { header: 'Group Rebalance Pause Dispatch', itemField: 'groupRebalancePauseDispatch' },
+            { header: 'Group Buckets', itemField: 'groupBuckets' },
+            { header: 'Group First Key', itemField: 'groupFirstKey' }
         ];
 
         ctrl.refresh = function () {

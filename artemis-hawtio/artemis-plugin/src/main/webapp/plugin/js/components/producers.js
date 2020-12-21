@@ -65,8 +65,32 @@ var Artemis;
         ctrl.refreshed = false;
         ctrl.dtOptions = {
            // turn of ordering as we do it ourselves
-           ordering: false
-        };
+           ordering: false,
+           columns: [
+                {name: "ID", visible: true},
+                {name: "Session", visible: true},
+                {name: "Client ID", visible: true},
+                {name: "Protocol", visible: true},
+                {name: "User", visible: true},
+                {name: "Address", visible: true},
+                {name: "Remote Address", visible: true},
+                {name: "Local Address", visible: true}
+           ]
+          };
+
+        Artemis.log.debug('localStorage: producersColumnDefs =', localStorage.getItem('producersColumnDefs'));
+        if (localStorage.getItem('producersColumnDefs')) {
+            ctrl.dtOptions.columns = JSON.parse(localStorage.getItem('producersColumnDefs'));
+        }
+
+        ctrl.updateColumns = function () {
+            var attributes = [];
+            ctrl.dtOptions.columns.forEach(function (column) {
+                attributes.push({name: column.name, visible: column.visible});
+            });
+            Artemis.log.debug("saving columns " + JSON.stringify(attributes));
+            localStorage.setItem('producersColumnDefs', JSON.stringify(attributes));
+        }
         ctrl.filter = {
             fieldOptions: [
                 {id: 'ID', name: 'ID'},

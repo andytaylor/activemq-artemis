@@ -67,8 +67,29 @@ var Artemis;
         ctrl.refreshed = false;
         ctrl.dtOptions = {
            // turn of ordering as we do it ourselves
-           ordering: false
+           ordering: false,
+           columns: [
+                {name: "ID", visible: true},
+                {name: "Name", visible: true},
+                {name: "Routing Types", visible: true},
+                {name: "Queue Count", visible: true}
+           ]
         };
+
+        Artemis.log.debug('sessionStorage: addressColumnDefs =', localStorage.getItem('addressColumnDefs'));
+        if (localStorage.getItem('addressColumnDefs')) {
+            ctrl.dtOptions.columns = JSON.parse(localStorage.getItem('addressColumnDefs'));
+        }
+
+        ctrl.updateColumns = function () {
+            var attributes = [];
+            ctrl.dtOptions.columns.forEach(function (column) {
+                attributes.push({name: column.name, visible: column.visible});
+            });
+            Artemis.log.debug("saving columns " + JSON.stringify(attributes));
+            localStorage.setItem('addressColumnDefs', JSON.stringify(attributes));
+        }
+
         ctrl.filter = {
             fieldOptions: [
                 {id: 'id', name: 'ID'},

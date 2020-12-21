@@ -82,8 +82,30 @@ var Artemis;
         ctrl.closeDialog = false;
         ctrl.dtOptions = {
            // turn of ordering as we do it ourselves
-           ordering: false
+           ordering: false,
+           columns: [
+                {name: "ID", visible: true},
+                {name: "Connection", visible: true},
+                {name: "User", visible: true},
+                {name: "Consumer Count", visible: true},
+                {name: "Producer Count", visible: true},
+                {name: "Creation Time", visible: true}
+             ]
         };
+
+        Artemis.log.debug('localStorage: sessionsColumnDefs =', localStorage.getItem('sessionsColumnDefs'));
+        if (localStorage.getItem('sessionsColumnDefs')) {
+            ctrl.dtOptions.columns = JSON.parse(localStorage.getItem('sessionsColumnDefs'));
+        }
+
+        ctrl.updateColumns = function () {
+                var attributes = [];
+                ctrl.dtOptions.columns.forEach(function (column) {
+                    attributes.push({name: column.name, visible: column.visible});
+                });
+                Artemis.log.debug("saving columns " + JSON.stringify(attributes));
+                localStorage.setItem('sessionsColumnDefs', JSON.stringify(attributes));
+        }
         ctrl.filter = {
             fieldOptions: [
                 {id: 'ID', name: 'ID'},

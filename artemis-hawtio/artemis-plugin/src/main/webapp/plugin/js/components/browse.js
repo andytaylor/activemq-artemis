@@ -65,6 +65,11 @@ var Artemis;
                                         ng-disabled="$ctrl.retryDisabled"
                                         ng-click="$ctrl.openRetryDialog()">Retry Messages
                                     </button>
+                                    <button class="btn btn-default primary-action ng-binding ng-scope"
+                                        type="button"
+                                        title=""
+                                        ng-click="$ctrl.showColumns = true">Columns
+                                    </button>
                             </div>
                         </form>
                     </div>
@@ -72,7 +77,7 @@ var Artemis;
                 <pf-table-view config="$ctrl.tableConfig"
                     columns="$ctrl.tableColumns"
                     items="$ctrl.messages"
-                    dt-options="$ctrl.tableDtOptions"
+                    dt-options="$ctrl.dtOptions"
                     action-buttons="$ctrl.tableMenuActions">
                 </pf-table-view>
                 <div ng-include="'plugin/artemispagination.html'"></div>
@@ -147,6 +152,33 @@ var Artemis;
                     <p>{{$ctrl.actionText}}</p>
                 </div>
             </div>
+            <div class="form-group" ng-show="$ctrl.showColumns">
+                <button class="btn btn-default" data-toggle="modal" data-target="#myModal">Columns</button>
+                <div class="modal ng-scope">
+                  <div class="modal-dialog ">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title ng-binding">Column Selector</h4>
+                      </div>
+                      <div class="modal-body">
+                        <table class="table-view-container table table-striped table-bordered table-hover dataTable ng-scope ng-isolate-scope no-footer">
+                            <tbody>
+                                <tr ng-repeat="col in $ctrl.dtOptions.columns">
+                                    <td>{{ col.name }}</td>
+                                    <td><input type="checkbox" ng-model="col.visible" placeholder="Name" autocomplete="off" id="name"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default ng-binding" ng-click="$ctrl.showColumns = false;$ctrl.updateColumns()">
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
             <script type="text/ng-template" id="browse-instructions.html">
               <div>
                 <p>
@@ -200,6 +232,40 @@ var Artemis;
             }
         }
 
+        ctrl.dtOptions = {
+           // turn of ordering as we do it ourselves
+           ordering: false,
+           columns: [
+                {name: "Select", visible: true},
+                {name: "Message ID", visible: true},
+                {name: "Type", visible: true},
+                {name: "Durable", visible: true},
+                {name: "Priority", visible: true},
+                {name: "Timestamp", visible: true},
+                {name: "Expires", visible: true},
+                {name: "Redelivered", visible: true},
+                {name: "Large", visible: true},
+                {name: "Persistent Size", visible: true},
+                {name: "User ID", visible: true},
+                {name: "Validated User", visible: true},
+                {name: "Original Queue (Expiry/DLQ's only)", visible: true}
+           ]
+        };
+
+        Artemis.log.debug('sessionStorage: browseColumnDefs =', localStorage.getItem('browseColumnDefs'));
+        if (localStorage.getItem('browseColumnDefs')) {
+            ctrl.dtOptions.columns = JSON.parse(localStorage.getItem('browseColumnDefs'));
+        }
+
+        ctrl.updateColumns = function () {
+            var attributes = [];
+            ctrl.dtOptions.columns.forEach(function (column) {
+                attributes.push({name: column.name, visible: column.visible});
+            });
+            Artemis.log.debug("saving columns " + JSON.stringify(attributes));
+            localStorage.setItem('addressColumnDefs', JSON.stringify(attributes));
+        }
+
         ctrl.tableConfig = {
             onCheckBoxChange: handleCheckBoxChange,
             selectionMatchProp: 'messageID',
@@ -208,7 +274,7 @@ var Artemis;
         ctrl.tableColumns = [
             {
                 itemField: 'messageID',
-                header: 'messageID'
+                header: 'Message ID'
             },
             {
                 itemField: 'type',
@@ -312,9 +378,6 @@ var Artemis;
 
         ctrl.tableMenuActions = [ showConfig, resendConfig ];
 
-        ctrl.tableDtOptions = {
-          order: [[0, "asc"]]
-        };
         ctrl.sysprops = [];
 
         Artemis.log.debug("loaded browse 5" + Artemis.browseQueueModule);

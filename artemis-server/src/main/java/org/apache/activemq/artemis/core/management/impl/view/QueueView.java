@@ -60,7 +60,7 @@ public class QueueView extends ActiveMQAbstractView<QueueControl> {
          .add("messagesAcked", toString(queue.getMessagesAcknowledged()))
          .add("deliveringCount", toString(queue.getDeliveringCount()))
          .add("messagesKilled", toString(queue.getMessagesKilled()))
-         .add("deliverDeliver", toString(q.isDirectDeliver()))
+         .add("directDeliver", toString(q.isDirectDeliver()))
          .add("exclusive", toString(queue.isExclusive()))
          .add("lastValue", toString(queue.isLastValue()))
          .add("scheduledCount", toString(queue.getScheduledCount()))
