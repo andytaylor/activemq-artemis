@@ -416,34 +416,35 @@ var Artemis;
             return (value < 10 ? '0' : '') + value;
         }
 
-        function formatExpires(timestamp) {
-            if (isNaN(timestamp)) {
+        $scope.formatExpires = function(timestamp) {
+             if (isNaN(timestamp)) {
                 return timestamp;
-            }
-            var expiresIn = timestamp - Date.now();
-            if (Math.abs(expiresIn) < MS_PER_DAY) {
+             }
+             var expiresIn = timestamp - Date.now();
+             if (Math.abs(expiresIn) < MS_PER_DAY) {
                 var duration = expiresIn < 0 ? -expiresIn : expiresIn;
                 var hours = pad2(Math.floor((duration / MS_PER_HOUR) % 24));
                 var mins  = pad2(Math.floor((duration / MS_PER_MIN) % 60));
                 var secs  = pad2(Math.floor((duration / MS_PER_SEC) % 60));
                 if (expiresIn < 0) {
-                // "HH:mm:ss ago"
-                    return hours + ":" + mins + ":" + secs + " ago";
+                   // "HH:mm:ss ago"
+                   return hours + ":" + mins + ":" + secs + " ago";
                 }
                 // "in HH:mm:ss ago"
                 return "in " + hours + ":" + mins + ":" + secs;
-            }
-            return formatTimestamp(timestamp);
-        }
+             }
+             return $scope.formatTimestamp(timestamp);
+          }
 
-        function formatTimestamp(timestamp) {
-            if (isNaN(timestamp)) {
+          $scope.formatTimestamp = function(timestamp) {
+             if (isNaN(timestamp)) {
                 return timestamp;
-            }
-            var d = new Date(timestamp);
-            // "yyyy-MM-dd HH:mm:ss"
-            return d.getFullYear() + "-" + pad2(d.getMonth()) + "-" + pad2(d.getDay()) + " " + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds());
-        }
+             }
+             var d = new Date(timestamp);
+             // "yyyy-MM-dd HH:mm:ss"
+             //add 1 to month as getmonth returns the position not the actual month
+             return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()) + " " + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds());
+          }
 
         var typeLabels = ["default", "1", "object", "text", "bytes", "map", "stream", "embedded"];
         function formatType(type) {
