@@ -280,9 +280,6 @@ var Artemis;
             return targetNID;
         }
         function getRootNid($location) {
-            var firstDash = currentNid.indexOf('-');
-            var secondDash = currentNid.indexOf('-', firstDash + 1);
-            var thirdDash = currentNid.indexOf('-', secondDash + 1);
             var mBean = Artemis.getBrokerMBean(workspace, jolokia);
             var details = Core.parseMBean(mBean);
             var properties = details['attributes'];

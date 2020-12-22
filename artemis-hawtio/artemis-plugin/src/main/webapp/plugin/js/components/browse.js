@@ -416,7 +416,7 @@ var Artemis;
             return (value < 10 ? '0' : '') + value;
         }
 
-        $scope.formatExpires = function(timestamp) {
+        function formatExpires(timestamp) {
              if (isNaN(timestamp)) {
                 return timestamp;
              }
@@ -433,10 +433,10 @@ var Artemis;
                 // "in HH:mm:ss ago"
                 return "in " + hours + ":" + mins + ":" + secs;
              }
-             return $scope.formatTimestamp(timestamp);
+             return formatTimestamp(timestamp);
           }
 
-          $scope.formatTimestamp = function(timestamp) {
+          function formatTimestamp(timestamp) {
              if (isNaN(timestamp)) {
                 return timestamp;
              }
