@@ -57,6 +57,7 @@ var Artemis;
     function ProducersController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisProducer, artemisAddress, artemisSession) {
         var ctrl = this;
         ctrl.pagination = pagination;
+        ctrl.pagination.reset();
         var mbean = Artemis.getBrokerMBean(workspace, jolokia);
         ctrl.allProducers = [];
         ctrl.producers = [];
@@ -177,6 +178,7 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[1].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisProducer.producer.sessionID;
+            artemisProducer.producer = null;
         }
 
         ctrl.loadOperation = function () {

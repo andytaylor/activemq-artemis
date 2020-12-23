@@ -206,6 +206,7 @@ var Artemis;
         ctrl.moveDisabled = true;
         ctrl.retryDisabled = true;
         ctrl.pagination = pagination;
+        ctrl.pagination.reset();
         ctrl.filter = '';
         ctrl.actionText = '';
 

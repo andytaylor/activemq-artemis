@@ -72,6 +72,7 @@ var Artemis;
     function ConnectionsController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisConnection, artemisSession) {
         var ctrl = this;
         ctrl.pagination = pagination;
+        ctrl.pagination.reset();
         var mbean = Artemis.getBrokerMBean(workspace, jolokia);
         ctrl.allConnections = [];
         ctrl.connections = [];
@@ -113,14 +114,14 @@ var Artemis;
 
         ctrl.filter = {
             fieldOptions: [
-                {id: 'connectionID', name: 'ID'},
-                {id: 'clientId', name: 'Client ID'},
+                {id: 'connection_id', name: 'ID'},
+                {id: 'client_id', name: 'Client ID'},
                 {id: 'users', name: 'Users'},
                 {id: 'protocol', name: 'Protocol'},
-                {id: 'sessionCount', name: 'Session Count'},
-                {id: 'remoteAddress', name: 'Remote Address'},
-                {id: 'localAddress', name: 'Local Address'},
-                {id: 'sessionId', name: 'Session ID'}
+                {id: 'session_count', name: 'Session Count'},
+                {id: 'remote_address', name: 'Remote Address'},
+                {id: 'local_address', name: 'Local Address'},
+                {id: 'session_id', name: 'Session ID'}
             ],
             operationOptions: [
                 {id: 'EQUALS', name: 'Equals'},
@@ -182,6 +183,7 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[0].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisSession.session.connectionID;
+            artemisSession.session = null;
         }
 
         ctrl.refresh = function () {

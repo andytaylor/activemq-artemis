@@ -70,6 +70,7 @@ var Artemis;
     function ConsumersController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisConsumer, artemisQueue, artemisAddress, artemisSession) {
         var ctrl = this;
         ctrl.pagination = pagination;
+        ctrl.pagination.reset();
         var mbean = Artemis.getBrokerMBean(workspace, jolokia);
         ctrl.allConsumers = [];
         ctrl.consumers = [];
@@ -196,6 +197,15 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[1].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisConsumer.consumer.sessionID;
+            artemisConsumer.consumer = null;
+        }
+
+        if (artemisQueue.queue) {
+            Artemis.log.info("navigating to consumer = " + artemisQueue.queue.queue);
+            ctrl.filter.values.field = ctrl.filter.fieldOptions[5].id;
+            ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
+            ctrl.filter.values.value = artemisQueue.queue.queue;
+            artemisQueue.queue = null;
         }
 
         selectQueue = function (idx) {
@@ -252,6 +262,8 @@ var Artemis;
                     ctrl.pagination.reset();
                     ctrl.refreshed = false;
                 }
+
+                Artemis.log.info(JSON.stringify(sessionsFilter));
                 jolokia.request({ type: 'exec', mbean: mbean, operation: method, arguments: [JSON.stringify(sessionsFilter), ctrl.pagination.pageNumber, ctrl.pagination.pageSize] }, Core.onSuccess(populateTable, { error: onError }));
             }
         };

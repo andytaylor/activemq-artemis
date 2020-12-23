@@ -60,6 +60,7 @@ var Artemis;
     function QueuesController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisQueue, artemisAddress) {
         var ctrl = this;
         ctrl.pagination = pagination;
+        ctrl.pagination.reset();
         var mbean = Artemis.getBrokerMBean(workspace, jolokia);
         ctrl.allAddresses = [];
         ctrl.queues = [];
@@ -179,12 +180,14 @@ var Artemis;
             { header: 'Address', itemField: 'address',
               templateFn: function(value, item) { return '<a href="#" onclick="selectAddress(' + item.idx + ')">' + $sanitize(value) + '</a>' }
             },
-            { header: 'Routing Type', itemField: 'routingType' },
+            { header: 'Routing Type', itemField: 'routingType'},
             { header: 'Filter', itemField: 'filter' },
             { header: 'Durable', itemField: 'durable' },
             { header: 'Max Consumers', itemField: 'maxConsumers' },
             { header: 'Purge On No Consumers', itemField: 'purgeOnNoConsumers' },
-            { header: 'Consumer Count', itemField: 'consumerCount' },
+            { header: 'Consumer Count', itemField: 'consumerCount' ,
+              templateFn: function(value, item) { return '<a href="#" onclick="selectConsumers(' + item.idx + ')">' + $sanitize(value) + '</a>' }
+            },
             { header: 'Rate', itemField: 'rate' },
             { header: 'Message Count', itemField: 'messageCount',
               templateFn: function(value, item) { return '<a href="#" onclick="browseQueue(' + item.idx + ')" title="Browse Messages">' + value + '</a>' }
@@ -230,6 +233,7 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[1].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisQueue.queue.queue;
+            artemisQueue.queue = null;
         }
 
         if (artemisAddress.address) {
@@ -237,6 +241,7 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[3].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisAddress.address.address;
+            artemisAddress.address = null;
         }
 
         function navigateToQueuesAtts(action, item) {
@@ -257,9 +262,14 @@ var Artemis;
             var item = ctrl.queues[idx];
             var nid = getQueuesNid(item, $location);
             Artemis.log.debug("navigating to queue:" + nid);
-            artemisAddress.address = { address: item.address };
-            artemisQueue.queue = item;
+            artemisQueue.queue = { queue: item.name };
             $location.path("artemis/artemisQueues").search({"tab": "artemis", "nid": nid});
+        };
+        selectConsumers = function (idx) {
+            var item = ctrl.queues[idx];
+            var nid = getQueuesNid(item, $location);
+            artemisQueue.queue = { queue: item.name };
+            $location.path("artemis/artemisConsumers").search({"tab": "artemis", "nid": nid});;
         };
         browseQueue = function (idx) {
             var item = ctrl.queues[idx];

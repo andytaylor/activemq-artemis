@@ -71,6 +71,7 @@ var Artemis;
     function SessionsController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisConnection, artemisSession, artemisConsumer, artemisProducer) {
         var ctrl = this;
         ctrl.pagination = pagination;
+        ctrl.pagination.reset();
         var mbean = Artemis.getBrokerMBean(workspace, jolokia);
         ctrl.allSessions = [];
         ctrl.sessions = [];
@@ -108,14 +109,14 @@ var Artemis;
         }
         ctrl.filter = {
             fieldOptions: [
-                {id: 'ID', name: 'ID'},
-                {id: 'CONNECTION_ID', name: 'Connection ID'},
-                {id: 'CONSUMER_COUNT', name: 'Consumer Count'},
-                {id: 'USER', name: 'User'},
-                {id: 'PROTOCOL', name: 'Protocol'},
-                {id: 'CLIENT_ID', name: 'Client ID'},
-                {id: 'LOCAL_ADDRESS', name: 'Local Address'},
-                {id: 'REMOTE_ADDRESS', name: 'Remote Address'}
+                {id: 'id', name: 'ID'},
+                {id: 'connection_id', name: 'Connection ID'},
+                {id: 'consumer_count', name: 'Consumer Count'},
+                {id: 'user', name: 'User'},
+                {id: 'protocol', name: 'Protocol'},
+                {id: 'client_id', name: 'Client ID'},
+                {id: 'local_address', name: 'Local Address'},
+                {id: 'remote_address', name: 'Remote Address'}
             ],
             operationOptions: [
                 {id: 'EQUALS', name: 'Equals'},
@@ -208,6 +209,7 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[1].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisConnection.connection.connectionID;
+            artemisConnection.connection = null;
         }
 
         if (artemisSession.session) {
@@ -215,6 +217,7 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[0].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisSession.session.session;
+            artemisSession.session = null;
         }
 
         function openCloseDialog(action, item) {

@@ -60,6 +60,7 @@ var Artemis;
     function AddressesController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisAddress) {
         var ctrl = this;
         ctrl.pagination = pagination;
+        ctrl.pagination.reset();
         var mbean = Artemis.getBrokerMBean(workspace, jolokia);
         ctrl.allAddresses = [];
         ctrl.addresses = [];
@@ -165,6 +166,7 @@ var Artemis;
             ctrl.filter.values.field = ctrl.filter.fieldOptions[1].id;
             ctrl.filter.values.operation = ctrl.filter.operationOptions[0].id;
             ctrl.filter.values.value = artemisAddress.address.address;
+            artemisAddress.address = null;
         }
 
         selectQueues = function (idx) {
