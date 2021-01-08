@@ -19,7 +19,8 @@ var Artemis;
     //Artemis.log.debug("loading addresses");
     Artemis._module.component('artemisAddresses', {
         template:
-            `<h1>Browse Addresses
+            `
+            <h1>Browse Addresses
                 <button type="button" class="btn btn-link jvm-title-popover"
                           uib-popover-template="'addresses-instructions.html'" popover-placement="bottom-left"
                           popover-title="Instructions" popover-trigger="'outsideClick'">
@@ -27,12 +28,36 @@ var Artemis;
                 </button>
             </h1>
              <div ng-include="'plugin/artemistoolbar.html'"></div>
-             <pf-table-view config="$ctrl.tableConfig"
-                            dt-options="$ctrl.dtOptions"
-                            columns="$ctrl.tableColumns"
-                            action-buttons="$ctrl.tableActionButtons"
-                            items="$ctrl.addresses">
-             </pf-table-view>
+             <table id="addressTable"
+               data-row-style="rowStyle"
+               data-search="false"
+               data-pagination="false"
+               data-resizable="true"
+               data-resizable-columns-id="addressTable">
+               <thead>
+                   <tr>
+                     <th data-resizable-column-id="ID" data-switchable="true"/>
+                     <th data-resizable-column-id="Name" data-switchable="true"/>
+                     <th data-resizable-column-id="Routing Types" data-switchable="true"/>
+                     <th data-resizable-column-id="Queue Count" data-switchable="true"/>
+                     <th data-resizable-column-id="Actions" data-switchable="true"/>
+                   </tr>
+                 </thead>
+                 <tbody/>
+             </table>
+             <script>
+                function rowStyle(row, index) {
+                      if (index % 2 === 0 ) {
+                        return {
+                          classes: 'even'
+                        }
+                      }
+                      return {
+                        classes: 'odd'
+                      }
+                    }
+             </script>
+
              <div ng-include="'plugin/artemispagination.html'"></div>
              <script type="text/ng-template" id="addresses-instructions.html">
              <div>
@@ -57,40 +82,52 @@ var Artemis;
     .name;
 
 
-    function AddressesController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisAddress) {
+    function AddressesController($scope, workspace, jolokia, localStorage, artemisMessage, $location, $timeout, $filter, $sanitize, pagination, artemisAddress, $route) {
         var ctrl = this;
+        ctrl.route = $route;
         ctrl.pagination = pagination;
         ctrl.pagination.reset();
         var mbean = Artemis.getBrokerMBean(workspace, jolokia);
-        ctrl.allAddresses = [];
         ctrl.addresses = [];
         ctrl.workspace = workspace;
         ctrl.refreshed = false;
-        ctrl.dtOptions = {
-           // turn of ordering as we do it ourselves
-           ordering: false,
-           columns: [
-                {name: "ID", visible: true},
-                {name: "Name", visible: true},
-                {name: "Routing Types", visible: true},
-                {name: "Queue Count", visible: true}
-           ]
-        };
+
+        ctrl.btTableColumns = [
+            { title: 'ID', field: 'id' , visible: true},
+            { title: 'Name', field: 'name', visible: true },
+            { title: 'Routing Types', field: 'routingTypes', visible: true },
+            { title: 'Queue Count', field: 'queueCount' , visible: true },
+            { title: 'Actions', field: 'actions' , visible: true }
+        ];
 
         Artemis.log.debug('sessionStorage: addressColumnDefs =', localStorage.getItem('addressColumnDefs'));
         if (localStorage.getItem('addressColumnDefs')) {
             loadedDefs = JSON.parse(localStorage.getItem('addressColumnDefs'));
-            //sanity check to make sure columns havent been added
-            if(loadedDefs.length === ctrl.dtOptions.columns.length) {
-                ctrl.dtOptions.columns = loadedDefs;
-            }
 
+            ctrl.btTableColumns.forEach(function (column) {
+                Artemis.log.info(column.title + ' ' + column.visible);
+                var btCol = loadedDefs.find( col => {
+                  return column.title == col.name || column.title == col.title;
+                });
+                Artemis.log.info("btcol " + btCol);
+                if (btCol) {
+                    column.visible = btCol.visible;
+                    Artemis.log.info(btCol.visible);
+                }
+            })
+        } else {
+            localStorage.setItem('addressColumnDefs', JSON.stringify(ctrl.btTableColumns));
         }
 
         ctrl.updateColumns = function () {
             var attributes = [];
-            ctrl.dtOptions.columns.forEach(function (column) {
-                attributes.push({name: column.name, visible: column.visible});
+            ctrl.btTableColumns.forEach(function (column) {
+                attributes.push({title: column.title, visible: column.visible});
+                if (column.visible) {
+                    $('#addressTable').bootstrapTable('showColumn', column.field);
+                } else {
+                    $('#addressTable').bootstrapTable('hideColumn', column.field);
+                }
             });
             Artemis.log.debug("saving columns " + JSON.stringify(attributes));
             localStorage.setItem('addressColumnDefs', JSON.stringify(attributes));
@@ -128,18 +165,6 @@ var Artemis;
             }
         };
 
-        ctrl.tableActionButtons = [
-            {
-                name: 'attributes',
-                title: 'Navigate to attributes',
-                actionFn: navigateToAddressAtts
-            },
-            {
-               name: 'operations',
-               title: 'navigate to operations',
-               actionFn: navigateToAddressOps
-            }
-        ];
         ctrl.tableConfig = {
             selectionMatchProp: 'id',
             showCheckboxes: false
@@ -150,6 +175,7 @@ var Artemis;
             { header: 'Routing Types', itemField: 'routingTypes' },
             { header: 'Queue Count', itemField: 'queueCount' , templateFn: function(value, item) { return '<a href="#" onclick="selectQueues(' + item.idx + ')">' + $sanitize(value) + '</a>' }}
         ];
+
 
         ctrl.refresh = function () {
             ctrl.refreshed = true;
@@ -174,23 +200,24 @@ var Artemis;
             artemisAddress.address = null;
         }
 
-        selectQueues = function (idx) {
-            var address = ctrl.addresses[idx].name;
+        selectQueues = function (address) {
             Artemis.log.debug("navigating to queues:" + address)
             artemisAddress.address = { address: address };
             $location.path("artemis/artemisQueues");
         };
 
-        function navigateToAddressAtts(action, item) {
-            $location.path("artemis/attributes").search({"tab": "artemis", "nid": getAddressNid(item.name, $location)});
+        navigateToAddressAtts = function(address) {
+            $location.path("artemis/attributes").search({"tab": "artemis", "nid": getAddressNid(address, $location)});
+            ctrl.workspace.loadTree();
         };
-        function navigateToAddressOps(action, item) {
-            $location.path("artemis/operations").search({"tab": "artemis", "nid": getAddressNid(item.name, $location)});
+        navigateToAddressOps = function(address) {
+            $location.path("artemis/operations").search({"tab": "artemis", "nid": getAddressNid(address, $location)});
+            ctrl.workspace.loadTree();
         };
         function getAddressNid(address, $location) {
             var rootNID = getRootNid($location);
             var targetNID = rootNID + "addresses-" + address;
-            Artemis.log.debug("targetNID=" + targetNID);
+            Artemis.log.info("targetNID=" + targetNID);
             return targetNID;
         }
         function getRootNid($location) {
@@ -230,23 +257,69 @@ var Artemis;
             Core.notification("error", "could not invoke list sessions" + response.error);
             $scope.workspace.selectParentNode();
         };
-
         function populateTable(response) {
             var data = JSON.parse(response.value);
+            Artemis.log.info(JSON.stringify(data.data));
             ctrl.addresses = [];
             angular.forEach(data["data"], function (value, idx) {
-                value.idx = idx;
-                ctrl.addresses.push(value);
+                ctrl.addresses.push ({
+                    id: value.id,
+                    name: value.name,
+                    routingTypes: value.routingTypes,
+                    queueCount: '<a href="#" onclick="selectQueues(\'' + value.name + '\')">' + $sanitize(value.queueCount) + '</a>',
+                    actions: '<button class="btn btn-default" title="Navigate to attributes" onClick="navigateToAddressAtts(\'' + value.name + '\')"><span class="ng-binding ng-scope">attributes</span></button>' +
+                             '<button class="btn btn-default" title="Navigate to operations" onClick="navigateToAddressOps(\'' + value.name + '\')"><span class="ng-binding ng-scope">operations</span></button>'
+                });
+                Artemis.log.info("val " + JSON.stringify(value));
             });
             ctrl.pagination.page(data["count"]);
-            allAddresses = ctrl.addresses;
-            ctrl.addresses = allAddresses;
+            Artemis.log.info(ctrl.btData);
+            $('#addressTable').bootstrapTable('load', ctrl.addresses);
+            $("#addressTable").resizableColumns({
+                store: {
+                    get: function (key, optionalDefaultValue) {
+                        if (localStorage.getItem('addressColumnDefs')) {
+                            loadedDefs = JSON.parse(localStorage.getItem('addressColumnDefs'));
+                            var def = loadedDefs.find( col => {
+                                return key.endsWith(col.title);
+                            });
+                            if (def && def.width) {
+                                return def.width;
+                            }
+                        }
+                        Artemis.log.info("in getter: " + key + " " + optionalDefaultValue);
+                    },
+                    set: function (key, value) {
+                        if (localStorage.getItem('addressColumnDefs')) {
+                            loadedDefs = JSON.parse(localStorage.getItem('addressColumnDefs'));
+                            var def = loadedDefs.find( col => {
+                                Artemis.log.info(" key=" + key + " col=" + col.title);
+                                Artemis.log.info(key.endsWith(col.title));
+                                return key.endsWith(col.title);
+                            });
+                             Artemis.log.info(def);
+                            if (def) {
+                                def.width = value;
+                                localStorage.setItem('addressColumnDefs', JSON.stringify(loadedDefs));
+                            }
+                        }
+                        Artemis.log.info("in setter "+ key + " " + value);
+                    }
+                }
+            });
             Core.$apply($scope);
         }
 
         ctrl.pagination.load();
+
+        Artemis.log.info("here ");
+        $('#addressTable').bootstrapTable({
+           columns: ctrl.btTableColumns,
+           data: ctrl.addresses
+        });
+        Artemis.log.info("here");
     }
-    AddressesController.$inject = ['$scope', 'workspace', 'jolokia', 'localStorage', 'artemisMessage', '$location', '$timeout', '$filter', '$sanitize', 'pagination', 'artemisAddress'];
+    AddressesController.$inject = ['$scope', 'workspace', 'jolokia', 'localStorage', 'artemisMessage', '$location', '$timeout', '$filter', '$sanitize', 'pagination', 'artemisAddress', '$route'];
 
 
 })(Artemis || (Artemis = {}));

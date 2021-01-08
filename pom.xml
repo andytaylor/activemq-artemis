@@ -1688,6 +1688,8 @@
                <reportFile>${activemq.basedir}/ratReport.txt</reportFile>
                <skip>${skipLicenseCheck}</skip>
                <excludes>
+                  <exclude>**/jquery*</exclude>
+                  <exclude>**/bootstrap*</exclude>
                   <exclude>**/src/main/webapp/hawtconfig.json</exclude>
                   <exclude>.repository/**</exclude>
                   <exclude>.travis.yml</exclude>

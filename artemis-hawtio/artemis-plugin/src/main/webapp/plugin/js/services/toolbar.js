@@ -86,9 +86,9 @@ var Artemis;
                                   <div class="modal-body">
                                     <table class="table-view-container table table-striped table-bordered table-hover dataTable ng-scope ng-isolate-scope no-footer">
                                         <tbody>
-                                            <tr ng-repeat="col in $ctrl.dtOptions.columns">
-                                                <td>{{ col.name }}</td>
-                                                <td><input type="checkbox" ng-model="col.visible" placeholder="Name" autocomplete="off" id="name"></td>
+                                            <tr ng-repeat="col in $ctrl.btTableColumns">
+                                                <td>{{ col.title }}</td>
+                                                <td><input type="checkbox" ng-model="col.visible" placeholder="Name" ng-click="$ctrl.updateColumn(col.field)" autocomplete="off" id="name"></td>
                                             </tr>
                                         </tbody>
                                     </table>
