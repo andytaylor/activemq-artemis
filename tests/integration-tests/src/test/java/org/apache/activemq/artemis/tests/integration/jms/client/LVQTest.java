@@ -18,6 +18,7 @@ package org.apache.activemq.artemis.tests.integration.jms.client;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
@@ -30,8 +31,15 @@ import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
 import org.apache.activemq.artemis.tests.util.JMSTestBase;
 import org.apache.activemq.artemis.tests.util.Wait;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * LVQ Test
@@ -47,6 +55,81 @@ public class LVQTest extends JMSTestBase {
 
    protected ConnectionFactory getCF() throws Exception {
       return cf;
+   }
+
+   @Test
+   public void testLVQacked() throws Exception {
+      ActiveMQConnectionFactory fact = (ActiveMQConnectionFactory) getCF();
+      fact.setConsumerWindowSize(0);
+
+      HashMap<String, List<String>> results = new HashMap<>();
+      results.put("0", new ArrayList<>());
+      results.put("1", new ArrayList<>());
+      results.put("2", new ArrayList<>());
+      HashMap<String, Integer> dups = new HashMap<>();
+
+      try (Connection connection = fact.createConnection(); Connection connection2 = fact.createConnection()) {
+         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+         Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+         // swapping these two lines makes the test either succeed for fail
+         // Queue queue = session.createQueue("random?last-value=true");
+         Queue queue = session.createQueue("random?last-value=true&non-destructive=true");
+
+         MessageProducer producer = session2.createProducer(queue);
+         MessageConsumer consumer = session.createConsumer(queue);
+
+         connection.start();
+
+
+         Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+               for (int i = 0; i < 100; i++) {
+                  String lastval = "" + (i % 3);
+                  try {
+                     TextMessage message = session2.createTextMessage();
+                     message.setText("" + i);
+                     message.setStringProperty("lastval", lastval);
+                     message.setStringProperty(Message.HDR_LAST_VALUE_NAME.toString(), lastval);
+                     producer.send(message);
+                  } catch (JMSException e) {
+                     e.printStackTrace();
+                  }
+               }
+            }
+         });
+
+         t.start();;
+         while(true) {
+            TextMessage tm = (TextMessage) consumer.receive(2000);
+            if(tm == null) break;
+            results.get(tm.getStringProperty("lastval")).add(tm.getText());
+            tm.acknowledge();
+
+         }
+
+      }
+      for (Map.Entry<String, List<String>> entry : results.entrySet()) {
+         System.out.print("Messages received with lastval="+ entry.getKey() + " (");
+         for (String s : entry.getValue()) {
+            int occurrences = Collections.frequency(entry.getValue(), s);
+            if (occurrences > 1 && !dups.containsValue(s)) {
+               dups.put(s, occurrences);
+            }
+            System.out.print(s + ",");
+         }
+         System.out.println(")");
+
+      }
+      if (dups.size() > 0) {
+         StringBuffer sb = new StringBuffer();
+         for (Map.Entry<String, Integer> stringIntegerEntry : dups.entrySet()) {
+            sb.append(stringIntegerEntry.getKey() + "(" + stringIntegerEntry.getValue() + "),");
+         }
+         Assert.fail("Duplicate messages received " + sb.toString());
+      }
+
    }
 
    @Test
