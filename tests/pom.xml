@@ -151,5 +151,6 @@
       <module>performance-tests</module>
       <module>artemis-test-support</module>
       <module>smoke-tests</module>
+      <module>e2e-tests</module>
    </modules>
 </project>
