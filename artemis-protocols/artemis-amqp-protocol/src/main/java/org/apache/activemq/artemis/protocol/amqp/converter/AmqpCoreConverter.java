@@ -55,7 +55,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -491,7 +490,7 @@ public class AmqpCoreConverter {
          msg.setFloatProperty(key, ((Decimal32) value).floatValue());
       } else if (value instanceof Binary) {
          Binary bin = (Binary) value;
-         msg.setObjectProperty(key, Arrays.copyOfRange(bin.getArray(), bin.getArrayOffset(), bin.getLength()));
+         msg.setObjectProperty(key, bin.toString());
       } else {
          msg.setObjectProperty(key, value);
       }

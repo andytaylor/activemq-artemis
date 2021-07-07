@@ -42,6 +42,7 @@ import org.apache.activemq.transport.amqp.client.AmqpMessage;
 import org.apache.activemq.transport.amqp.client.AmqpSender;
 import org.apache.activemq.transport.amqp.client.AmqpSession;
 import org.apache.qpid.jms.JmsConnectionFactory;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Header;
 import org.junit.After;
@@ -110,6 +111,47 @@ public class AMQPToOpenwireTest extends ActiveMQTestBase {
       } finally {
          if (connection != null) {
             connection.close();
+         }
+      }
+   }
+
+   @Test
+   public void testObjectMessageWithBinary() throws Exception {
+      AmqpClient directClient = new AmqpClient(new URI("tcp://localhost:61616"), null, null);
+      AmqpConnection connection = null;
+      Connection connection2 = null;
+      AmqpSession session = null;
+      AmqpSender sender = null;
+      try {
+         connection = directClient.connect(true);
+         session = connection.createSession();
+         sender = session.createSender(queueName.toString());
+
+         AmqpMessage message = new AmqpMessage();
+         message = new AmqpMessage();
+         byte[] b = new byte[]{1,2,3,5};
+         message.setMessageId("msg-1");
+         message.setApplicationProperty("binary", new Binary(b));
+         sender.send(message);
+
+         connection2 = factory.createConnection();
+         Session session2 = connection2.createSession(false, Session.AUTO_ACKNOWLEDGE);
+         Queue queue = session2.createQueue(queueName);
+         MessageConsumer consumer = session2.createConsumer(queue);
+         connection2.start();
+         Message receive =  consumer.receive(5000);
+         assertNotNull(receive);
+         String binary = receive.getStringProperty("binary");
+         System.out.println("binary = " + binary);
+         assertNotNull(binary);
+         assertEquals("\\x01\\x02\\x03\\x05", binary);
+         connection.close();
+      } finally {
+         if (connection != null) {
+            connection.close();
+         }
+         if (connection2 != null) {
+            connection2.close();
          }
       }
    }

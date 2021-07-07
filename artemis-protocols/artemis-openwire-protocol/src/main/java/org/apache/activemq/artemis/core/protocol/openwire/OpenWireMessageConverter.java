@@ -185,7 +185,7 @@ public final class OpenWireMessageConverter {
 
       final ByteSequence midBytes = marshaller.marshal(messageId);
       midBytes.compact();
-      coreMessage.putBytesProperty(AMQ_MSG_MESSAGE_ID, midBytes.data);
+      coreMessage.putStringProperty(AMQ_MSG_MESSAGE_ID, new String(midBytes.data));
 
       coreMessage.setUserID(UUIDGenerator.getInstance().generateUUID());
 
@@ -193,7 +193,7 @@ public final class OpenWireMessageConverter {
       if (producerId != null) {
          final ByteSequence producerIdBytes = marshaller.marshal(producerId);
          producerIdBytes.compact();
-         coreMessage.putBytesProperty(AMQ_MSG_PRODUCER_ID, producerIdBytes.data);
+         coreMessage.putStringProperty(AMQ_MSG_PRODUCER_ID, new String(producerIdBytes.data));
       }
       final ByteSequence propBytes = messageSend.getMarshalledProperties();
       if (propBytes != null) {
@@ -625,10 +625,10 @@ public final class OpenWireMessageConverter {
 
       amqMsg.setGroupSequence(coreMessage.getGroupSequence());
 
-      final byte[] midBytes = coreMessage.getBytesProperty(AMQ_MSG_MESSAGE_ID);
+      String stringMessageId = coreMessage.getStringProperty(AMQ_MSG_MESSAGE_ID);
       final MessageId mid;
-      if (midBytes != null) {
-         ByteSequence midSeq = new ByteSequence(midBytes);
+      if (stringMessageId != null) {
+         ByteSequence midSeq = new ByteSequence(stringMessageId.getBytes());
          mid = (MessageId) marshaller.unmarshal(midSeq);
       } else {
          //JMSMessageID should be started with "ID:" and needs to be globally unique (node + journal id)
@@ -648,9 +648,9 @@ public final class OpenWireMessageConverter {
          setAMQMsgOriginalTransactionId(amqMsg, marshaller, origTxIdBytes);
       }
 
-      final byte[] producerIdBytes = (byte[]) coreMessage.getObjectProperty(AMQ_MSG_PRODUCER_ID);
-      if (producerIdBytes != null) {
-         ProducerId producerId = (ProducerId) marshaller.unmarshal(new ByteSequence(producerIdBytes));
+      String stringProducerId = coreMessage.getStringProperty(AMQ_MSG_PRODUCER_ID);
+      if (stringProducerId != null) {
+         ProducerId producerId = (ProducerId) marshaller.unmarshal(new ByteSequence(stringProducerId.getBytes()));
          amqMsg.setProducerId(producerId);
       }
 
