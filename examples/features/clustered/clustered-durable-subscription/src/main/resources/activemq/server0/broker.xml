@@ -62,7 +62,7 @@ under the License.
             <connector-ref>netty-connector</connector-ref>
             <retry-interval>500</retry-interval>
             <use-duplicate-detection>true</use-duplicate-detection>
-            <message-load-balancing>STRICT</message-load-balancing>
+            <message-load-balancing>ON_DEMAND</message-load-balancing>
             <max-hops>1</max-hops>
             <discovery-group-ref discovery-group-name="my-discovery-group"/>
          </cluster-connection>
@@ -81,6 +81,16 @@ under the License.
             <permission roles="guest" type="send"/>
          </security-setting>
       </security-settings>
+
+      <address-settings>
+         <address-setting match="#">
+            <redistribution-delay>5</redistribution-delay>
+            <auto-delete-queues-message-count>0</auto-delete-queues-message-count>
+            <auto-delete-queues-delay>0</auto-delete-queues-delay>
+            <auto-delete-queues>true</auto-delete-queues>
+            <auto-delete-created-queues>true</auto-delete-created-queues>
+         </address-setting>
+      </address-settings>
 
       <addresses>
          <address name="exampleTopic">

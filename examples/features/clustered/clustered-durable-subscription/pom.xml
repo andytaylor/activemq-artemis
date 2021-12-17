@@ -55,6 +55,7 @@ under the License.
                      <goal>create</goal>
                   </goals>
                   <configuration>
+                     <noWeb>false</noWeb>
                      <ignore>${noServer}</ignore>
                      <clustered>true</clustered>
                      <instance>${basedir}/target/server0</instance>
@@ -69,6 +70,7 @@ under the License.
                      <goal>create</goal>
                   </goals>
                   <configuration>
+                     <noWeb>false</noWeb>
                      <ignore>${noServer}</ignore>
                      <clustered>true</clustered>
                      <instance>${basedir}/target/server1</instance>

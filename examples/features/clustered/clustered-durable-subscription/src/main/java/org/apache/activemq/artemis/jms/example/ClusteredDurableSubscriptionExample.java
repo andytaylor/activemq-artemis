@@ -18,11 +18,13 @@ package org.apache.activemq.artemis.jms.example;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
+import javax.jms.TopicSubscriber;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 
@@ -54,22 +56,11 @@ public class ClusteredDurableSubscriptionExample {
 
          connection0.setClientID(clientID);
 
-         // Step 4. We create a JMS Connection connection1 which is a connection to server 1
-         // and set the same client-id
-         connection1 = cf1.createConnection();
-
-         connection1.setClientID(clientID);
-
          // Step 5. We create a JMS Session on server 0
-         Session session0 = connection0.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-         // Step 6. We create a JMS Session on server 1
-         Session session1 = connection1.createSession(false, Session.AUTO_ACKNOWLEDGE);
+         final Session session0 = connection0.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
          // Step 7. We start the connections to ensure delivery occurs on them
          connection0.start();
-
-         connection1.start();
 
          // Step 8. We create JMS durable subscriptions with the same name and client-id on both nodes
          // of the cluster
@@ -81,18 +72,12 @@ public class ClusteredDurableSubscriptionExample {
 
          MessageConsumer subscriber0 = session0.createDurableSubscriber(topic, subscriptionName);
 
-         MessageConsumer subscriber1 = session1.createDurableSubscriber(topic, subscriptionName);
-
          Thread.sleep(1000);
 
          // Step 10. We create a JMS MessageProducer object on server 0
          MessageProducer producer = session0.createProducer(topic);
 
-         // Step 11. We send some messages to server 0
-
-         final int numMessages = 10;
-
-         for (int i = 0; i < numMessages; i++) {
+         for (int i = 0; i < 10; i++) {
             TextMessage message = session0.createTextMessage("This is text message " + i);
 
             producer.send(message);
@@ -106,15 +91,48 @@ public class ClusteredDurableSubscriptionExample {
          // The "logical" subscription is distributed across the cluster and contains exactly one copy of all the
          // messages
 
-         for (int i = 0; i < numMessages; i += 2) {
+         for (int i = 0; i < 5; i ++) {
             TextMessage message0 = (TextMessage) subscriber0.receive(5000);
 
             System.out.println("Got message: " + message0.getText() + " from node 0");
-
-            TextMessage message1 = (TextMessage) subscriber1.receive(5000);
-
-            System.out.println("Got message: " + message1.getText() + " from node 1");
          }
+         subscriber0.close();
+
+         Connection connection = cf1.createConnection();
+
+         connection.setClientID(clientID);
+
+         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+         connection.start();
+
+         subscriber0 = session.createDurableSubscriber(topic, subscriptionName);
+
+         Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+               for (int i = 0; i < 10; i++) {
+                  try {
+                     TextMessage message = session0.createTextMessage("This is text message " + i);
+
+                     producer.send(message);
+
+                     System.out.println("Sent message: " + message.getText());
+                  } catch (JMSException e) {
+                     e.printStackTrace();
+                  }
+               }
+            }
+         });
+         t.start();
+         for (int i = 0; i < 15; i ++) {
+            TextMessage message0 = (TextMessage) subscriber0.receive(5000);
+
+            System.out.println("Got message: " + message0.getText() + " from node 1");
+         }
+         System.out.println("check the console to see that the subscritipn queue has been deleted then press enter");
+         System.in.read();
+
       } finally {
          // Step 15. Be sure to close our JMS resources!
          if (connection0 != null) {
