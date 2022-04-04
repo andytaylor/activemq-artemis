@@ -17,6 +17,9 @@
 
 package org.apache.activemq.artemis.core.server.routing;
 
+import org.apache.activemq.artemis.utils.uri.BeanSupport;
+import org.apache.commons.beanutils.Converter;
+
 public enum KeyType {
    CLIENT_ID, SNI_HOST, SOURCE_IP, USER_NAME, ROLE_NAME;
 
@@ -34,6 +37,18 @@ public enum KeyType {
       }
 
       validValues = stringBuffer.toString();
+      // for URI support on ClusterConnection
+      BeanSupport.registerConverter(new KeyType.KeyTypeConverter(), KeyType.class);
+   }
+
+
+
+   static class KeyTypeConverter implements Converter {
+
+      @Override
+      public <T> T convert(Class<T> type, Object value) {
+         return type.cast(KeyType.valueOf(value.toString()));
+      }
    }
 
    public static KeyType getType(String type) {

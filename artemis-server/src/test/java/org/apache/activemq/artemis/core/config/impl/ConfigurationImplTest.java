@@ -30,8 +30,10 @@ import org.apache.activemq.artemis.core.config.amqpBrokerConnectivity.AMQPBroker
 import org.apache.activemq.artemis.core.config.amqpBrokerConnectivity.AMQPBrokerConnectionAddressType;
 import org.apache.activemq.artemis.core.config.amqpBrokerConnectivity.AMQPMirrorBrokerConnectionElement;
 import org.apache.activemq.artemis.core.config.ha.LiveOnlyPolicyConfiguration;
+import org.apache.activemq.artemis.core.config.routing.ConnectionRouterConfiguration;
 import org.apache.activemq.artemis.core.server.JournalType;
 import org.apache.activemq.artemis.core.server.plugin.impl.LoggingActiveMQServerPlugin;
+import org.apache.activemq.artemis.core.server.routing.KeyType;
 import org.apache.activemq.artemis.tests.util.ActiveMQTestBase;
 import org.apache.activemq.artemis.utils.RandomUtil;
 import org.jboss.logging.Logger;
@@ -599,6 +601,7 @@ public class ConfigurationImplTest extends ActiveMQTestBase {
       ConfigurationImpl configuration = new ConfigurationImpl();
 
       Properties properties = new Properties();
+      properties.put("connectionRouters.joe.keyType", "CLIENT_ID");
       properties.put("connectionRouters.joe.localTargetFilter", "LF");
       properties.put("connectionRouters.joe.keyFilter", "TF");
 
@@ -621,9 +624,11 @@ public class ConfigurationImplTest extends ActiveMQTestBase {
 
       properties.put("resourceLimitSettings.joe.maxConnections", "100");
 
+
       configuration.parsePrefixedProperties(properties, null);
 
       Assert.assertEquals(1, configuration.getConnectionRouters().size());
+      Assert.assertEquals(KeyType.CLIENT_ID, configuration.getConnectionRouters().get(0).getKeyType());
       Assert.assertEquals("LF", configuration.getConnectionRouters().get(0).getLocalTargetFilter());
       Assert.assertEquals("TF", configuration.getConnectionRouters().get(0).getKeyFilter());
 
