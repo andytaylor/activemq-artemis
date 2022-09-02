@@ -335,7 +335,7 @@ public class FederatedAddressTest extends FederatedTestBase {
          deployServer = 0;
       }
 
-      FederationAddressPolicyConfiguration policy = (FederationAddressPolicyConfiguration) federationConfiguration.getFederationPolicyMap().get("AddressPolicy" + address);
+      FederationAddressPolicyConfiguration policy = (FederationAddressPolicyConfiguration) federationConfiguration.getFederationPolicies().get("AddressPolicy" + address);
       //enable listening for divert bindings
       policy.setEnableDivertBindings(true);
       getServer(deployServer).getConfiguration().getFederationConfigurations().add(federationConfiguration);

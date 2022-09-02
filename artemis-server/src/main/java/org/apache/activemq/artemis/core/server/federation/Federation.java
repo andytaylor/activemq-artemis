@@ -92,10 +92,10 @@ public class Federation {
 
    public synchronized void deploy() throws ActiveMQException {
       for (FederationUpstreamConfiguration upstreamConfiguration : config.getUpstreamConfigurations()) {
-         deploy(upstreamConfiguration, config.getFederationPolicyMap());
+         deploy(upstreamConfiguration, config.getFederationPolicies());
       }
       for (FederationDownstreamConfiguration downstreamConfiguration : config.getDownstreamConfigurations()) {
-         deploy(downstreamConfiguration, config.getFederationPolicyMap());
+         deploy(downstreamConfiguration, config.getFederationPolicies());
       }
       if (state != FederationManager.State.STARTED) {
          state = FederationManager.State.DEPLOYED;

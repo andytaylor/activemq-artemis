@@ -101,7 +101,7 @@ public class FederatedTestUtil {
    public static void addAddressTransformerConfiguration(final FederationConfiguration federationConfiguration, final String address) {
       federationConfiguration.addTransformerConfiguration(
          new FederationTransformerConfiguration("transformer", new TransformerConfiguration(FederatedAddressTest.TestTransformer.class.getName())));
-      FederationAddressPolicyConfiguration policy = (FederationAddressPolicyConfiguration) federationConfiguration.getFederationPolicyMap().get("AddressPolicy" + address);
+      FederationAddressPolicyConfiguration policy = (FederationAddressPolicyConfiguration) federationConfiguration.getFederationPolicies().get("AddressPolicy" + address);
       policy.setTransformerRef("transformer");
    }
 
@@ -174,7 +174,7 @@ public class FederatedTestUtil {
    public static void addQueueTransformerConfiguration(final FederationConfiguration federationConfiguration, final String queueName) {
       federationConfiguration.addTransformerConfiguration(
          new FederationTransformerConfiguration("transformer", new TransformerConfiguration(FederatedQueueTest.TestTransformer.class.getName())));
-      FederationQueuePolicyConfiguration policy = (FederationQueuePolicyConfiguration) federationConfiguration.getFederationPolicyMap().get("QueuePolicy" + queueName);
+      FederationQueuePolicyConfiguration policy = (FederationQueuePolicyConfiguration) federationConfiguration.getFederationPolicies().get("QueuePolicy" + queueName);
       policy.setTransformerRef("transformer");
    }
 

@@ -74,8 +74,13 @@ public class FederationConfiguration implements Serializable {
       this.upstreamConfigurations.clear();
    }
 
-   public Map<String, FederationPolicy> getFederationPolicyMap() {
+   public Map<String, FederationPolicy> getFederationPolicies() {
       return federationPolicyMap;
+   }
+
+   public FederationConfiguration setFederationPolicies(Map<String, FederationPolicy> federationPolicies) {
+      this.federationPolicyMap = federationPolicies;
+      return this;
    }
 
    public FederationConfiguration addTransformerConfiguration(FederationTransformerConfiguration transformerConfiguration) {

@@ -58,6 +58,8 @@ import org.apache.activemq.artemis.api.core.QueueConfiguration;
 import org.apache.activemq.artemis.api.core.SimpleString;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.core.config.TransformerConfiguration;
+import org.apache.activemq.artemis.core.config.federation.FederationAddressPolicyConfiguration;
+import org.apache.activemq.artemis.core.config.federation.FederationPolicy;
 import org.apache.activemq.artemis.core.config.routing.ConnectionRouterConfiguration;
 import org.apache.activemq.artemis.core.config.amqpBrokerConnectivity.AMQPBrokerConnectConfiguration;
 import org.apache.activemq.artemis.core.config.BridgeConfiguration;
@@ -566,6 +568,14 @@ public class ConfigurationImpl implements Configuration, Serializable {
       beanUtils.getConvertUtils().register(new Converter() {
          @Override
          public <T> T convert(Class<T> type, Object value) {
+            FederationPolicy instance = new FederationAddressPolicyConfiguration();
+            return (T) instance;
+         }
+      }, Map.class);
+
+      beanUtils.getConvertUtils().register(new Converter() {
+         @Override
+         public <T> T convert(Class<T> type, Object value) {
             List convertedValue = new ArrayList<String>();
             for (String entry : value.toString().split(",")) {
                convertedValue.add(entry);
@@ -573,6 +583,17 @@ public class ConfigurationImpl implements Configuration, Serializable {
             return (T) convertedValue;
          }
       }, java.util.List.class);
+
+      beanUtils.getConvertUtils().register(new Converter() {
+         @Override
+         public <T> T convert(Class<T> type, Object value) {
+            Set convertedValue = new HashSet<String>();
+            for (String entry : value.toString().split(",")) {
+               convertedValue.add(entry);
+            }
+            return (T) convertedValue;
+         }
+      }, java.util.Set.class);
 
       // support 25K or 25m etc like xml config
       beanUtils.getConvertUtils().register(new Converter() {
@@ -1957,6 +1978,11 @@ public class ConfigurationImpl implements Configuration, Serializable {
    @Override
    public List<FederationConfiguration> getFederationConfigurations() {
       return federationConfigurations;
+   }
+
+   public ConfigurationImpl addFederationConfiguration(FederationConfiguration federationConfiguration) {
+      federationConfigurations.add(federationConfiguration);
+      return this;
    }
 
    @Override

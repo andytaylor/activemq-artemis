@@ -85,7 +85,7 @@ public class FederatedQueueTest extends FederatedTestBase {
       String queueName = getName();
 
       FederationConfiguration federationConfiguration = FederatedTestUtil.createQueueUpstreamFederationConfiguration("server1", queueName);
-      FederationQueuePolicyConfiguration policy = (FederationQueuePolicyConfiguration) federationConfiguration.getFederationPolicyMap().get("QueuePolicy" + queueName);
+      FederationQueuePolicyConfiguration policy = (FederationQueuePolicyConfiguration) federationConfiguration.getFederationPolicies().get("QueuePolicy" + queueName);
       //Favor federated broker over local consumers
       policy.setPriorityAdjustment(1);
 
@@ -100,7 +100,7 @@ public class FederatedQueueTest extends FederatedTestBase {
       String queueName = getName();
 
       FederationConfiguration federationConfiguration = FederatedTestUtil.createQueueDownstreamFederationConfiguration("server0", queueName, "server1");
-      FederationQueuePolicyConfiguration policy = (FederationQueuePolicyConfiguration) federationConfiguration.getFederationPolicyMap().get("QueuePolicy" + queueName);
+      FederationQueuePolicyConfiguration policy = (FederationQueuePolicyConfiguration) federationConfiguration.getFederationPolicies().get("QueuePolicy" + queueName);
       //Favor federated broker over local consumers
       policy.setPriorityAdjustment(1);
 

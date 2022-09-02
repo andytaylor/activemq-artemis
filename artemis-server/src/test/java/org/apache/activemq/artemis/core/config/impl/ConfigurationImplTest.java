@@ -912,6 +912,123 @@ public class ConfigurationImplTest extends ActiveMQTestBase {
    }
 
    @Test
+   public void testFederationViaProperties() throws Exception {
+      ConfigurationImpl configuration = new ConfigurationImpl();
+
+
+      final String connectorName = "conn1";
+      final String policyRef = "ref1";
+      final boolean isHA = true;
+      final String dg = "dg1";
+      final int pa = 11;
+      final long cbt = 22l;
+      final String user = "user";
+      final String pass = "pass";
+      final boolean isShared = true;
+      final long cfcp = 33;
+      final long cttl = 55;
+      final long ri = 88;
+      final double rim = 99;
+      final long mri = 987;
+      final long ica = 8;
+      final long ra = 66;
+      final long ct = 76;
+      final long fct = 66;
+
+      Properties properties = new ConfigurationImpl.InsertionOrderedProperties();
+
+
+      properties.put("federationConfigurations.myfed.federationPolicies.myQueuePolicy", "queuePolicy");
+      properties.put("federationConfigurations.myfed.federationPolicies.myAddressPolicy", "addressPolicy");
+      properties.put("federationConfigurations.myfed.federationPolicies.myPolicySet", "policySet");
+
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.policyRefs", policyRef);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.staticConnectors", connectorName);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.hA", isHA);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.discoveryGroupName", dg);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.isHA", pa);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.priorityAdjustment", pa);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.circuitBreakerTimeout", cbt);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.username", user);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.password", pass);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.shareConnection", isShared);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.clientFailureCheckPeriod", cfcp);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.connectionTTL", cttl);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.retryInterval", ri);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.retryIntervalMultiplier", rim);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.maxRetryInterval", mri);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.initialConnectAttempts", ica);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.reconnectAttempts", ra);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.callTimeout", ct);
+      properties.put("federationConfigurations.myfed.upstreamConfigurations.myUpstream.connectionConfiguration.callFailoverTimeout", fct);
+
+
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.policyRefs", policyRef);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.staticConnectors", connectorName);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.hA", isHA);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.discoveryGroupName", dg);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.isHA", pa);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.priorityAdjustment", pa);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.circuitBreakerTimeout", cbt);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.username", user);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.password", pass);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.shareConnection", isShared);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.clientFailureCheckPeriod", cfcp);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.connectionTTL", cttl);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.retryInterval", ri);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.retryIntervalMultiplier", rim);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.maxRetryInterval", mri);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.initialConnectAttempts", ica);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.reconnectAttempts", ra);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.callTimeout", ct);
+      properties.put("federationConfigurations.myfed.downstreamConfigurations.myUpstream.connectionConfiguration.callFailoverTimeout", fct);
+
+
+      configuration.parsePrefixedProperties(properties, null);
+
+      Assert.assertEquals(1, configuration.getFederationConfigurations().size());
+      Assert.assertEquals(connectorName, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getStaticConnectors().get(0));
+      Assert.assertEquals(isHA, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().isHA());
+      Assert.assertEquals(dg, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getDiscoveryGroupName());
+      Assert.assertEquals(pa, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getPriorityAdjustment());
+      Assert.assertEquals(cbt, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getCircuitBreakerTimeout());
+      Assert.assertEquals(user, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getUsername());
+      Assert.assertEquals(pass, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getPassword());
+      Assert.assertEquals(isShared, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().isShareConnection());
+      Assert.assertEquals(cfcp, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getClientFailureCheckPeriod());
+      Assert.assertEquals(cttl, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getConnectionTTL());
+      Assert.assertEquals(ri, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getRetryInterval());
+      Assert.assertEquals(rim, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getRetryIntervalMultiplier(),1);
+      Assert.assertEquals(mri, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getMaxRetryInterval());
+      Assert.assertEquals(ica, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getInitialConnectAttempts());
+      Assert.assertEquals(ra, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getReconnectAttempts());
+      Assert.assertEquals(ct, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getCallTimeout());
+      Assert.assertEquals(fct, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getConnectionConfiguration().getCallFailoverTimeout());
+      Assert.assertEquals(policyRef, configuration.getFederationConfigurations().get(0).getUpstreamConfigurations().get(0).getPolicyRefs().toArray()[0]);
+
+      Assert.assertEquals(connectorName, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getStaticConnectors().get(0));
+      Assert.assertEquals(isHA, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().isHA());
+      Assert.assertEquals(dg, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getDiscoveryGroupName());
+      Assert.assertEquals(pa, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getPriorityAdjustment());
+      Assert.assertEquals(cbt, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getCircuitBreakerTimeout());
+      Assert.assertEquals(user, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getUsername());
+      Assert.assertEquals(pass, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getPassword());
+      Assert.assertEquals(isShared, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().isShareConnection());
+      Assert.assertEquals(cfcp, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getClientFailureCheckPeriod());
+      Assert.assertEquals(cttl, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getConnectionTTL());
+      Assert.assertEquals(ri, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getRetryInterval());
+      Assert.assertEquals(rim, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getRetryIntervalMultiplier(),1);
+      Assert.assertEquals(mri, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getMaxRetryInterval());
+      Assert.assertEquals(ica, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getInitialConnectAttempts());
+      Assert.assertEquals(ra, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getReconnectAttempts());
+      Assert.assertEquals(ct, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getCallTimeout());
+      Assert.assertEquals(fct, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getConnectionConfiguration().getCallFailoverTimeout());
+      Assert.assertEquals(policyRef, configuration.getFederationConfigurations().get(0).getDownstreamConfigurations().get(0).getPolicyRefs().toArray()[0]);
+
+
+   }
+
+   @Test
    public void testRoleSettingsViaProperties() throws Exception {
       ConfigurationImpl configuration = new ConfigurationImpl();
 

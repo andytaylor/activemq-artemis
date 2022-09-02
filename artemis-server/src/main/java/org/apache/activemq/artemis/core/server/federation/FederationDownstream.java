@@ -89,7 +89,7 @@ public class FederationDownstream extends AbstractFederationStream implements Se
          message.setName(federationConfiguration.getName());
          message.setCredentials(federationConfiguration.getCredentials());
          message.setStreamConfiguration(config);
-         message.setFederationPolicyMap(federationConfiguration.getFederationPolicyMap());
+         message.setFederationPolicyMap(federationConfiguration.getFederationPolicies());
          message.setTransformerConfigurationMap(federationConfiguration.getTransformerConfigurationMap());
 
          if (config.getUpstreamConfigurationRef() != null
