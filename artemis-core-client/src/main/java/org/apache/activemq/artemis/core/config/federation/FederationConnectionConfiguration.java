@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.activemq.artemis.api.config.ActiveMQDefaultConfiguration;
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 
 public class FederationConnectionConfiguration implements Serializable {
@@ -60,6 +61,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return staticConnectors;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setStaticConnectors(List<String> staticConnectors) {
       this.staticConnectors = staticConnectors;
       return this;
@@ -69,6 +71,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return isHA;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setHA(boolean HA) {
       isHA = HA;
       return this;
@@ -78,6 +81,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return circuitBreakerTimeout;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setCircuitBreakerTimeout(long circuitBreakerTimeout) {
       this.circuitBreakerTimeout = circuitBreakerTimeout;
       return this;
@@ -87,6 +91,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return username;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setUsername(String username) {
       this.username = username;
       return this;
@@ -96,6 +101,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return password;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setPassword(String password) {
       this.password = password;
       return this;
@@ -105,6 +111,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return priorityAdjustment;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setPriorityAdjustment(int priorityAdjustment) {
       this.priorityAdjustment = priorityAdjustment;
       return this;
@@ -114,6 +121,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return shareConnection;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setShareConnection(boolean shareConnection) {
       this.shareConnection = shareConnection;
       return this;
@@ -123,6 +131,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return clientFailureCheckPeriod;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setClientFailureCheckPeriod(long clientFailureCheckPeriod) {
       this.clientFailureCheckPeriod = clientFailureCheckPeriod;
       return this;
@@ -132,6 +141,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return connectionTTL;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setConnectionTTL(long connectionTTL) {
       this.connectionTTL = connectionTTL;
       return this;
@@ -141,6 +151,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return retryInterval;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setRetryInterval(long retryInterval) {
       this.retryInterval = retryInterval;
       return this;
@@ -150,6 +161,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return retryIntervalMultiplier;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setRetryIntervalMultiplier(double retryIntervalMultiplier) {
       this.retryIntervalMultiplier = retryIntervalMultiplier;
       return this;
@@ -159,6 +171,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return maxRetryInterval;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setMaxRetryInterval(long maxRetryInterval) {
       this.maxRetryInterval = maxRetryInterval;
       return this;
@@ -168,6 +181,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return initialConnectAttempts;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setInitialConnectAttempts(int initialConnectAttempts) {
       this.initialConnectAttempts = initialConnectAttempts;
       return this;
@@ -177,6 +191,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return reconnectAttempts;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setReconnectAttempts(int reconnectAttempts) {
       this.reconnectAttempts = reconnectAttempts;
       return this;
@@ -186,6 +201,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return callTimeout;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setCallTimeout(long callTimeout) {
       this.callTimeout = callTimeout;
       return this;
@@ -195,6 +211,7 @@ public class FederationConnectionConfiguration implements Serializable {
       return callFailoverTimeout;
    }
 
+   @BrokerProperty
    public FederationConnectionConfiguration setCallFailoverTimeout(long callFailoverTimeout) {
       this.callFailoverTimeout = callFailoverTimeout;
       return this;

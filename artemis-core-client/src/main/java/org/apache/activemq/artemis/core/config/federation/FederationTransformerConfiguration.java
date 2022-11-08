@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 import org.apache.activemq.artemis.core.config.TransformerConfiguration;
 import org.apache.activemq.artemis.utils.Preconditions;
@@ -48,6 +49,11 @@ public class FederationTransformerConfiguration implements Serializable {
 
    public TransformerConfiguration getTransformerConfiguration() {
       return transformerConfiguration;
+   }
+
+   @BrokerProperty(type = BrokerProperty.OBJECT, propertyName = "transformerConfiguration", xmlName = "transformer", xmlType = "federationTransformerType", mappedName = "NAME")
+   public void setTransformerConfiguration(TransformerConfiguration transformerConfiguration) {
+      this.transformerConfiguration = transformerConfiguration;
    }
 
    @Override

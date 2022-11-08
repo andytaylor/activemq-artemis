@@ -16,6 +16,7 @@
  */
 package org.apache.activemq.artemis.core.config;
 
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.utils.JsonLoader;
 
 import org.apache.activemq.artemis.json.JsonObject;
@@ -43,6 +44,7 @@ public final class TransformerConfiguration implements Serializable {
    public TransformerConfiguration() {
    }
 
+   @BrokerProperty
    public void setClassName(String className) {
       this.className = className;
    }
@@ -95,6 +97,7 @@ public final class TransformerConfiguration implements Serializable {
    /**
     * @param properties the properties to set
     */
+   @BrokerProperty(propertyName = "properties", xmlName = "property", extraDocs = "A KEY/VALUE pair to set on the transformer, i.e. ...properties.MY_PROPERTY=MY_VALUE")
    public TransformerConfiguration setProperties(final Map<String, String> properties) {
       if (properties != null) {
          this.properties.putAll(properties);

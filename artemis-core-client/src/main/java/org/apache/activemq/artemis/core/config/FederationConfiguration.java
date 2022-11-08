@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 import org.apache.activemq.artemis.core.config.federation.FederationAddressPolicyConfiguration;
 import org.apache.activemq.artemis.core.config.federation.FederationDownstreamConfiguration;
@@ -50,6 +51,7 @@ public class FederationConfiguration implements Serializable {
       return upstreamConfigurations;
    }
 
+   @BrokerProperty(type = BrokerProperty.MAP, xmlName = "upstream", xmlType = "upstreamType", xmlSubType = "streamType", propertyName = "upstreamConfigurations", mappedName = "NAME")
    public FederationConfiguration addUpstreamConfiguration(FederationUpstreamConfiguration federationUpstreamConfiguration) {
       this.upstreamConfigurations.add(federationUpstreamConfiguration);
       return this;
@@ -59,11 +61,13 @@ public class FederationConfiguration implements Serializable {
       return downstreamConfigurations;
    }
 
+   @BrokerProperty(type = BrokerProperty.MAP, xmlName = "downstream", xmlType = "downstreamType",xmlSubType = "streamType", propertyName = "downstreamConfigurations", mappedName = "NAME")
    public FederationConfiguration addDownstreamConfiguration(FederationDownstreamConfiguration federationDownstreamConfiguration) {
       this.downstreamConfigurations.add(federationDownstreamConfiguration);
       return this;
    }
 
+   @BrokerProperty(type = BrokerProperty.MAP, xmlType = "policySetType", xmlName = "policy-set", mappedName = "NAME")
    public FederationConfiguration addFederationPolicy(FederationPolicy federationPolicy) {
       federationPolicyMap.put(federationPolicy.getName(), federationPolicy);
       return this;
@@ -74,6 +78,7 @@ public class FederationConfiguration implements Serializable {
    }
 
    // strange spelling!, it allows a type match for singular of correct plural Policies from properties
+   @BrokerProperty(type = BrokerProperty.OBJECT, xmlType = "queuePolicyType", propertyName = "queuePolicies", xmlName = "queue-policy", mappedName = "NAME")
    public FederationConfiguration addQueuePolicie(FederationQueuePolicyConfiguration federationPolicy) {
       federationPolicyMap.put(federationPolicy.getName(), federationPolicy);
       return this;
@@ -83,6 +88,7 @@ public class FederationConfiguration implements Serializable {
       return federationPolicyMap;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, xmlType = "AddressPolicyType", propertyName = "addressPolicies", xmlName = "address-policy", mappedName = "NAME")
    public FederationConfiguration addAddressPolicie(FederationAddressPolicyConfiguration federationPolicy) {
       federationPolicyMap.put(federationPolicy.getName(), federationPolicy);
       return this;
@@ -109,6 +115,7 @@ public class FederationConfiguration implements Serializable {
       return federationPolicyMap;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, propertyName = "transformerConfigurations", xmlName = "transformer", xmlType = "transformer", mappedName = "NAME")
    public FederationConfiguration addTransformerConfiguration(FederationTransformerConfiguration transformerConfiguration) {
       transformerConfigurationMap.put(transformerConfiguration.getName(), transformerConfiguration);
       return this;

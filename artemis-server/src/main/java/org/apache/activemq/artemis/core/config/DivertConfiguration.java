@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.activemq.artemis.api.config.ActiveMQDefaultConfiguration;
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 import org.apache.activemq.artemis.core.journal.EncodingSupport;
 import org.apache.activemq.artemis.core.server.ComponentConfigurationRoutingType;
@@ -93,6 +94,7 @@ public class DivertConfiguration implements Serializable, EncodingSupport {
    /**
     * @param routingName the routingName to set
     */
+   @BrokerProperty
    public DivertConfiguration setRoutingName(final String routingName) {
       if (routingName == null) {
          this.routingName = UUIDGenerator.getInstance().generateStringUUID();
@@ -105,6 +107,7 @@ public class DivertConfiguration implements Serializable, EncodingSupport {
    /**
     * @param address the address to set
     */
+   @BrokerProperty
    public DivertConfiguration setAddress(final String address) {
       this.address = address;
       return this;
@@ -113,6 +116,7 @@ public class DivertConfiguration implements Serializable, EncodingSupport {
    /**
     * @param forwardingAddress the forwardingAddress to set
     */
+   @BrokerProperty
    public DivertConfiguration setForwardingAddress(final String forwardingAddress) {
       this.forwardingAddress = forwardingAddress;
       return this;
@@ -121,6 +125,7 @@ public class DivertConfiguration implements Serializable, EncodingSupport {
    /**
     * @param exclusive the exclusive to set
     */
+   @BrokerProperty
    public DivertConfiguration setExclusive(final boolean exclusive) {
       this.exclusive = exclusive;
       return this;
@@ -129,6 +134,7 @@ public class DivertConfiguration implements Serializable, EncodingSupport {
    /**
     * @param filterString the filterString to set
     */
+   @BrokerProperty
    public DivertConfiguration setFilterString(final String filterString) {
       this.filterString = filterString;
       return this;
@@ -137,6 +143,7 @@ public class DivertConfiguration implements Serializable, EncodingSupport {
    /**
     * @param transformerConfiguration the transformerConfiguration to set
     */
+   @BrokerProperty(type = BrokerProperty.OBJECT)
    public DivertConfiguration setTransformerConfiguration(final TransformerConfiguration transformerConfiguration) {
       this.transformerConfiguration = transformerConfiguration;
       return this;
@@ -145,6 +152,7 @@ public class DivertConfiguration implements Serializable, EncodingSupport {
    /**
     * @param routingType the routingType to set
     */
+   @BrokerProperty(type = BrokerProperty.ENUM, xmlName = "routing-type", xmlType = "component-routing-type")
    public DivertConfiguration setRoutingType(final ComponentConfigurationRoutingType routingType) {
       this.routingType = routingType;
       return this;

@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 import org.apache.activemq.artemis.utils.Preconditions;
 
@@ -52,11 +53,13 @@ public class FederationQueuePolicyConfiguration implements FederationPolicy<Fede
       return excludes;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, propertyName = "includes", xmlName = "queue-match", mappedName = "NAME", xmlType = "queueMatchType")
    public FederationQueuePolicyConfiguration addInclude(Matcher include) {
       includes.add(include);
       return this;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, propertyName = "excludes", xmlName = "exclude", mappedName = "NAME", xmlType = "queueMatchType")
    public FederationQueuePolicyConfiguration addExclude(Matcher exclude) {
       excludes.add(exclude);
       return this;
@@ -66,6 +69,7 @@ public class FederationQueuePolicyConfiguration implements FederationPolicy<Fede
       return includeFederated;
    }
 
+   @BrokerProperty
    public FederationQueuePolicyConfiguration setIncludeFederated(boolean includeFederated) {
       this.includeFederated = includeFederated;
       return this;
@@ -75,6 +79,7 @@ public class FederationQueuePolicyConfiguration implements FederationPolicy<Fede
       return priorityAdjustment;
    }
 
+   @BrokerProperty
    public FederationQueuePolicyConfiguration setPriorityAdjustment(Integer priorityAdjustment) {
       this.priorityAdjustment = priorityAdjustment;
       return this;
@@ -84,6 +89,7 @@ public class FederationQueuePolicyConfiguration implements FederationPolicy<Fede
       return transformerRef;
    }
 
+   @BrokerProperty
    public FederationQueuePolicyConfiguration setTransformerRef(String transformerRef) {
       this.transformerRef = transformerRef;
       return this;
@@ -150,6 +156,7 @@ public class FederationQueuePolicyConfiguration implements FederationPolicy<Fede
          return queueMatch;
       }
 
+      @BrokerProperty
       public Matcher setQueueMatch(String queueMatch) {
          this.queueMatch = queueMatch;
          return this;

@@ -19,6 +19,7 @@ package org.apache.activemq.artemis.core.settings.impl;
 import java.io.Serializable;
 
 import org.apache.activemq.artemis.api.config.ActiveMQDefaultConfiguration;
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 import org.apache.activemq.artemis.api.core.RoutingType;
 import org.apache.activemq.artemis.api.core.SimpleString;
@@ -423,6 +424,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoCreateQueues != null ? autoCreateQueues : AddressSettings.DEFAULT_AUTO_CREATE_QUEUES;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoCreateQueues(Boolean autoCreateQueues) {
       this.autoCreateQueues = autoCreateQueues;
       return this;
@@ -432,11 +434,13 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoDeleteQueues != null ? autoDeleteQueues : AddressSettings.DEFAULT_AUTO_DELETE_QUEUES;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoDeleteQueues(Boolean autoDeleteQueues) {
       this.autoDeleteQueues = autoDeleteQueues;
       return this;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoDeleteCreatedQueues(Boolean autoDeleteCreatedQueues) {
       this.autoDeleteCreatedQueues = autoDeleteCreatedQueues;
       return this;
@@ -451,6 +455,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoDeleteQueuesDelay != null ? autoDeleteQueuesDelay : AddressSettings.DEFAULT_AUTO_DELETE_QUEUES_DELAY;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoDeleteQueuesDelay(final long autoDeleteQueuesDelay) {
       this.autoDeleteQueuesDelay = autoDeleteQueuesDelay;
       return this;
@@ -469,6 +474,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoDeleteQueuesMessageCount != null ? autoDeleteQueuesMessageCount : AddressSettings.DEFAULT_AUTO_DELETE_QUEUES_MESSAGE_COUNT;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoDeleteQueuesMessageCount(final long autoDeleteQueuesMessageCount) {
       this.autoDeleteQueuesMessageCount = autoDeleteQueuesMessageCount;
       return this;
@@ -478,6 +484,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return configDeleteQueues != null ? configDeleteQueues : AddressSettings.DEFAULT_CONFIG_DELETE_QUEUES;
    }
 
+   @BrokerProperty(type = BrokerProperty.ENUM, xmlName = "config-delete-queues")
    public AddressSettings setConfigDeleteQueues(DeletionPolicy configDeleteQueues) {
       this.configDeleteQueues = configDeleteQueues;
       return this;
@@ -487,6 +494,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoCreateAddresses != null ? autoCreateAddresses : AddressSettings.DEFAULT_AUTO_CREATE_ADDRESSES;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoCreateAddresses(Boolean autoCreateAddresses) {
       this.autoCreateAddresses = autoCreateAddresses;
       return this;
@@ -496,6 +504,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoDeleteAddresses != null ? autoDeleteAddresses : AddressSettings.DEFAULT_AUTO_DELETE_ADDRESSES;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoDeleteAddresses(Boolean autoDeleteAddresses) {
       this.autoDeleteAddresses = autoDeleteAddresses;
       return this;
@@ -505,6 +514,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoDeleteAddressesDelay != null ? autoDeleteAddressesDelay : AddressSettings.DEFAULT_AUTO_DELETE_ADDRESSES_DELAY;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoDeleteAddressesDelay(final long autoDeleteAddressesDelay) {
       this.autoDeleteAddressesDelay = autoDeleteAddressesDelay;
       return this;
@@ -523,11 +533,13 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return configDeleteAddresses != null ? configDeleteAddresses : AddressSettings.DEFAULT_CONFIG_DELETE_ADDRESSES;
    }
 
+   @BrokerProperty
    public AddressSettings setConfigDeleteAddresses(DeletionPolicy configDeleteAddresses) {
       this.configDeleteAddresses = configDeleteAddresses;
       return this;
    }
 
+   @BrokerProperty(type = BrokerProperty.ENUM, xmlName = "config-delete-addresses")
    public AddressSettings setConfigDeleteDiverts(DeletionPolicy configDeleteDiverts) {
       this.configDeleteDiverts = configDeleteDiverts;
       return this;
@@ -541,6 +553,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultMaxConsumers != null ? defaultMaxConsumers : ActiveMQDefaultConfiguration.getDefaultMaxQueueConsumers();
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultMaxConsumers(Integer defaultMaxConsumers) {
       this.defaultMaxConsumers = defaultMaxConsumers;
       return this;
@@ -550,6 +563,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultConsumersBeforeDispatch != null ? defaultConsumersBeforeDispatch : ActiveMQDefaultConfiguration.getDefaultConsumersBeforeDispatch();
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultConsumersBeforeDispatch(Integer defaultConsumersBeforeDispatch) {
       this.defaultConsumersBeforeDispatch = defaultConsumersBeforeDispatch;
       return this;
@@ -559,6 +573,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultDelayBeforeDispatch != null ? defaultDelayBeforeDispatch : ActiveMQDefaultConfiguration.getDefaultDelayBeforeDispatch();
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultDelayBeforeDispatch(Long defaultDelayBeforeDispatch) {
       this.defaultDelayBeforeDispatch = defaultDelayBeforeDispatch;
       return this;
@@ -568,6 +583,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultPurgeOnNoConsumers != null ? defaultPurgeOnNoConsumers : ActiveMQDefaultConfiguration.getDefaultPurgeOnNoConsumers();
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultPurgeOnNoConsumers(Boolean defaultPurgeOnNoConsumers) {
       this.defaultPurgeOnNoConsumers = defaultPurgeOnNoConsumers;
       return this;
@@ -577,6 +593,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultQueueRoutingType != null ? defaultQueueRoutingType : ActiveMQDefaultConfiguration.getDefaultRoutingType();
    }
 
+   @BrokerProperty(type = BrokerProperty.ENUM)
    public AddressSettings setDefaultQueueRoutingType(RoutingType defaultQueueRoutingType) {
       this.defaultQueueRoutingType = defaultQueueRoutingType;
       return this;
@@ -586,6 +603,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultAddressRoutingType != null ? defaultAddressRoutingType : ActiveMQDefaultConfiguration.getDefaultRoutingType();
    }
 
+   @BrokerProperty(type = BrokerProperty.ENUM)
    public AddressSettings setDefaultAddressRoutingType(RoutingType defaultAddressRoutingType) {
       this.defaultAddressRoutingType = defaultAddressRoutingType;
       return this;
@@ -595,6 +613,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultLastValueQueue != null ? defaultLastValueQueue : AddressSettings.DEFAULT_LAST_VALUE_QUEUE;
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultLastValueQueue(final boolean defaultLastValueQueue) {
       this.defaultLastValueQueue = defaultLastValueQueue;
       return this;
@@ -604,6 +623,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultLastValueKey != null ? defaultLastValueKey : ActiveMQDefaultConfiguration.getDefaultLastValueKey();
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultLastValueKey(final SimpleString defaultLastValueKey) {
       this.defaultLastValueKey = defaultLastValueKey;
       return this;
@@ -613,6 +633,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultNonDestructive != null ? defaultNonDestructive : ActiveMQDefaultConfiguration.getDefaultNonDestructive();
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultNonDestructive(final boolean defaultNonDestructive) {
       this.defaultNonDestructive = defaultNonDestructive;
       return this;
@@ -622,6 +643,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultExclusiveQueue != null ? defaultExclusiveQueue : ActiveMQDefaultConfiguration.getDefaultExclusive();
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultExclusiveQueue(Boolean defaultExclusiveQueue) {
       this.defaultExclusiveQueue = defaultExclusiveQueue;
       return this;
@@ -631,6 +653,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return addressFullMessagePolicy != null ? addressFullMessagePolicy : AddressSettings.DEFAULT_ADDRESS_FULL_MESSAGE_POLICY;
    }
 
+   @BrokerProperty
    public AddressSettings setAddressFullMessagePolicy(final AddressFullMessagePolicy addressFullMessagePolicy) {
       this.addressFullMessagePolicy = addressFullMessagePolicy;
       return this;
@@ -640,6 +663,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return pageSizeBytes != null ? pageSizeBytes : AddressSettings.DEFAULT_PAGE_SIZE;
    }
 
+   @BrokerProperty
    public AddressSettings setPageSizeBytes(final int pageSize) {
       pageSizeBytes = pageSize;
       return this;
@@ -649,6 +673,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return pageMaxCache != null ? pageMaxCache : AddressSettings.DEFAULT_PAGE_MAX_CACHE;
    }
 
+   @BrokerProperty
    public AddressSettings setPageCacheMaxSize(final int pageMaxCache) {
       this.pageMaxCache = pageMaxCache;
       return this;
@@ -662,11 +687,13 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return maxSizeMessages != null ? maxSizeMessages : AddressSettings.DEFAULT_MAX_SIZE_MESSAGES;
    }
 
+   @BrokerProperty
    public AddressSettings setMaxSizeMessages(final long maxSizeMessages) {
       this.maxSizeMessages = maxSizeMessages;
       return this;
    }
 
+   @BrokerProperty
    public AddressSettings setMaxSizeBytes(final long maxSizeBytes) {
       this.maxSizeBytes = maxSizeBytes;
       return this;
@@ -712,6 +739,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return maxReadPageBytes != null ? maxReadPageBytes : 2 * getPageSizeBytes();
    }
 
+   @BrokerProperty
    public AddressSettings setMaxReadPageBytes(final int maxReadPageBytes) {
       this.maxReadPageBytes = maxReadPageBytes;
       return this;
@@ -721,6 +749,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return maxDeliveryAttempts != null ? maxDeliveryAttempts : AddressSettings.DEFAULT_MAX_DELIVERY_ATTEMPTS;
    }
 
+   @BrokerProperty
    public AddressSettings setMaxDeliveryAttempts(final int maxDeliveryAttempts) {
       this.maxDeliveryAttempts = maxDeliveryAttempts;
       return this;
@@ -730,6 +759,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return messageCounterHistoryDayLimit != null ? messageCounterHistoryDayLimit : AddressSettings.DEFAULT_MESSAGE_COUNTER_HISTORY_DAY_LIMIT;
    }
 
+   @BrokerProperty
    public AddressSettings setMessageCounterHistoryDayLimit(final int messageCounterHistoryDayLimit) {
       this.messageCounterHistoryDayLimit = messageCounterHistoryDayLimit;
       return this;
@@ -739,6 +769,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return redeliveryDelay != null ? redeliveryDelay : AddressSettings.DEFAULT_REDELIVER_DELAY;
    }
 
+   @BrokerProperty
    public AddressSettings setRedeliveryDelay(final long redeliveryDelay) {
       this.redeliveryDelay = redeliveryDelay;
       return this;
@@ -748,6 +779,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return redeliveryMultiplier != null ? redeliveryMultiplier : AddressSettings.DEFAULT_REDELIVER_MULTIPLIER;
    }
 
+   @BrokerProperty
    public AddressSettings setRedeliveryMultiplier(final double redeliveryMultiplier) {
       this.redeliveryMultiplier = redeliveryMultiplier;
       return this;
@@ -757,6 +789,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return redeliveryCollisionAvoidanceFactor != null ? redeliveryCollisionAvoidanceFactor : AddressSettings.DEFAULT_REDELIVER_COLLISION_AVOIDANCE_FACTOR;
    }
 
+   @BrokerProperty
    public AddressSettings setRedeliveryCollisionAvoidanceFactor(final double redeliveryCollisionAvoidanceFactor) {
       this.redeliveryCollisionAvoidanceFactor = redeliveryCollisionAvoidanceFactor;
       return this;
@@ -768,6 +801,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return maxRedeliveryDelay != null ? maxRedeliveryDelay : (getRedeliveryDelay() * 10);
    }
 
+   @BrokerProperty
    public AddressSettings setMaxRedeliveryDelay(final long maxRedeliveryDelay) {
       this.maxRedeliveryDelay = maxRedeliveryDelay;
       return this;
@@ -777,6 +811,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return deadLetterAddress;
    }
 
+   @BrokerProperty
    public AddressSettings setDeadLetterAddress(final SimpleString deadLetterAddress) {
       this.deadLetterAddress = deadLetterAddress;
       return this;
@@ -786,6 +821,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return expiryAddress;
    }
 
+   @BrokerProperty
    public AddressSettings setExpiryAddress(final SimpleString expiryAddress) {
       this.expiryAddress = expiryAddress;
       return this;
@@ -795,6 +831,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoCreateExpiryResources != null ? autoCreateExpiryResources : AddressSettings.DEFAULT_AUTO_CREATE_EXPIRY_RESOURCES;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoCreateExpiryResources(final boolean value) {
       autoCreateExpiryResources = value;
       return this;
@@ -804,6 +841,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return expiryQueuePrefix != null ? expiryQueuePrefix : AddressSettings.DEFAULT_EXPIRY_QUEUE_PREFIX;
    }
 
+   @BrokerProperty
    public AddressSettings setExpiryQueuePrefix(final SimpleString value) {
       expiryQueuePrefix = value;
       return this;
@@ -813,6 +851,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return expiryQueueSuffix != null ? expiryQueueSuffix : AddressSettings.DEFAULT_EXPIRY_QUEUE_SUFFIX;
    }
 
+   @BrokerProperty
    public AddressSettings setExpiryQueueSuffix(final SimpleString value) {
       expiryQueueSuffix = value;
       return this;
@@ -822,6 +861,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return expiryDelay != null ? expiryDelay : AddressSettings.DEFAULT_EXPIRY_DELAY;
    }
 
+   @BrokerProperty
    public AddressSettings setExpiryDelay(final Long expiryDelay) {
       this.expiryDelay = expiryDelay;
       return this;
@@ -831,6 +871,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return minExpiryDelay != null ? minExpiryDelay : AddressSettings.DEFAULT_MIN_EXPIRY_DELAY;
    }
 
+   @BrokerProperty
    public AddressSettings setMinExpiryDelay(final Long minExpiryDelay) {
       this.minExpiryDelay = minExpiryDelay;
       return this;
@@ -840,6 +881,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return maxExpiryDelay != null ? maxExpiryDelay : AddressSettings.DEFAULT_MAX_EXPIRY_DELAY;
    }
 
+   @BrokerProperty
    public AddressSettings setMaxExpiryDelay(final Long maxExpiryDelay) {
       this.maxExpiryDelay = maxExpiryDelay;
       return this;
@@ -849,6 +891,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return sendToDLAOnNoRoute != null ? sendToDLAOnNoRoute : AddressSettings.DEFAULT_SEND_TO_DLA_ON_NO_ROUTE;
    }
 
+   @BrokerProperty
    public AddressSettings setSendToDLAOnNoRoute(final boolean value) {
       sendToDLAOnNoRoute = value;
       return this;
@@ -858,6 +901,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return autoCreateDeadLetterResources != null ? autoCreateDeadLetterResources : AddressSettings.DEFAULT_AUTO_CREATE_DEAD_LETTER_RESOURCES;
    }
 
+   @BrokerProperty
    public AddressSettings setAutoCreateDeadLetterResources(final boolean value) {
       autoCreateDeadLetterResources = value;
       return this;
@@ -867,6 +911,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return deadLetterQueuePrefix != null ? deadLetterQueuePrefix : AddressSettings.DEFAULT_DEAD_LETTER_QUEUE_PREFIX;
    }
 
+   @BrokerProperty
    public AddressSettings setDeadLetterQueuePrefix(final SimpleString value) {
       deadLetterQueuePrefix = value;
       return this;
@@ -876,6 +921,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return deadLetterQueueSuffix != null ? deadLetterQueueSuffix : AddressSettings.DEFAULT_DEAD_LETTER_QUEUE_SUFFIX;
    }
 
+   @BrokerProperty
    public AddressSettings setDeadLetterQueueSuffix(final SimpleString value) {
       deadLetterQueueSuffix = value;
       return this;
@@ -885,6 +931,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return redistributionDelay != null ? redistributionDelay : AddressSettings.DEFAULT_REDISTRIBUTION_DELAY;
    }
 
+   @BrokerProperty
    public AddressSettings setRedistributionDelay(final long redistributionDelay) {
       this.redistributionDelay = redistributionDelay;
       return this;
@@ -894,6 +941,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return slowConsumerThreshold != null ? slowConsumerThreshold : AddressSettings.DEFAULT_SLOW_CONSUMER_THRESHOLD;
    }
 
+   @BrokerProperty
    public AddressSettings setSlowConsumerThreshold(final long slowConsumerThreshold) {
       this.slowConsumerThreshold = slowConsumerThreshold;
       return this;
@@ -903,6 +951,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return slowConsumerThresholdMeasurementUnit != null ? slowConsumerThresholdMeasurementUnit : AddressSettings.DEFAULT_SLOW_CONSUMER_THRESHOLD_MEASUREMENT_UNIT;
    }
 
+   @BrokerProperty(type = BrokerProperty.ENUM, xmlName = "slow-consumer-threshold-measurement-unit")
    public AddressSettings setSlowConsumerThresholdMeasurementUnit(final SlowConsumerThresholdMeasurementUnit slowConsumerThresholdMeasurementUnit) {
       this.slowConsumerThresholdMeasurementUnit = slowConsumerThresholdMeasurementUnit;
       return this;
@@ -912,6 +961,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return slowConsumerCheckPeriod != null ? slowConsumerCheckPeriod : AddressSettings.DEFAULT_SLOW_CONSUMER_CHECK_PERIOD;
    }
 
+   @BrokerProperty
    public AddressSettings setSlowConsumerCheckPeriod(final long slowConsumerCheckPeriod) {
       this.slowConsumerCheckPeriod = slowConsumerCheckPeriod;
       return this;
@@ -921,6 +971,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return slowConsumerPolicy != null ? slowConsumerPolicy : AddressSettings.DEFAULT_SLOW_CONSUMER_POLICY;
    }
 
+   @BrokerProperty(type = BrokerProperty.ENUM, xmlName = "slow-consumer-policy")
    public AddressSettings setSlowConsumerPolicy(final SlowConsumerPolicy slowConsumerPolicy) {
       this.slowConsumerPolicy = slowConsumerPolicy;
       return this;
@@ -930,6 +981,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return managementBrowsePageSize != null ? managementBrowsePageSize : AddressSettings.MANAGEMENT_BROWSE_PAGE_SIZE;
    }
 
+   @BrokerProperty
    public AddressSettings setManagementBrowsePageSize(int managementBrowsePageSize) {
       this.managementBrowsePageSize = managementBrowsePageSize;
       return this;
@@ -939,6 +991,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return queuePrefetch != null ? queuePrefetch : AddressSettings.DEFAULT_QUEUE_PREFETCH;
    }
 
+   @BrokerProperty
    public AddressSettings setQueuePrefetch(int queuePrefetch) {
       this.queuePrefetch = queuePrefetch;
       return this;
@@ -948,6 +1001,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return (maxSizeBytesRejectThreshold == null) ? AddressSettings.DEFAULT_ADDRESS_REJECT_THRESHOLD : maxSizeBytesRejectThreshold;
    }
 
+   @BrokerProperty
    public AddressSettings setMaxSizeBytesRejectThreshold(long maxSizeBytesRejectThreshold) {
       this.maxSizeBytesRejectThreshold = maxSizeBytesRejectThreshold;
       return this;
@@ -963,6 +1017,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
    /**
     * @param defaultConsumerWindowSize the defaultConsumerWindowSize to set
     */
+   @BrokerProperty
    public AddressSettings setDefaultConsumerWindowSize(int defaultConsumerWindowSize) {
       this.defaultConsumerWindowSize = defaultConsumerWindowSize;
       return this;
@@ -978,6 +1033,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
    /**
     * @param defaultGroupRebalance the defaultGroupBuckets to set
     */
+   @BrokerProperty
    public AddressSettings setDefaultGroupRebalance(boolean defaultGroupRebalance) {
       this.defaultGroupRebalance = defaultGroupRebalance;
       return this;
@@ -993,6 +1049,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
    /**
     * @param defaultGroupRebalancePauseDispatch the defaultGroupBuckets to set
     */
+   @BrokerProperty
    public AddressSettings setDefaultGroupRebalancePauseDispatch(boolean defaultGroupRebalancePauseDispatch) {
       this.defaultGroupRebalancePauseDispatch = defaultGroupRebalancePauseDispatch;
       return this;
@@ -1015,6 +1072,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
    /**
     * @param defaultGroupFirstKey the defaultGroupFirstKey to set
     */
+   @BrokerProperty
    public AddressSettings setDefaultGroupFirstKey(SimpleString defaultGroupFirstKey) {
       this.defaultGroupFirstKey = defaultGroupFirstKey;
       return this;
@@ -1032,6 +1090,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return defaultRingSize != null ? defaultRingSize : ActiveMQDefaultConfiguration.DEFAULT_RING_SIZE;
    }
 
+   @BrokerProperty
    public AddressSettings setDefaultRingSize(final long defaultRingSize) {
       this.defaultRingSize = defaultRingSize;
       return this;
@@ -1041,6 +1100,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return retroactiveMessageCount != null ? retroactiveMessageCount : ActiveMQDefaultConfiguration.DEFAULT_RETROACTIVE_MESSAGE_COUNT;
    }
 
+   @BrokerProperty
    public AddressSettings setRetroactiveMessageCount(final long defaultRetroactiveMessageCount) {
       this.retroactiveMessageCount = defaultRetroactiveMessageCount;
       return this;
@@ -1050,6 +1110,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return enableMetrics != null ? enableMetrics : AddressSettings.DEFAULT_ENABLE_METRICS;
    }
 
+   @BrokerProperty
    public AddressSettings setEnableMetrics(final boolean enableMetrics) {
       this.enableMetrics = enableMetrics;
       return this;
@@ -1059,6 +1120,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return managementMessageAttributeSizeLimit != null ? managementMessageAttributeSizeLimit : AddressSettings.MANAGEMENT_MESSAGE_ATTRIBUTE_SIZE_LIMIT;
    }
 
+   @BrokerProperty
    public AddressSettings setManagementMessageAttributeSizeLimit(int managementMessageAttributeSizeLimit) {
       this.managementMessageAttributeSizeLimit = managementMessageAttributeSizeLimit;
       return this;
@@ -1068,6 +1130,7 @@ public class AddressSettings implements Mergeable<AddressSettings>, Serializable
       return enableIngressTimestamp != null ? enableIngressTimestamp : AddressSettings.DEFAULT_ENABLE_INGRESS_TIMESTAMP;
    }
 
+   @BrokerProperty
    public AddressSettings setEnableIngressTimestamp(final boolean enableIngressTimestamp) {
       this.enableIngressTimestamp = enableIngressTimestamp;
       return this;

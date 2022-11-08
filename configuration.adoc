@@ -1,0 +1,1892 @@
+= Broker Properties
+
+`criticalAnalyzerCheckPeriod` +
+
+Type: long +
+Default: 0 +
+XML name: critical-analyzer-check-period +
+Description: The timeout here will be defaulted to half critical-analyzer-timeout, calculation happening at runtime
+
+`pageMaxConcurrentIO` +
+
+Type: int +
+Default: 5 +
+XML name: page-max-concurrent-io +
+Description: The max number of concurrent reads allowed on paging
+
+`messageCounterSamplePeriod` +
+
+Type: long +
+Default: 10000 +
+XML name: message-counter-sample-period +
+Description: the sample period (in ms) to use for message counters
+
+`networkCheckNIC` +
+
+Type: String +
+Default:  +
+XML name: network-check-nic +
+Description: The network interface card name to be used to validate the address.
+
+`globalMaxSize` +
+
+Type: long +
+Default: -1 +
+XML name: global-max-size +
+Description: Size (in bytes) before all addresses will enter into their Full Policy configured upon messages being produced. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`journalFileSize` +
+
+Type: int +
+Default: 10485760 +
+XML name: journal-file-size +
+Description: The size (in bytes) of each journal file. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`configurationFileRefreshPeriod` +
+
+Type: long +
+Default: 5000 +
+XML name: configuration-file-refresh-period +
+Description: how often (in ms) to check the configuration file for modifications
+
+`diskScanPeriod` +
+
+Type: int +
+Default: 5000 +
+XML name: disk-scan-period +
+Description: how often (in ms) to scan the disks for full disks.
+
+`journalRetentionDirectory` +
+
+Type: String +
+Default:  +
+XML name: journal-retention-directory +
+Description: the directory to store journal-retention message in and rention configuraion.
+
+`networkCheckPeriod` +
+
+Type: long +
+Default: 10000 +
+XML name: network-check-period +
+Description: A frequency in milliseconds to how often we should check if the network is still up
+
+`journalBufferSize_AIO` +
+
+Type: int +
+Default: 501760 +
+XML name: journal-buffer-size +
+Description: The size (in bytes) of the internal buffer on the journal. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`networkCheckURLList` +
+
+Type: String +
+Default:  +
+XML name: network-check-URL-list +
+Description: A comma separated list of URLs to be used to validate if the broker should be kept up
+
+`networkCheckTimeout` +
+
+Type: int +
+Default: 1000 +
+XML name: network-check-timeout +
+Description: A timeout used in milliseconds to be used on the ping.
+
+`pageSyncTimeout` +
+
+Type: int +
+Default:  +
+XML name: page-sync-timeout +
+Description: The timeout (in nanoseconds) used to sync pages. The exact default value depend on whether the journal is ASYNCIO or NIO.
+
+`journalPoolFiles` +
+
+Type: int +
+Default: -1 +
+XML name: journal-pool-files +
+Description: how many journal files to pre-create
+
+`criticalAnalyzer` +
+
+Type: boolean +
+Default: true +
+XML name: critical-analyzer +
+Description: should analyze response time on critical paths and decide for broker log, shutdown or halt.
+
+`readWholePage` +
+
+Type: boolean +
+Default: false +
+XML name: read-whole-page +
+Description: Whether the whole page is read while getting message after page cache is evicted.
+
+`maxDiskUsage` +
+
+Type: int +
+Default: 90 +
+XML name: max-disk-usage +
+Description: Max percentage of disk usage before the system blocks or fails clients.
+
+`globalMaxMessages` +
+
+Type: long +
+Default: -1 +
+XML name: global-max-messages +
+Description: Number of messages before all addresses will enter into their Full Policy configured. It works in conjunction with global-max-size, being watever value hits its maximum first.
+
+`internalNamingPrefix` +
+
+Type: String +
+Default:  +
+XML name: internal-naming-prefix +
+Description: Artemis uses internal queues and addresses for implementing certain behaviours. These queues and addresses will be prefixed by default with "$.activemq.internal" to avoid naming clashes with user namespacing. This can be overridden by setting this value to a valid Artemis address.
+
+`journalFileOpenTimeout` +
+
+Type: int +
+Default: 5 +
+XML name: journal-file-open-timeout +
+Description: the length of time in seconds to wait when opening a new Journal file before timing out and failing
+
+`journalCompactPercentage` +
+
+Type: int +
+Default: 30 +
+XML name: journal-compact-percentage +
+Description: The percentage of live data on which we consider compacting the journal
+
+`createBindingsDir` +
+
+Type: boolean +
+Default: true +
+XML name: create-bindings-dir +
+Description: true means that the server will create the bindings directory on start up
+
+`suppressSessionNotifications` +
+
+Type: boolean +
+Default: false +
+XML name: suppress-session-notifications +
+Description: Whether or not to suppress SESSION_CREATED and SESSION_CLOSED notifications. Set to true to reduce notification overhead. However, these are required to enforce unique client ID utilization in a cluster for MQTT clients.
+
+`journalBufferTimeout_AIO` +
+
+Type: int +
+Default:  +
+XML name: journal-buffer-timeout +
+Description: The timeout (in nanoseconds) used to flush internal buffers on the journal. The exact default value depend on whether the journal is ASYNCIO or NIO.
+
+`journalType` +
+
+Type: JournalType +
+Default: ASYNCIO +
+XML name: journal-type +
+Description: the type of journal to use
+
+`name` +
+
+Type: String +
+Default:  +
+XML name: name +
+Description: Node name. If set, it will be used in topology notifications.
+
+`networkCheckPingCommand` +
+
+Type: String +
+Default:  +
+XML name: network-check-ping-command +
+Description: The ping command used to ping IPV4 addresses.
+
+`temporaryQueueNamespace` +
+
+Type: String +
+Default:  +
+XML name: temporary-queue-namespace +
+Description: the namespace to use for looking up address settings for temporary queues
+
+`pagingDirectory` +
+
+Type: String +
+Default: data/paging +
+XML name: paging-directory +
+Description: the directory to store paged messages in
+
+`journalDirectory` +
+
+Type: String +
+Default: data/journal +
+XML name: journal-directory +
+Description: the directory to store the journal files in
+
+`journalBufferSize_NIO` +
+
+Type: int +
+Default: 501760 +
+XML name: journal-buffer-size +
+Description: The size (in bytes) of the internal buffer on the journal. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`journalDeviceBlockSize` +
+
+Type: Integer +
+Default:  +
+XML name: journal-device-block-size +
+Description: The size in bytes used by the device. This is usually translated as fstat/st_blksize And this is a way to bypass the value returned as st_blksize.
+
+`nodeManagerLockDirectory` +
+
+Type: String +
+Default:  +
+XML name: node-manager-lock-directory +
+Description: the directory to store the node manager lock file
+
+`messageCounterMaxDayHistory` +
+
+Type: int +
+Default: 10 +
+XML name: message-counter-max-day-history +
+Description: how many days to keep message counter history
+
+`largeMessagesDirectory` +
+
+Type: String +
+Default: data/largemessages +
+XML name: large-messages-directory +
+Description: the directory to store large messages
+
+`networkCheckPing6Command` +
+
+Type: String +
+Default:  +
+XML name: network-check-ping6-command +
+Description: The ping command used to ping IPV6 addresses.
+
+`memoryWarningThreshold` +
+
+Type: int +
+Default: 25 +
+XML name: memory-warning-threshold +
+Description: Percentage of available memory which will trigger a warning log
+
+`mqttSessionScanInterval` +
+
+Type: long +
+Default: 5000 +
+XML name: mqtt-session-scan-interval +
+Description: how often (in ms) to scan for expired MQTT sessions
+
+`journalMaxAtticFiles` +
+
+Type: int +
+Default:  +
+XML name: journal-max-attic-files +
+Description: 
+
+`journalSyncTransactional` +
+
+Type: boolean +
+Default: true +
+XML name: journal-sync-transactional +
+Description: if true wait for transaction data to be synchronized to the journal before returning response to client
+
+`logJournalWriteRate` +
+
+Type: boolean +
+Default: false +
+XML name: log-journal-write-rate +
+Description: Whether to log messages about the journal write rate
+
+`journalMaxIO_AIO` +
+
+Type: int +
+Default:  +
+XML name: journal-max-io +
+Description: the maximum number of write requests that can be in the AIO queue at any one time. Default is 500 for AIO and 1 for NIO.
+
+`messageExpiryScanPeriod` +
+
+Type: long +
+Default: 30000 +
+XML name: message-expiry-scan-period +
+Description: how often (in ms) to scan for expired messages
+
+`criticalAnalyzerTimeout` +
+
+Type: long +
+Default: 120000 +
+XML name: critical-analyzer-timeout +
+Description: The default timeout used on analyzing timeouts on the critical path.
+
+`messageCounterEnabled` +
+
+Type: boolean +
+Default: false +
+XML name: message-counter-enabled +
+Description: true means that message counters are enabled
+
+`journalCompactMinFiles` +
+
+Type: int +
+Default: 10 +
+XML name: journal-compact-min-files +
+Description: The minimal number of data files before we can start compacting
+
+`createJournalDir` +
+
+Type: boolean +
+Default: true +
+XML name: create-journal-dir +
+Description: true means that the journal directory will be created
+
+`addressQueueScanPeriod` +
+
+Type: long +
+Default: 30000 +
+XML name: address-queue-scan-period +
+Description: how often (in ms) to scan for addresses and queues that need to be deleted
+
+`memoryMeasureInterval` +
+
+Type: long +
+Default: -1 +
+XML name: memory-measure-interval +
+Description: frequency to sample JVM memory in ms (or -1 to disable memory sampling)
+
+`journalSyncNonTransactional` +
+
+Type: boolean +
+Default: true +
+XML name: journal-sync-non-transactional +
+Description: if true wait for non transaction data to be synced to the journal before returning response to client.
+
+`connectionTtlCheckInterval` +
+
+Type: long +
+Default: 2000 +
+XML name: connection-ttl-check-interval +
+Description: how often (in ms) to check connections for ttl violation
+
+`rejectEmptyValidatedUser` +
+
+Type: boolean +
+Default: false +
+XML name: reject-empty-validated-user +
+Description: true means that the server will not allow any message that doesn't have a validated user, in JMS this is JMSXUserID
+
+`journalMaxIO_NIO` +
+
+Type: int +
+Default:  +
+XML name: journal-max-io +
+Description: the maximum number of write requests that can be in the AIO queue at any one time. Default is 500 for AIO and 1 for NIO.Currently Broker properties only supports using an integer and measures in bytes
+
+`transactionTimeoutScanPeriod` +
+
+Type: long +
+Default: 1000 +
+XML name: transaction-timeout-scan-period +
+Description: how often (in ms) to scan for timeout transactions
+
+`systemPropertyPrefix` +
+
+Type: String +
+Default:  +
+XML name: system-property-prefix +
+Description: This defines the prefix which we will use to parse System properties for the configuration. Default=
+
+`transactionTimeout` +
+
+Type: long +
+Default: 300000 +
+XML name: transaction-timeout +
+Description: how long (in ms) before a transaction can be removed from the resource manager after create time
+
+`journalLockAcquisitionTimeout` +
+
+Type: long +
+Default: -1 +
+XML name: journal-lock-acquisition-timeout +
+Description: how long (in ms) to wait to acquire a file lock on the journal
+
+`journalBufferTimeout_NIO` +
+
+Type: int +
+Default:  +
+XML name: journal-buffer-timeout +
+Description: The timeout (in nanoseconds) used to flush internal buffers on the journal. The exact default value depend on whether the journal is ASYNCIO or NIO.
+
+`journalMinFiles` +
+
+Type: int +
+Default: 2 +
+XML name: journal-min-files +
+Description: how many journal files to pre-create
+
+## bridgeConfigurations
+`bridgeConfigurations.<__name__>.retryIntervalMultiplier` +
+
+Type: double +
+Default: 1 +
+XML name: retry-interval-multiplier +
+Description: multiplier to apply to successive retry intervals
+
+`bridgeConfigurations.<__name__>.maxRetryInterval` +
+
+Type: long +
+Default: 2000 +
+XML name: max-retry-interval +
+Description: Limit to the retry-interval growth (due to retry-interval-multiplier)
+
+`bridgeConfigurations.<__name__>.filterString` +
+
+Type: String +
+Default:  +
+XML name: filter-string +
+Description: 
+
+`bridgeConfigurations.<__name__>.connectionTTL` +
+
+Type: long +
+Default: 60000 +
+XML name: connection-ttl +
+Description: how long to keep a connection alive in the absence of any data arriving from the client. This should be greater than the ping period.
+
+`bridgeConfigurations.<__name__>.confirmationWindowSize` +
+
+Type: int +
+Default: 1048576 +
+XML name: confirmation-window-size +
+Description: Once the bridge has received this many bytes, it sends a confirmation. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`bridgeConfigurations.<__name__>.staticConnectors` +
+
+Type: List +
+Default:  +
+XML name: static-connectors +
+Description: 
+
+`bridgeConfigurations.<__name__>.reconnectAttemptsOnSameNode` +
+
+Type: int +
+Default:  +
+XML name: reconnect-attempts-on-same-node +
+Description: 
+
+`bridgeConfigurations.<__name__>.concurrency` +
+
+Type: int +
+Default: 1 +
+XML name: concurrency +
+Description: Number of concurrent workers, more workers can help increase throughput on high latency networks. Defaults to 1
+
+`bridgeConfigurations.<__name__>.transformerConfiguration` +
+
+Type: TransformerConfiguration +
+Default:  +
+XML name: transformer-configuration +
+Description: 
+
+`bridgeConfigurations.<__name__>.transformerConfiguration.className` +
+
+Type: String +
+Default:  +
+XML name: class-name +
+Description: 
+
+`bridgeConfigurations.<__name__>.transformerConfiguration.properties` +
+
+Type: Map +
+Default:  +
+XML name: property +
+Description: A KEY/VALUE pair to set on the transformer, i.e. ...properties.MY_PROPERTY=MY_VALUE
+
+`bridgeConfigurations.<__name__>.password` +
+
+Type: String +
+Default:  +
+XML name: password +
+Description: password, if unspecified the cluster-password is used
+
+`bridgeConfigurations.<__name__>.queueName` +
+
+Type: String +
+Default:  +
+XML name: queue-name +
+Description: name of queue that this bridge consumes from
+
+`bridgeConfigurations.<__name__>.forwardingAddress` +
+
+Type: String +
+Default:  +
+XML name: forwarding-address +
+Description: address to forward to. If omitted original address is used
+
+`bridgeConfigurations.<__name__>.routingType` +
+
+Type: ComponentConfigurationRoutingType +
+Default: PASS +
+XML name: routing-type +
+Description: how should the routing-type on the bridged messages be set?
+
+`bridgeConfigurations.<__name__>.name` +
+
+Type: String +
+Default:  +
+XML name: name +
+Description: unique name for this bridge
+
+`bridgeConfigurations.<__name__>.ha` +
+
+Type: boolean +
+Default: false +
+XML name: ha +
+Description: whether this bridge supports fail-over
+
+`bridgeConfigurations.<__name__>.initialConnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: initial-connect-attempts +
+Description: maximum number of initial connection attempts, -1 means 'no limits'
+
+`bridgeConfigurations.<__name__>.retryInterval` +
+
+Type: long +
+Default: 2000 +
+XML name: retry-interval +
+Description: period (in ms) between successive retries
+
+`bridgeConfigurations.<__name__>.producerWindowSize` +
+
+Type: int +
+Default: 1048576 +
+XML name: producer-window-size +
+Description: Producer flow control. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`bridgeConfigurations.<__name__>.clientFailureCheckPeriod` +
+
+Type: long +
+Default: 30000 +
+XML name: check-period +
+Description: The period (in milliseconds) a bridge's client will check if it failed to receive a ping from the server. -1 disables this check.
+
+`bridgeConfigurations.<__name__>.discoveryGroupName` +
+
+Type: String +
+Default:  +
+XML name: discovery-group-ref +
+Description: 
+
+`bridgeConfigurations.<__name__>.user` +
+
+Type: String +
+Default:  +
+XML name: user +
+Description: username, if unspecified the cluster-user is used
+
+`bridgeConfigurations.<__name__>.useDuplicateDetection` +
+
+Type: boolean +
+Default: true +
+XML name: use-duplicate-detection +
+Description: should duplicate detection headers be inserted in forwarded messages?
+
+`bridgeConfigurations.<__name__>.minLargeMessageSize` +
+
+Type: int +
+Default: 102400 +
+XML name: min-large-message-size +
+Description: Any message larger than this size (in bytes) is considered a large message (to be sent in chunks). Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+## AMQPConnections
+`AMQPConnections.<__name__>.reconnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: reconnect-attempts +
+Description: How many attempts should be made to reconnect after failure
+
+`AMQPConnections.<__name__>.password` +
+
+Type: String +
+Default:  +
+XML name: password +
+Description: Password used to connect. If not defined it will try an anonymous connection.
+
+`AMQPConnections.<__name__>.retryInterval` +
+
+Type: int +
+Default: 5000 +
+XML name: retry-interval +
+Description: period (in ms) between successive retries
+
+`AMQPConnections.<__name__>.connectionElements` +
+
+Type: AMQPMirrorBrokerConnectionElement +
+Default:  +
+XML name: amqp-connection +
+Description: An AMQP Broker Connection that supports 4 types, these are: 1. Mirrors - The broker uses an AMQP connection to another broker and duplicates messages and sends acknowledgements over the wire. 2. Senders - Messages received on specific queues are transferred to another endpoint. 3. Receivers - The broker pulls messages from another endpoint. 4. Peers - The broker creates both senders and receivers on another endpoint that knows how to handle them. This is currently implemented by Apache Qpid Dispatch.Currently only mirror type is supported
+
+`AMQPConnections.<__name__>.connectionElements.<__name__>.messageAcknowledgements` +
+
+Type: boolean +
+Default:  +
+XML name: message-acknowledgements +
+Description: If true then message acknowledgements will be mirrored
+
+`AMQPConnections.<__name__>.connectionElements.<__name__>.queueRemoval` +
+
+Type: boolean +
+Default:  +
+XML name: queue-removal +
+Description: Should mirror queue deletion events for addresses and queues.
+
+`AMQPConnections.<__name__>.connectionElements.<__name__>.addressFilter` +
+
+Type: String +
+Default:  +
+XML name: address-filter +
+Description: This defines a filter that mirror will use to determine witch events will be forwarded toward target server based on source address.
+
+`AMQPConnections.<__name__>.connectionElements.<__name__>.queueCreation` +
+
+Type: boolean +
+Default:  +
+XML name: queue-creation +
+Description: Should mirror queue creation events for addresses and queues.
+
+`AMQPConnections.<__name__>.autostart` +
+
+Type: boolean +
+Default: true +
+XML name: auto-start +
+Description: should the broker connection be started when the server is started.
+
+`AMQPConnections.<__name__>.user` +
+
+Type: String +
+Default:  +
+XML name: user +
+Description: User name used to connect. If not defined it will try an anonymous connection.
+
+`AMQPConnections.<__name__>.uri` +
+
+Type: String +
+Default:  +
+XML name: uri +
+Description: uri of the amqp connection
+
+## divertConfiguration
+`divertConfiguration.transformerConfiguration` +
+
+Type: TransformerConfiguration +
+Default:  +
+XML name: transformer-configuration +
+Description: 
+
+`divertConfiguration.transformerConfiguration.className` +
+
+Type: String +
+Default:  +
+XML name: class-name +
+Description: 
+
+`divertConfiguration.transformerConfiguration.properties` +
+
+Type: Map +
+Default:  +
+XML name: property +
+Description: A KEY/VALUE pair to set on the transformer, i.e. ...properties.MY_PROPERTY=MY_VALUE
+
+`divertConfiguration.filterString` +
+
+Type: String +
+Default:  +
+XML name: filter-string +
+Description: 
+
+`divertConfiguration.routingName` +
+
+Type: String +
+Default:  +
+XML name: routing-name +
+Description: the routing name for the divert
+
+`divertConfiguration.address` +
+
+Type: String +
+Default:  +
+XML name: address +
+Description: the address this divert will divert from
+
+`divertConfiguration.forwardingAddress` +
+
+Type: String +
+Default:  +
+XML name: forwarding-address +
+Description: the forwarding address for the divert
+
+`divertConfiguration.routingType` +
+
+Type: ComponentConfigurationRoutingType( MULTICAST ANYCAST STRIP PASS ) +
+Default:  +
+XML name: routing-type +
+Description: how should the routing-type on the diverted messages be set?
+
+`divertConfiguration.exclusive` +
+
+Type: boolean +
+Default: false +
+XML name: exclusive +
+Description: whether this is an exclusive divert
+
+## addressSettings
+`addressSettings.<__address__>.configDeleteDiverts` +
+
+Type: DeletionPolicy( OFF FORCE ) +
+Default:  +
+XML name: config-delete-addresses +
+Description: 
+
+`addressSettings.<__address__>.expiryQueuePrefix` +
+
+Type: SimpleString +
+Default:  +
+XML name: expiry-queue-prefix +
+Description: 
+
+`addressSettings.<__address__>.defaultConsumerWindowSize` +
+
+Type: int +
+Default:  +
+XML name: default-consumer-window-size +
+Description: 
+
+`addressSettings.<__address__>.maxReadPageBytes` +
+
+Type: int +
+Default:  +
+XML name: max-read-page-bytes +
+Description: 
+
+`addressSettings.<__address__>.deadLetterQueuePrefix` +
+
+Type: SimpleString +
+Default:  +
+XML name: dead-letter-queue-prefix +
+Description: 
+
+`addressSettings.<__address__>.defaultGroupRebalancePauseDispatch` +
+
+Type: boolean +
+Default:  +
+XML name: default-group-rebalance-pause-dispatch +
+Description: 
+
+`addressSettings.<__address__>.autoCreateAddresses` +
+
+Type: Boolean +
+Default:  +
+XML name: auto-create-addresses +
+Description: 
+
+`addressSettings.<__address__>.slowConsumerThreshold` +
+
+Type: long +
+Default:  +
+XML name: slow-consumer-threshold +
+Description: 
+
+`addressSettings.<__address__>.managementMessageAttributeSizeLimit` +
+
+Type: int +
+Default:  +
+XML name: management-message-attribute-size-limit +
+Description: 
+
+`addressSettings.<__address__>.autoCreateExpiryResources` +
+
+Type: boolean +
+Default:  +
+XML name: auto-create-expiry-resources +
+Description: 
+
+`addressSettings.<__address__>.pageSizeBytes` +
+
+Type: int +
+Default:  +
+XML name: page-size-bytes +
+Description: 
+
+`addressSettings.<__address__>.minExpiryDelay` +
+
+Type: Long +
+Default:  +
+XML name: min-expiry-delay +
+Description: 
+
+`addressSettings.<__address__>.defaultConsumersBeforeDispatch` +
+
+Type: Integer +
+Default:  +
+XML name: default-consumers-before-dispatch +
+Description: 
+
+`addressSettings.<__address__>.expiryQueueSuffix` +
+
+Type: SimpleString +
+Default:  +
+XML name: expiry-queue-suffix +
+Description: 
+
+`addressSettings.<__address__>.configDeleteQueues` +
+
+Type: DeletionPolicy( OFF FORCE ) +
+Default:  +
+XML name: config-delete-queues +
+Description: 
+
+`addressSettings.<__address__>.enableIngressTimestamp` +
+
+Type: boolean +
+Default:  +
+XML name: enable-ingress-timestamp +
+Description: 
+
+`addressSettings.<__address__>.autoDeleteCreatedQueues` +
+
+Type: Boolean +
+Default:  +
+XML name: auto-delete-created-queues +
+Description: 
+
+`addressSettings.<__address__>.expiryAddress` +
+
+Type: SimpleString +
+Default:  +
+XML name: expiry-address +
+Description: 
+
+`addressSettings.<__address__>.managementBrowsePageSize` +
+
+Type: int +
+Default:  +
+XML name: management-browse-page-size +
+Description: 
+
+`addressSettings.<__address__>.autoDeleteQueues` +
+
+Type: Boolean +
+Default:  +
+XML name: auto-delete-queues +
+Description: 
+
+`addressSettings.<__address__>.retroactiveMessageCount` +
+
+Type: long +
+Default:  +
+XML name: retroactive-message-count +
+Description: 
+
+`addressSettings.<__address__>.maxExpiryDelay` +
+
+Type: Long +
+Default:  +
+XML name: max-expiry-delay +
+Description: 
+
+`addressSettings.<__address__>.maxDeliveryAttempts` +
+
+Type: int +
+Default:  +
+XML name: max-delivery-attempts +
+Description: 
+
+`addressSettings.<__address__>.defaultGroupFirstKey` +
+
+Type: SimpleString +
+Default:  +
+XML name: default-group-first-key +
+Description: 
+
+`addressSettings.<__address__>.slowConsumerCheckPeriod` +
+
+Type: long +
+Default:  +
+XML name: slow-consumer-check-period +
+Description: 
+
+`addressSettings.<__address__>.defaultPurgeOnNoConsumers` +
+
+Type: Boolean +
+Default:  +
+XML name: default-purge-on-no-consumers +
+Description: 
+
+`addressSettings.<__address__>.defaultLastValueKey` +
+
+Type: SimpleString +
+Default:  +
+XML name: default-last-value-key +
+Description: 
+
+`addressSettings.<__address__>.autoCreateQueues` +
+
+Type: Boolean +
+Default:  +
+XML name: auto-create-queues +
+Description: 
+
+`addressSettings.<__address__>.defaultExclusiveQueue` +
+
+Type: Boolean +
+Default:  +
+XML name: default-exclusive-queue +
+Description: 
+
+`addressSettings.<__address__>.defaultMaxConsumers` +
+
+Type: Integer +
+Default:  +
+XML name: default-max-consumers +
+Description: 
+
+`addressSettings.<__address__>.defaultQueueRoutingType` +
+
+Type: RoutingType( MULTICAST ANYCAST ) +
+Default:  +
+XML name: default-queue-routing-type +
+Description: 
+
+`addressSettings.<__address__>.messageCounterHistoryDayLimit` +
+
+Type: int +
+Default:  +
+XML name: message-counter-history-day-limit +
+Description: 
+
+`addressSettings.<__address__>.defaultGroupRebalance` +
+
+Type: boolean +
+Default:  +
+XML name: default-group-rebalance +
+Description: 
+
+`addressSettings.<__address__>.defaultAddressRoutingType` +
+
+Type: RoutingType( MULTICAST ANYCAST ) +
+Default:  +
+XML name: default-address-routing-type +
+Description: 
+
+`addressSettings.<__address__>.maxSizeBytesRejectThreshold` +
+
+Type: long +
+Default:  +
+XML name: max-size-bytes-reject-threshold +
+Description: 
+
+`addressSettings.<__address__>.pageCacheMaxSize` +
+
+Type: int +
+Default:  +
+XML name: page-cache-max-size +
+Description: 
+
+`addressSettings.<__address__>.autoCreateDeadLetterResources` +
+
+Type: boolean +
+Default:  +
+XML name: auto-create-dead-letter-resources +
+Description: 
+
+`addressSettings.<__address__>.maxRedeliveryDelay` +
+
+Type: long +
+Default:  +
+XML name: max-redelivery-delay +
+Description: 
+
+`addressSettings.<__address__>.configDeleteAddresses` +
+
+Type: DeletionPolicy +
+Default:  +
+XML name: config-delete-addresses +
+Description: 
+
+`addressSettings.<__address__>.deadLetterAddress` +
+
+Type: SimpleString +
+Default:  +
+XML name: dead-letter-address +
+Description: 
+
+`addressSettings.<__address__>.autoDeleteQueuesMessageCount` +
+
+Type: long +
+Default:  +
+XML name: auto-delete-queues-message-count +
+Description: 
+
+`addressSettings.<__address__>.autoDeleteAddresses` +
+
+Type: Boolean +
+Default:  +
+XML name: auto-delete-addresses +
+Description: 
+
+`addressSettings.<__address__>.addressFullMessagePolicy` +
+
+Type: AddressFullMessagePolicy +
+Default:  +
+XML name: address-full-message-policy +
+Description: 
+
+`addressSettings.<__address__>.maxSizeBytes` +
+
+Type: long +
+Default:  +
+XML name: max-size-bytes +
+Description: 
+
+`addressSettings.<__address__>.defaultDelayBeforeDispatch` +
+
+Type: Long +
+Default:  +
+XML name: default-delay-before-dispatch +
+Description: 
+
+`addressSettings.<__address__>.redistributionDelay` +
+
+Type: long +
+Default:  +
+XML name: redistribution-delay +
+Description: 
+
+`addressSettings.<__address__>.maxSizeMessages` +
+
+Type: long +
+Default:  +
+XML name: max-size-messages +
+Description: 
+
+`addressSettings.<__address__>.redeliveryMultiplier` +
+
+Type: double +
+Default:  +
+XML name: redelivery-multiplier +
+Description: 
+
+`addressSettings.<__address__>.defaultRingSize` +
+
+Type: long +
+Default:  +
+XML name: default-ring-size +
+Description: 
+
+`addressSettings.<__address__>.defaultLastValueQueue` +
+
+Type: boolean +
+Default:  +
+XML name: default-last-value-queue +
+Description: 
+
+`addressSettings.<__address__>.slowConsumerPolicy` +
+
+Type: SlowConsumerPolicy( KILL NOTIFY ) +
+Default:  +
+XML name: slow-consumer-policy +
+Description: 
+
+`addressSettings.<__address__>.redeliveryCollisionAvoidanceFactor` +
+
+Type: double +
+Default:  +
+XML name: redelivery-collision-avoidance-factor +
+Description: 
+
+`addressSettings.<__address__>.autoDeleteQueuesDelay` +
+
+Type: long +
+Default:  +
+XML name: auto-delete-queues-delay +
+Description: 
+
+`addressSettings.<__address__>.autoDeleteAddressesDelay` +
+
+Type: long +
+Default:  +
+XML name: auto-delete-addresses-delay +
+Description: 
+
+`addressSettings.<__address__>.expiryDelay` +
+
+Type: Long +
+Default:  +
+XML name: expiry-delay +
+Description: 
+
+`addressSettings.<__address__>.enableMetrics` +
+
+Type: boolean +
+Default:  +
+XML name: enable-metrics +
+Description: 
+
+`addressSettings.<__address__>.sendToDLAOnNoRoute` +
+
+Type: boolean +
+Default:  +
+XML name: send-to-d-l-a-on-no-route +
+Description: 
+
+`addressSettings.<__address__>.slowConsumerThresholdMeasurementUnit` +
+
+Type: SlowConsumerThresholdMeasurementUnit( MESSAGES_PER_SECOND MESSAGES_PER_MINUTE MESSAGES_PER_HOUR MESSAGES_PER_DAY ) +
+Default:  +
+XML name: slow-consumer-threshold-measurement-unit +
+Description: 
+
+`addressSettings.<__address__>.queuePrefetch` +
+
+Type: int +
+Default:  +
+XML name: queue-prefetch +
+Description: 
+
+`addressSettings.<__address__>.redeliveryDelay` +
+
+Type: long +
+Default:  +
+XML name: redelivery-delay +
+Description: 
+
+`addressSettings.<__address__>.deadLetterQueueSuffix` +
+
+Type: SimpleString +
+Default:  +
+XML name: dead-letter-queue-suffix +
+Description: 
+
+`addressSettings.<__address__>.defaultNonDestructive` +
+
+Type: boolean +
+Default:  +
+XML name: default-non-destructive +
+Description: 
+
+## federationConfigurations
+`federationConfigurations.<__name__>.transformerConfigurations` +
+
+Type: FederationTransformerConfiguration +
+Default:  +
+XML name: transformer +
+Description: optional transformer configuration
+
+`federationConfigurations.<__name__>.transformerConfigurations.<__name__>.transformerConfiguration` +
+
+Type: TransformerConfiguration +
+Default:  +
+XML name: transformer +
+Description: Allows adding a custom transformer to amend the message
+
+`federationConfigurations.<__name__>.transformerConfigurations.<__name__>.transformerConfiguration.<__name__>.className` +
+
+Type: String +
+Default:  +
+XML name: class-name +
+Description: the class name of the Transformer implementation
+
+`federationConfigurations.<__name__>.transformerConfigurations.<__name__>.transformerConfiguration.<__name__>.properties` +
+
+Type: Map +
+Default:  +
+XML name: property +
+Description: A KEY/VALUE pair to set on the transformer, i.e. ...properties.MY_PROPERTY=MY_VALUE
+
+`federationConfigurations.<__name__>.queuePolicies` +
+
+Type: FederationQueuePolicyConfiguration +
+Default:  +
+XML name: queue-policy +
+Description: 
+
+`federationConfigurations.<__name__>.queuePolicies.<__name__>.priorityAdjustment` +
+
+Type: Integer +
+Default:  +
+XML name: priority-adjustment +
+Description: when a consumer attaches its priority is used to make the upstream consumer, but with an adjustment by default -1, so that local consumers get load balanced first over remote, this enables this to be configurable should it be wanted/needed.
+
+`federationConfigurations.<__name__>.queuePolicies.<__name__>.excludes` +
+
+Type: Matcher +
+Default:  +
+XML name: exclude +
+Description: A list of Queue matches to exclude
+
+`federationConfigurations.<__name__>.queuePolicies.<__name__>.excludes.<__name__>.queueMatch` +
+
+Type: String +
+Default:  +
+XML name: queue-match +
+Description: A Queue match pattern to apply. If none are present all queues will be matched
+
+`federationConfigurations.<__name__>.queuePolicies.<__name__>.transformerRef` +
+
+Type: String +
+Default:  +
+XML name: transformer-ref +
+Description: The ref name for a transformer (see transformer config) that you may wish to configure to transform the message on federation transfer.
+
+`federationConfigurations.<__name__>.queuePolicies.<__name__>.includes` +
+
+Type: Matcher +
+Default:  +
+XML name: queue-match +
+Description: 
+
+`federationConfigurations.<__name__>.queuePolicies.<__name__>.excludes.<__name__>.queueMatch` +
+
+Type: String +
+Default:  +
+XML name: queue-match +
+Description: A Queue match pattern to apply. If none are present all queues will be matched
+
+`federationConfigurations.<__name__>.queuePolicies.<__name__>.includeFederated` +
+
+Type: boolean +
+Default:  +
+XML name: include-federated +
+Description: by default this is false, we don't federate a federated consumer, this is to avoid issue, where in symmetric or any closed loop setup you could end up when no "real" consumers attached with messages flowing round and round endlessly.
+
+`federationConfigurations.<__name__>.upstreamConfigurations` +
+
+Type: FederationUpstreamConfiguration +
+Default:  +
+XML name: upstream +
+Description: 
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration` +
+
+Type: FederationConnectionConfiguration +
+Default:  +
+XML name: connection-configuration +
+Description: This is the streams connection configuration
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.priorityAdjustment` +
+
+Type: int +
+Default:  +
+XML name: priority-adjustment +
+Description: 
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.retryIntervalMultiplier` +
+
+Type: double +
+Default: 1 +
+XML name: retry-interval-multiplier +
+Description: multiplier to apply to the retry-interval
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.shareConnection` +
+
+Type: boolean +
+Default: false +
+XML name: share-connection +
+Description: if there is a downstream and upstream connection configured for the same broker then the same connection will be shared as long as both stream configs set this flag to true
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.maxRetryInterval` +
+
+Type: long +
+Default: 2000 +
+XML name: max-retry-interval +
+Description: Maximum value for retry-interval
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.connectionTTL` +
+
+Type: long +
+Default:  +
+XML name: connection-t-t-l +
+Description: 
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.circuitBreakerTimeout` +
+
+Type: long +
+Default: 30000 +
+XML name: circuit-breaker-timeout +
+Description: whether this connection supports fail-over
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.callTimeout` +
+
+Type: long +
+Default: 30000 +
+XML name: call-timeout +
+Description: How long to wait for a reply
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.staticConnectors` +
+
+Type: List +
+Default:  +
+XML name: static-connectors +
+Description: A list of connector references configured via connectors
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.reconnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: reconnect-attempts +
+Description: How many attempts should be made to reconnect after failure
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.password` +
+
+Type: String +
+Default:  +
+XML name: password +
+Description: password, if unspecified the federated password is used
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.callFailoverTimeout` +
+
+Type: long +
+Default: -1 +
+XML name: call-failover-timeout +
+Description: How long to wait for a reply if in the middle of a fail-over. -1 means wait forever.
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.hA` +
+
+Type: boolean +
+Default:  +
+XML name: h-a +
+Description: 
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.initialConnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: initial-connect-attempts +
+Description: How many attempts should be made to connect initially
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.retryInterval` +
+
+Type: long +
+Default: 500 +
+XML name: retry-interval +
+Description: period (in ms) between successive retries
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.clientFailureCheckPeriod` +
+
+Type: long +
+Default:  +
+XML name: client-failure-check-period +
+Description: 
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.connectionConfiguration.username` +
+
+Type: String +
+Default:  +
+XML name: username +
+Description: 
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.policyRefs` +
+
+Type: Collection +
+Default:  +
+XML name: policy-refs +
+Description: 
+
+`federationConfigurations.<__name__>.upstreamConfigurations.<__name__>.staticConnectors` +
+
+Type: List +
+Default:  +
+XML name: static-connectors +
+Description: A list of connector references configured via connectors
+
+`federationConfigurations.<__name__>.downstreamConfigurations` +
+
+Type: FederationDownstreamConfiguration +
+Default:  +
+XML name: downstream +
+Description: 
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration` +
+
+Type: FederationConnectionConfiguration +
+Default:  +
+XML name: connection-configuration +
+Description: This is the streams connection configuration
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.priorityAdjustment` +
+
+Type: int +
+Default:  +
+XML name: priority-adjustment +
+Description: 
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.retryIntervalMultiplier` +
+
+Type: double +
+Default: 1 +
+XML name: retry-interval-multiplier +
+Description: multiplier to apply to the retry-interval
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.shareConnection` +
+
+Type: boolean +
+Default: false +
+XML name: share-connection +
+Description: if there is a downstream and upstream connection configured for the same broker then the same connection will be shared as long as both stream configs set this flag to true
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.maxRetryInterval` +
+
+Type: long +
+Default: 2000 +
+XML name: max-retry-interval +
+Description: Maximum value for retry-interval
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.connectionTTL` +
+
+Type: long +
+Default:  +
+XML name: connection-t-t-l +
+Description: 
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.circuitBreakerTimeout` +
+
+Type: long +
+Default: 30000 +
+XML name: circuit-breaker-timeout +
+Description: whether this connection supports fail-over
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.callTimeout` +
+
+Type: long +
+Default: 30000 +
+XML name: call-timeout +
+Description: How long to wait for a reply
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.staticConnectors` +
+
+Type: List +
+Default:  +
+XML name: static-connectors +
+Description: A list of connector references configured via connectors
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.reconnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: reconnect-attempts +
+Description: How many attempts should be made to reconnect after failure
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.password` +
+
+Type: String +
+Default:  +
+XML name: password +
+Description: password, if unspecified the federated password is used
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.callFailoverTimeout` +
+
+Type: long +
+Default: -1 +
+XML name: call-failover-timeout +
+Description: How long to wait for a reply if in the middle of a fail-over. -1 means wait forever.
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.hA` +
+
+Type: boolean +
+Default:  +
+XML name: h-a +
+Description: 
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.initialConnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: initial-connect-attempts +
+Description: How many attempts should be made to connect initially
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.retryInterval` +
+
+Type: long +
+Default: 500 +
+XML name: retry-interval +
+Description: period (in ms) between successive retries
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.clientFailureCheckPeriod` +
+
+Type: long +
+Default:  +
+XML name: client-failure-check-period +
+Description: 
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.connectionConfiguration.username` +
+
+Type: String +
+Default:  +
+XML name: username +
+Description: 
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.policyRefs` +
+
+Type: Collection +
+Default:  +
+XML name: policy-refs +
+Description: 
+
+`federationConfigurations.<__name__>.downstreamConfigurations.<__name__>.staticConnectors` +
+
+Type: List +
+Default:  +
+XML name: static-connectors +
+Description: A list of connector references configured via connectors
+
+`federationConfigurations.<__name__>.federationPolicys` +
+
+Type: FederationPolicy +
+Default:  +
+XML name: policy-set +
+Description: 
+
+`federationConfigurations.<__name__>.addressPolicies` +
+
+Type: FederationAddressPolicyConfiguration +
+Default:  +
+XML name: address-policy +
+Description: 
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.autoDeleteMessageCount` +
+
+Type: Long +
+Default:  +
+XML name: auto-delete-message-count +
+Description: The amount number messages in the upstream queue that the message count must be equal or below before the downstream broker has disconnected before the upstream queue can be eligable for auto-delete.
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.enableDivertBindings` +
+
+Type: Boolean +
+Default:  +
+XML name: enable-divert-bindings +
+Description: Setting to true will enable divert bindings to be listened for demand. If there is a divert binding with an address that matches the included addresses for the stream, any queue bindings that match the forward address of the divert will create demand. Default is false
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.includes.{NAME}.addressMatch` +
+
+Type: Matcher +
+Default:  +
+XML name: include +
+Description: 
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.maxHops` +
+
+Type: int +
+Default:  +
+XML name: max-hops +
+Description: The number of hops that a message can have made for it to be federated
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.transformerRef` +
+
+Type: String +
+Default:  +
+XML name: transformer-ref +
+Description: The ref name for a transformer (see transformer config) that you may wish to configure to transform the message on federation transfer.
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.autoDeleteDelay` +
+
+Type: Long +
+Default:  +
+XML name: auto-delete-delay +
+Description: The amount of time in milliseconds after the downstream broker has disconnected before the upstream queue can be eligable for auto-delete.
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.autoDelete` +
+
+Type: Boolean +
+Default:  +
+XML name: auto-delete +
+Description: For address federation, the downstream dynamically creates a durable queue on the upstream address. This is used to mark if the upstream queue should be deleted once downstream disconnects, and the delay and message count params have been met. This is useful if you want to automate the clean up, though you may wish to disable this if you want messages to queued for the downstream when disconnect no matter what.
+
+`federationConfigurations.<__name__>.addressPolicies.<__name__>.excludes.{NAME}.addressMatch` +
+
+Type: Matcher +
+Default:  +
+XML name: include +
+Description: 
+
+## clusterConfigurations
+`clusterConfigurations.<__name__>.retryIntervalMultiplier` +
+
+Type: double +
+Default: 1 +
+XML name: retry-interval-multiplier +
+Description: multiplier to apply to the retry-interval
+
+`clusterConfigurations.<__name__>.maxRetryInterval` +
+
+Type: long +
+Default: 2000 +
+XML name: max-retry-interval +
+Description: Maximum value for retry-interval
+
+`clusterConfigurations.<__name__>.address` +
+
+Type: String +
+Default:  +
+XML name: address +
+Description: name of the address this cluster connection applies to
+
+`clusterConfigurations.<__name__>.maxHops` +
+
+Type: int +
+Default: 1 +
+XML name: max-hops +
+Description: maximum number of hops cluster topology is propagated
+
+`clusterConfigurations.<__name__>.connectionTTL` +
+
+Type: long +
+Default: 60000 +
+XML name: connection-ttl +
+Description: how long to keep a connection alive in the absence of any data arriving from the client
+
+`clusterConfigurations.<__name__>.clusterNotificationInterval` +
+
+Type: long +
+Default: 1000 +
+XML name: notification-interval +
+Description: how often the cluster connection will notify the cluster of its existence right after joining the cluster
+
+`clusterConfigurations.<__name__>.confirmationWindowSize` +
+
+Type: int +
+Default: 1048576 +
+XML name: confirmation-window-size +
+Description: The size (in bytes) of the window used for confirming data from the server connected to. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`clusterConfigurations.<__name__>.callTimeout` +
+
+Type: long +
+Default: 30000 +
+XML name: call-timeout +
+Description: How long to wait for a reply
+
+`clusterConfigurations.<__name__>.staticConnectors` +
+
+Type: List +
+Default:  +
+XML name: static-connectors +
+Description: A list of connectors references names
+
+`clusterConfigurations.<__name__>.clusterNotificationAttempts` +
+
+Type: int +
+Default: 2 +
+XML name: notification-attempts +
+Description: how many times this cluster connection will notify the cluster of its existence right after joining the cluster
+
+`clusterConfigurations.<__name__>.allowDirectConnectionsOnly` +
+
+Type: boolean +
+Default: false +
+XML name: allow-direct-connections-only +
+Description: restricts cluster connections to the listed connector-ref's
+
+`clusterConfigurations.<__name__>.reconnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: reconnect-attempts +
+Description: How many attempts should be made to reconnect after failure
+
+`clusterConfigurations.<__name__>.duplicateDetection` +
+
+Type: boolean +
+Default: true +
+XML name: use-duplicate-detection +
+Description: should duplicate detection headers be inserted in forwarded messages?
+
+`clusterConfigurations.<__name__>.callFailoverTimeout` +
+
+Type: long +
+Default: -1 +
+XML name: call-failover-timeout +
+Description: How long to wait for a reply if in the middle of a fail-over. -1 means wait forever.
+
+`clusterConfigurations.<__name__>.messageLoadBalancingType` +
+
+Type: MessageLoadBalancingType( OFF STRICT ON_DEMAND OFF_WITH_REDISTRIBUTION ) +
+Default:  +
+XML name: message-load-balancing-type +
+Description: 
+
+`clusterConfigurations.<__name__>.initialConnectAttempts` +
+
+Type: int +
+Default: -1 +
+XML name: initial-connect-attempts +
+Description: How many attempts should be made to connect initially
+
+`clusterConfigurations.<__name__>.connectorName` +
+
+Type: String +
+Default:  +
+XML name: connector-ref +
+Description: Name of the connector reference to use.
+
+`clusterConfigurations.<__name__>.retryInterval` +
+
+Type: long +
+Default: 500 +
+XML name: retry-interval +
+Description: period (in ms) between successive retries
+
+`clusterConfigurations.<__name__>.producerWindowSize` +
+
+Type: int +
+Default: 1048576 +
+XML name: producer-window-size +
+Description: Producer flow control. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+`clusterConfigurations.<__name__>.clientFailureCheckPeriod` +
+
+Type: long +
+Default:  +
+XML name: client-failure-check-period +
+Description: 
+
+`clusterConfigurations.<__name__>.discoveryGroupName` +
+
+Type: String +
+Default:  +
+XML name: discovery-group-name +
+Description: name of discovery group used by this cluster-connection
+
+`clusterConfigurations.<__name__>.minLargeMessageSize` +
+
+Type: int +
+Default:  +
+XML name: min-large-message-size +
+Description: Messages larger than this are considered large-messages. Supports byte notation like "K", "Mb", "MiB", "GB", etc.
+
+## connectionRouters
+`connectionRouters.<__name__>.cacheConfiguration` +
+
+Type: CacheConfiguration +
+Default:  +
+XML name: cache +
+Description: This controls how often a cache removes its entries and if they are persisted.
+
+`connectionRouters.<__name__>.cacheConfiguration.persisted` +
+
+Type: boolean +
+Default: false +
+XML name: persisted +
+Description: true means that the cache entries are persisted
+
+`connectionRouters.<__name__>.cacheConfiguration.timeout` +
+
+Type: int +
+Default: -1 +
+XML name: timeout +
+Description: the timeout (in milliseconds) before removing cache entries
+
+`connectionRouters.<__name__>.keyFilter` +
+
+Type: String +
+Default:  +
+XML name: key-filter +
+Description: the filter for the target key
+
+`connectionRouters.<__name__>.keyType` +
+
+Type: KeyType( CLIENT_ID SNI_HOST SOURCE_IP USER_NAME ROLE_NAME ) +
+Default:  +
+XML name: key-type +
+Description: the optional target key
+
+`connectionRouters.<__name__>.localTargetFilter` +
+
+Type: String +
+Default:  +
+XML name: local-target-filter +
+Description: the filter to get the local target
+
+`connectionRouters.<__name__>.poolConfiguration` +
+
+Type: PoolConfiguration +
+Default:  +
+XML name: pool +
+Description: the pool configuration
+
+`connectionRouters.<__name__>.poolConfiguration.quorumTimeout` +
+
+Type: int +
+Default: 3000 +
+XML name: quorum-timeout +
+Description: the timeout (in milliseconds) used to get the minimum number of ready targets
+
+`connectionRouters.<__name__>.poolConfiguration.password` +
+
+Type: String +
+Default:  +
+XML name: password +
+Description: the password to access the targets
+
+`connectionRouters.<__name__>.poolConfiguration.localTargetEnabled` +
+
+Type: boolean +
+Default: false +
+XML name: local-target-enabled +
+Description: true means that the local target is enabled
+
+`connectionRouters.<__name__>.poolConfiguration.checkPeriod` +
+
+Type: int +
+Default: 5000 +
+XML name: check-period +
+Description: the period (in milliseconds) used to check if a target is ready
+
+`connectionRouters.<__name__>.poolConfiguration.quorumSize` +
+
+Type: int +
+Default: 1 +
+XML name: quorum-size +
+Description: the minimum number of ready targets
+
+`connectionRouters.<__name__>.poolConfiguration.staticConnectors` +
+
+Type: List +
+Default:  +
+XML name: static-connectors +
+Description: A list of connector references configured via connectors
+
+`connectionRouters.<__name__>.poolConfiguration.discoveryGroupName` +
+
+Type: String +
+Default:  +
+XML name: discovery-group-name +
+Description: name of discovery group used by this bridge
+
+`connectionRouters.<__name__>.poolConfiguration.clusterConnection` +
+
+Type: String +
+Default:  +
+XML name: cluster-connection +
+Description: the name of a cluster connection
+
+`connectionRouters.<__name__>.poolConfiguration.username` +
+
+Type: String +
+Default:  +
+XML name: username +
+Description: the username to access the targets
+
+`connectionRouters.<__name__>.policyConfiguration` +
+
+Type: NamedPropertyConfiguration +
+Default:  +
+XML name: policy-configuration +
+Description: 
+
+`connectionRouters.<__name__>..properties.{PROPERTY}` +
+
+Type: Properties +
+Default:  +
+XML name: property +
+Description: A set of Key value pairs specific to each named property, see above description
+

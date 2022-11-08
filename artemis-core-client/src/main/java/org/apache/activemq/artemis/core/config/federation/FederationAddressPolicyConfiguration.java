@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 import org.apache.activemq.artemis.utils.Preconditions;
 
@@ -55,11 +56,13 @@ public class FederationAddressPolicyConfiguration implements FederationPolicy<Fe
       return excludes;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, propertyName = "includes.{NAME}.addressMatch", xmlName = "include", xmlType = "addressMatchType")
    public FederationAddressPolicyConfiguration addInclude(Matcher include) {
       includes.add(include);
       return this;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, propertyName = "excludes.{NAME}.addressMatch", xmlName = "include", xmlType = "addressMatchType")
    public FederationAddressPolicyConfiguration addExclude(Matcher exclude) {
       excludes.add(exclude);
       return this;
@@ -69,6 +72,7 @@ public class FederationAddressPolicyConfiguration implements FederationPolicy<Fe
       return maxHops;
    }
 
+   @BrokerProperty
    public FederationAddressPolicyConfiguration setMaxHops(int maxHops) {
       this.maxHops = maxHops;
       return this;
@@ -78,6 +82,7 @@ public class FederationAddressPolicyConfiguration implements FederationPolicy<Fe
       return autoDeleteMessageCount;
    }
 
+   @BrokerProperty
    public FederationAddressPolicyConfiguration setAutoDeleteMessageCount(Long autoDeleteMessageCount) {
       this.autoDeleteMessageCount = autoDeleteMessageCount;
       return this;
@@ -87,6 +92,7 @@ public class FederationAddressPolicyConfiguration implements FederationPolicy<Fe
       return autoDeleteDelay;
    }
 
+   @BrokerProperty
    public FederationAddressPolicyConfiguration setAutoDeleteDelay(Long autoDeleteDelay) {
       this.autoDeleteDelay = autoDeleteDelay;
       return this;
@@ -96,6 +102,7 @@ public class FederationAddressPolicyConfiguration implements FederationPolicy<Fe
       return autoDelete;
    }
 
+   @BrokerProperty
    public FederationAddressPolicyConfiguration setAutoDelete(Boolean autoDelete) {
       this.autoDelete = autoDelete;
       return this;
@@ -105,6 +112,7 @@ public class FederationAddressPolicyConfiguration implements FederationPolicy<Fe
       return transformerRef;
    }
 
+   @BrokerProperty
    public FederationAddressPolicyConfiguration setTransformerRef(String transformerRef) {
       this.transformerRef = transformerRef;
       return this;
@@ -114,6 +122,7 @@ public class FederationAddressPolicyConfiguration implements FederationPolicy<Fe
       return enableDivertBindings;
    }
 
+   @BrokerProperty
    public FederationAddressPolicyConfiguration setEnableDivertBindings(Boolean enableDivertBindings) {
       this.enableDivertBindings = enableDivertBindings;
       return this;

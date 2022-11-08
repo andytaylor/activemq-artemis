@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.activemq.artemis.api.config.ActiveMQDefaultConfiguration;
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.QueueConfiguration;
 import org.apache.activemq.artemis.core.config.amqpBrokerConnectivity.AMQPBrokerConnectConfiguration;
 import org.apache.activemq.artemis.core.config.routing.ConnectionRouterConfiguration;
@@ -66,6 +67,7 @@ public interface Configuration {
    /**
     * To be used on dependency management on the application server
     */
+   @BrokerProperty
    Configuration setName(String name);
 
    /**
@@ -79,6 +81,7 @@ public interface Configuration {
     * @param systemPropertyPrefix
     * @return
     */
+   @BrokerProperty
    Configuration setSystemPropertyPrefix(String systemPropertyPrefix);
 
    /**
@@ -91,14 +94,17 @@ public interface Configuration {
 
    boolean isCriticalAnalyzer();
 
+   @BrokerProperty
    Configuration setCriticalAnalyzer(boolean CriticalAnalyzer);
 
    long getCriticalAnalyzerTimeout();
 
+   @BrokerProperty
    Configuration setCriticalAnalyzerTimeout(long timeout);
 
    long getCriticalAnalyzerCheckPeriod();
 
+   @BrokerProperty
    Configuration setCriticalAnalyzerCheckPeriod(long checkPeriod);
 
    CriticalAnalyzerPolicy getCriticalAnalyzerPolicy();
@@ -419,7 +425,6 @@ public interface Configuration {
    Configuration setBroadcastGroupConfigurations(List<BroadcastGroupConfiguration> configs);
 
    Configuration addBroadcastGroupConfiguration(BroadcastGroupConfiguration config);
-
    /**
     * Returns the discovery groups configured for this server.
     */
@@ -453,6 +458,8 @@ public interface Configuration {
     */
    Configuration setBridgeConfigurations(List<BridgeConfiguration> configs);
 
+   @BrokerProperty(type = BrokerProperty.MAP, xmlName = "bridges", mappedName = "NAME", xmlType = "bridgeType")
+   Configuration addBridgeConfiguration(BridgeConfiguration config);
    /**
     * Returns the diverts configured for this server.
     */
@@ -463,6 +470,7 @@ public interface Configuration {
     */
    Configuration setDivertConfigurations(List<DivertConfiguration> configs);
 
+   @BrokerProperty(type = BrokerProperty.MAP, propertyName = "divertConfiguration", xmlName = "diverts", xmlType = "divertType")
    Configuration addDivertConfiguration(DivertConfiguration config);
 
    /**
@@ -475,6 +483,7 @@ public interface Configuration {
     */
    Configuration setConnectionRouters(List<ConnectionRouterConfiguration> configs);
 
+   @BrokerProperty(type = BrokerProperty.MAP, xmlType = "ConnectionRouterType", propertyName = "connectionRouters", mappedName = "NAME")
    Configuration addConnectionRouter(ConnectionRouterConfiguration config);
 
    /**
@@ -490,12 +499,14 @@ public interface Configuration {
     */
    Configuration setClusterConfigurations(List<ClusterConnectionConfiguration> configs);
 
+   @BrokerProperty(type = BrokerProperty.MAP,xmlName = "cluster-connections", xmlType = "cluster-connectionType", propertyName = "clusterConfigurations", mappedName = "NAME")
    Configuration addClusterConfiguration(ClusterConnectionConfiguration config);
 
    ClusterConnectionConfiguration addClusterConfiguration(String name, String uri) throws Exception;
 
    Configuration clearClusterConfigurations();
 
+   @BrokerProperty(type = BrokerProperty.MAP, xmlName = "broker-connections", xmlType = "amqp-connectionUriType", propertyName = "AMQPConnections", mappedName = "NAME")
    Configuration addAMQPConnection(AMQPBrokerConnectConfiguration amqpBrokerConnectConfiguration);
 
    List<AMQPBrokerConnectConfiguration> getAMQPConnection();
@@ -639,6 +650,7 @@ public interface Configuration {
     * <p>
     * Default = 5
     */
+   @BrokerProperty(xmlName = "page-max-concurrent-io")
    Configuration setPageMaxConcurrentIO(int maxIO);
 
    /**
@@ -650,6 +662,7 @@ public interface Configuration {
    /**
     * Sets whether the whole page is read while getting message after page cache is evicted.
     */
+   @BrokerProperty
    Configuration setReadWholePage(boolean read);
 
    /**
@@ -673,6 +686,7 @@ public interface Configuration {
    /**
     * Sets the file system directory used to store the node manager lock file.
     */
+   @BrokerProperty
    Configuration setNodeManagerLockDirectory(String dir);
 
    /**
@@ -684,6 +698,7 @@ public interface Configuration {
    /**
     * Sets the file system directory used to store journal log.
     */
+   @BrokerProperty
    Configuration setJournalDirectory(String dir);
 
    String getJournalRetentionDirectory();
@@ -691,6 +706,7 @@ public interface Configuration {
    /**
     * Sets the file system directory used to store historical backup journal.
     */
+   @BrokerProperty
    Configuration setJournalRetentionDirectory(String dir);
 
    File getJournalRetentionLocation();
@@ -714,6 +730,7 @@ public interface Configuration {
    /**
     * Sets the type of journal used by this server (either {@code NIO} or {@code ASYNCIO}).
     */
+   @BrokerProperty
    Configuration setJournalType(JournalType type);
 
    /**
@@ -725,6 +742,7 @@ public interface Configuration {
    /**
     * Sets whether the journal is synchronized when receiving transactional data.
     */
+   @BrokerProperty
    Configuration setJournalSyncTransactional(boolean sync);
 
    /**
@@ -736,6 +754,7 @@ public interface Configuration {
    /**
     * Sets whether the journal is synchronized when receiving non-transactional data.
     */
+   @BrokerProperty
    Configuration setJournalSyncNonTransactional(boolean sync);
 
    /**
@@ -747,6 +766,7 @@ public interface Configuration {
    /**
     * Sets the size (in bytes) of each journal files.
     */
+   @BrokerProperty
    Configuration setJournalFileSize(int size);
 
    /**
@@ -758,6 +778,7 @@ public interface Configuration {
    /**
     * Sets the minimal number of journal files before compacting.
     */
+   @BrokerProperty
    Configuration setJournalCompactMinFiles(int minFiles);
 
    /**
@@ -768,6 +789,7 @@ public interface Configuration {
    /**
     * Number of files that would be acceptable to keep on a pool. Default value is {@link org.apache.activemq.artemis.api.config.ActiveMQDefaultConfiguration#DEFAULT_JOURNAL_POOL_FILES}.
     */
+   @BrokerProperty
    Configuration setJournalPoolFiles(int poolSize);
 
    /**
@@ -784,11 +806,13 @@ public interface Configuration {
    /**
    * Sets the journal file open timeout
    */
+   @BrokerProperty
    Configuration setJournalFileOpenTimeout(int journalFileOpenTimeout);
 
    /**
     * Sets the percentage of live data before compacting the journal.
     */
+   @BrokerProperty
    Configuration setJournalCompactPercentage(int percentage);
 
    /**
@@ -800,6 +824,7 @@ public interface Configuration {
    /**
     * Sets the number of journal files to pre-create.
     */
+   @BrokerProperty
    Configuration setJournalMinFiles(int files);
 
    // AIO and NIO need different values for these params
@@ -813,6 +838,7 @@ public interface Configuration {
    /**
     * Sets the maximum number of write requests that can be in the AIO queue at any given time.
     */
+   @BrokerProperty(xmlName = "journal-max-io")
    Configuration setJournalMaxIO_AIO(int journalMaxIO);
 
    /**
@@ -825,6 +851,7 @@ public interface Configuration {
    /**
     * Sets the timeout (in nanoseconds) used to flush buffers in the AIO queue.
     */
+   @BrokerProperty(xmlName = "journal-buffer-timeout")
    Configuration setJournalBufferTimeout_AIO(int journalBufferTimeout);
 
    /** This is the device block size used on writing.
@@ -836,6 +863,7 @@ public interface Configuration {
    /**
     * @see #getJournalDeviceBlockSize()
     */
+   @BrokerProperty
    Configuration setJournalDeviceBlockSize(Integer deviceBlockSize);
 
    /**
@@ -848,6 +876,7 @@ public interface Configuration {
    /**
     * Sets the buffer size (in bytes) for AIO.
     */
+   @BrokerProperty(xmlName = "journal-buffer-size")
    Configuration setJournalBufferSize_AIO(int journalBufferSize);
 
    /**
@@ -859,6 +888,7 @@ public interface Configuration {
    /**
     * Sets the maximum number of write requests for NIO journal.
     */
+   @BrokerProperty(xmlName = "journal-max-io", extraDocs = "Currently Broker properties only supports using an integer and measures in bytes")
    Configuration setJournalMaxIO_NIO(int journalMaxIO);
 
    /**
@@ -871,6 +901,7 @@ public interface Configuration {
    /**
     * Sets the timeout (in nanoseconds) used to flush buffers in the NIO.
     */
+   @BrokerProperty(xmlName = "journal-buffer-timeout")
    Configuration setJournalBufferTimeout_NIO(int journalBufferTimeout);
 
    /**
@@ -883,6 +914,7 @@ public interface Configuration {
    /**
     * Sets the buffer size (in bytes) for NIO.
     */
+   @BrokerProperty(xmlName = "journal-buffer-size")
    Configuration setJournalBufferSize_NIO(int journalBufferSize);
 
    /**
@@ -895,6 +927,7 @@ public interface Configuration {
    /**
     * Sets the maximal number of data files before we can start deleting corrupted files instead of moving them to attic.
     */
+   @BrokerProperty
    Configuration setJournalMaxAtticFiles(int maxAtticFiles);
 
    /**
@@ -906,6 +939,7 @@ public interface Configuration {
    /**
     * Sets whether the bindings directory is created on this server startup.
     */
+   @BrokerProperty
    Configuration setCreateBindingsDir(boolean create);
 
    /**
@@ -917,12 +951,14 @@ public interface Configuration {
    /**
     * Sets whether the journal directory is created on this server startup.
     */
+   @BrokerProperty
    Configuration setCreateJournalDir(boolean create);
 
    // Undocumented attributes
 
    boolean isLogJournalWriteRate();
 
+   @BrokerProperty
    Configuration setLogJournalWriteRate(boolean rate);
 
    long getServerDumpInterval();
@@ -931,10 +967,12 @@ public interface Configuration {
 
    int getMemoryWarningThreshold();
 
+   @BrokerProperty
    Configuration setMemoryWarningThreshold(int memoryWarningThreshold);
 
    long getMemoryMeasureInterval();
 
+   @BrokerProperty
    Configuration setMemoryMeasureInterval(long memoryMeasureInterval);
 
    // Paging Properties --------------------------------------------------------------------
@@ -948,6 +986,7 @@ public interface Configuration {
    /**
     * Sets the file system directory used to store paging files.
     */
+   @BrokerProperty
    Configuration setPagingDirectory(String dir);
 
    /**
@@ -971,6 +1010,7 @@ public interface Configuration {
    /**
     * Sets the file system directory used to store large messages.
     */
+   @BrokerProperty
    Configuration setLargeMessagesDirectory(String directory);
 
    // Other Properties ---------------------------------------------------------------------
@@ -1001,6 +1041,7 @@ public interface Configuration {
     * Sets the timeout (in milliseconds) after which transactions is removed
     * from the resource manager after it was created.
     */
+   @BrokerProperty
    Configuration setTransactionTimeout(long timeout);
 
    /**
@@ -1012,6 +1053,7 @@ public interface Configuration {
    /**
     * Sets whether message counter is enabled for this server.
     */
+   @BrokerProperty
    Configuration setMessageCounterEnabled(boolean enabled);
 
    /**
@@ -1025,6 +1067,7 @@ public interface Configuration {
     *
     * @param period value must be greater than 1000ms
     */
+   @BrokerProperty
    Configuration setMessageCounterSamplePeriod(long period);
 
    /**
@@ -1038,6 +1081,7 @@ public interface Configuration {
     *
     * @param maxDayHistory value must be greater than 0
     */
+   @BrokerProperty
    Configuration setMessageCounterMaxDayHistory(int maxDayHistory);
 
    /**
@@ -1051,6 +1095,7 @@ public interface Configuration {
     * Sets the frequency (in milliseconds)  to scan transactions to detect which transactions
     * have timed out.
     */
+   @BrokerProperty
    Configuration setTransactionTimeoutScanPeriod(long period);
 
    /**
@@ -1064,6 +1109,7 @@ public interface Configuration {
     * Sets the frequency (in milliseconds)  to scan messages to detect which messages
     * have expired.
     */
+   @BrokerProperty
    Configuration setMessageExpiryScanPeriod(long messageExpiryScanPeriod);
 
    /**
@@ -1090,6 +1136,7 @@ public interface Configuration {
     * Sets the frequency (in milliseconds) to scan addresses and queues to detect which
     * ones should be deleted.
     */
+   @BrokerProperty
    Configuration setAddressQueueScanPeriod(long addressQueueScanPeriod);
 
    /**
@@ -1103,6 +1150,7 @@ public interface Configuration {
     */
    Configuration setAddressSettings(Map<String, AddressSettings> addressSettings);
 
+   @BrokerProperty(type = BrokerProperty.MAP, propertyName = "addressSettings", mappedName = "ADDRESS", xmlName = "address-settings", xmlType = "address-setting", param = 1)
    Configuration addAddressSetting(String key, AddressSettings addressesSetting);
 
    Configuration clearAddressSettings();
@@ -1199,6 +1247,7 @@ public interface Configuration {
 
    Configuration copy() throws Exception;
 
+   @BrokerProperty
    Configuration setJournalLockAcquisitionTimeout(long journalLockAcquisitionTimeout);
 
    long getJournalLockAcquisitionTimeout();
@@ -1232,6 +1281,7 @@ public interface Configuration {
 
    boolean isRejectEmptyValidatedUser();
 
+   @BrokerProperty
    Configuration setRejectEmptyValidatedUser(boolean rejectEmptyValidatedUser);
 
    /**
@@ -1239,6 +1289,7 @@ public interface Configuration {
     */
    String debugConnectors();
 
+   @BrokerProperty
    Configuration setConnectionTtlCheckInterval(long connectionTtlCheckInterval);
 
    long getConnectionTtlCheckInterval();
@@ -1249,22 +1300,28 @@ public interface Configuration {
 
    long getConfigurationFileRefreshPeriod();
 
+   @BrokerProperty
    Configuration setConfigurationFileRefreshPeriod(long configurationFileRefreshPeriod);
 
    long getGlobalMaxSize();
 
+   @BrokerProperty
    Configuration setGlobalMaxSize(long globalMaxSize);
 
+   @BrokerProperty
    Configuration setGlobalMaxMessages(long globalMaxMessages);
 
    long getGlobalMaxMessages();
 
    int getMaxDiskUsage();
 
+   @BrokerProperty
    Configuration setMaxDiskUsage(int maxDiskUsage);
 
+   @BrokerProperty
    ConfigurationImpl setInternalNamingPrefix(String internalNamingPrefix);
 
+   @BrokerProperty
    Configuration setDiskScanPeriod(int diskScanPeriod);
 
    int getDiskScanPeriod();
@@ -1278,16 +1335,19 @@ public interface Configuration {
    /** A comma separated list of URIs we could use to validate if the network is UP.
     *  In case of none of these Ips are reached (if configured) the server will be shutdown.
     *  The difference from networkCheckList is that we will use HTTP to make this validation. */
+   @BrokerProperty(xmlName = "network-check-URL-list" )
    Configuration setNetworkCheckURLList(String uris);
 
    String getNetworkCheckURLList();
 
    /** The interval on which we will perform network checks. */
+   @BrokerProperty
    Configuration setNetworkCheckPeriod(long period);
 
    long getNetworkCheckPeriod();
 
    /** Time in ms for how long we should wait for a ping to finish. */
+   @BrokerProperty
    Configuration setNetworkCheckTimeout(int timeout);
 
    int getNetworkCheckTimeout();
@@ -1297,15 +1357,18 @@ public interface Configuration {
    Configuration setNetworCheckNIC(String nic);
 
    /** The NIC name to be used on network checks */
+   @BrokerProperty(xmlName = "network-check-nic")
    Configuration setNetworkCheckNIC(String nic);
    String getNetworkCheckNIC();
 
    String getNetworkCheckPingCommand();
 
+   @BrokerProperty
    Configuration setNetworkCheckPingCommand(String command);
 
    String getNetworkCheckPing6Command();
 
+   @BrokerProperty
    Configuration setNetworkCheckPing6Command(String command);
 
    String getInternalNamingPrefix();
@@ -1320,6 +1383,7 @@ public interface Configuration {
    /**
     * Sets the timeout (in nanoseconds) used to sync pages.
     */
+   @BrokerProperty
    Configuration setPageSyncTimeout(int pageSyncTimeout);
 
    /**
@@ -1397,6 +1461,9 @@ public interface Configuration {
     */
    List<FederationConfiguration> getFederationConfigurations();
 
+   @BrokerProperty(type = BrokerProperty.MAP, mappedName = "NAME", xmlName = "federations", xmlType = "federationType")
+   void addFederationConfiguration(FederationConfiguration federationConfiguration);
+
    /**
     * @return
     */
@@ -1404,12 +1471,14 @@ public interface Configuration {
 
    String getTemporaryQueueNamespace();
 
+   @BrokerProperty
    Configuration setTemporaryQueueNamespace(String temporaryQueueNamespace);
 
    /**
     * This is specific to MQTT, and it's necessary because the session scan interval is a broker-wide setting and can't
     * be set on a per-connector basis like the rest of the MQTT-specific settings.
     */
+   @BrokerProperty
    Configuration setMqttSessionScanInterval(long mqttSessionScanInterval);
 
    /**
@@ -1425,6 +1494,7 @@ public interface Configuration {
     */
    boolean isSuppressSessionNotifications();
 
+   @BrokerProperty
    Configuration setSuppressSessionNotifications(boolean suppressSessionNotifications);
 
    default String resolvePropertiesSources(String propertiesFileUrl) {

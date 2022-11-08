@@ -279,6 +279,25 @@ File | package | observation
                </plugin>
 
                <plugin>
+                  <groupId>org.apache.activemq</groupId>
+                  <artifactId>artemis-maven-plugin</artifactId>
+                  <version>${project.version}</version>
+                  <executions>
+                     <execution>
+                        <id>doc-jms-client</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                           <goal>broker-properties</goal>
+                        </goals>
+                        <configuration>
+                           <outputFile>${scratch-dir-user-manual}/broker-properties.md</outputFile>
+                           <schema>schema/artemis-configuration.xsd</schema>
+                        </configuration>
+                     </execution>
+                  </executions>
+               </plugin>
+
+               <plugin>
                   <artifactId>maven-antrun-plugin</artifactId>
                   <executions>
                      <execution>

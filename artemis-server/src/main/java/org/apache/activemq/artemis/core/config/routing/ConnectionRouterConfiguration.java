@@ -16,6 +16,7 @@
  */
 package org.apache.activemq.artemis.core.config.routing;
 
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.core.server.routing.KeyType;
 
 import java.io.Serializable;
@@ -43,6 +44,7 @@ public class ConnectionRouterConfiguration implements Serializable {
       return keyType;
    }
 
+   @BrokerProperty(type = BrokerProperty.ENUM)
    public ConnectionRouterConfiguration setKeyType(KeyType keyType) {
       this.keyType = keyType;
       return this;
@@ -52,6 +54,7 @@ public class ConnectionRouterConfiguration implements Serializable {
       return keyFilter;
    }
 
+   @BrokerProperty
    public ConnectionRouterConfiguration setKeyFilter(String keyFilter) {
       this.keyFilter = keyFilter;
       return this;
@@ -61,6 +64,7 @@ public class ConnectionRouterConfiguration implements Serializable {
       return localTargetFilter;
    }
 
+   @BrokerProperty
    public ConnectionRouterConfiguration setLocalTargetFilter(String localTargetFilter) {
       this.localTargetFilter = localTargetFilter;
       return this;
@@ -70,6 +74,7 @@ public class ConnectionRouterConfiguration implements Serializable {
       return cacheConfiguration;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, xmlName = "cache", xmlType = "connectionRouterCacheType", propertyName = "cacheConfiguration")
    public ConnectionRouterConfiguration setCacheConfiguration(CacheConfiguration cacheConfiguration) {
       this.cacheConfiguration = cacheConfiguration;
       return this;
@@ -79,6 +84,7 @@ public class ConnectionRouterConfiguration implements Serializable {
       return policyConfiguration;
    }
 
+   @BrokerProperty(type = BrokerProperty.PROPERTIES, xmlType = "policy")
    public ConnectionRouterConfiguration setPolicyConfiguration(NamedPropertyConfiguration policyConfiguration) {
       this.policyConfiguration = policyConfiguration;
       return this;
@@ -88,6 +94,7 @@ public class ConnectionRouterConfiguration implements Serializable {
       return poolConfiguration;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, xmlType = "connectionRouterPoolType", propertyName = "poolConfiguration", xmlName = "pool")
    public ConnectionRouterConfiguration setPoolConfiguration(PoolConfiguration poolConfiguration) {
       this.poolConfiguration = poolConfiguration;
       return this;

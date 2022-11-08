@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.activemq.artemis.api.config.ActiveMQDefaultConfiguration;
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.DiscoveryGroupConfiguration;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.api.core.client.ActiveMQClient;
@@ -104,6 +105,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return address;
    }
 
+   @BrokerProperty
    public ClusterConnectionConfiguration setAddress(String address) {
       this.address = address;
       return this;
@@ -128,6 +130,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param clientFailureCheckPeriod the clientFailureCheckPeriod to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setClientFailureCheckPeriod(long clientFailureCheckPeriod) {
       this.clientFailureCheckPeriod = clientFailureCheckPeriod;
       return this;
@@ -143,6 +146,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param connectionTTL the connectionTTL to set
     */
+   @BrokerProperty(propertyName = "connectionTTL", xmlName = "connection-ttl")
    public ClusterConnectionConfiguration setConnectionTTL(long connectionTTL) {
       this.connectionTTL = connectionTTL;
       return this;
@@ -158,6 +162,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param retryIntervalMultiplier the retryIntervalMultiplier to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setRetryIntervalMultiplier(double retryIntervalMultiplier) {
       this.retryIntervalMultiplier = retryIntervalMultiplier;
       return this;
@@ -173,6 +178,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param maxRetryInterval the maxRetryInterval to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setMaxRetryInterval(long maxRetryInterval) {
       this.maxRetryInterval = maxRetryInterval;
       return this;
@@ -188,6 +194,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param initialConnectAttempts the reconnectAttempts to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setInitialConnectAttempts(int initialConnectAttempts) {
       this.initialConnectAttempts = initialConnectAttempts;
       return this;
@@ -203,6 +210,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param reconnectAttempts the reconnectAttempts to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setReconnectAttempts(int reconnectAttempts) {
       this.reconnectAttempts = reconnectAttempts;
       return this;
@@ -215,6 +223,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param callTimeout the callTimeout to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setCallTimeout(long callTimeout) {
       this.callTimeout = callTimeout;
       return this;
@@ -227,6 +236,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param callFailoverTimeout the callTimeout to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setCallFailoverTimeout(long callFailoverTimeout) {
       this.callFailoverTimeout = callFailoverTimeout;
       return this;
@@ -236,6 +246,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return connectorName;
    }
 
+   @BrokerProperty(xmlName = "connector-ref")
    public ClusterConnectionConfiguration setConnectorName(String connectorName) {
       this.connectorName = connectorName;
       return this;
@@ -248,6 +259,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param duplicateDetection the duplicateDetection to set
     */
+   @BrokerProperty(xmlName = "use-duplicate-detection")
    public ClusterConnectionConfiguration setDuplicateDetection(boolean duplicateDetection) {
       this.duplicateDetection = duplicateDetection;
       return this;
@@ -261,6 +273,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
     * @param messageLoadBalancingType
     * @return
     */
+   @BrokerProperty(type = BrokerProperty.ENUM)
    public ClusterConnectionConfiguration setMessageLoadBalancingType(MessageLoadBalancingType messageLoadBalancingType) {
       this.messageLoadBalancingType = messageLoadBalancingType;
       return this;
@@ -270,6 +283,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return maxHops;
    }
 
+   @BrokerProperty
    public ClusterConnectionConfiguration setMaxHops(int maxHops) {
       this.maxHops = maxHops;
       return this;
@@ -279,6 +293,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return confirmationWindowSize;
    }
 
+   @BrokerProperty
    public ClusterConnectionConfiguration setConfirmationWindowSize(int confirmationWindowSize) {
       this.confirmationWindowSize = confirmationWindowSize;
       return this;
@@ -288,6 +303,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return producerWindowSize;
    }
 
+   @BrokerProperty
    public ClusterConnectionConfiguration setProducerWindowSize(int producerWindowSize) {
       this.producerWindowSize = producerWindowSize;
       return this;
@@ -297,6 +313,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return staticConnectors;
    }
 
+   @BrokerProperty
    public ClusterConnectionConfiguration setStaticConnectors(List<String> staticConnectors) {
       this.staticConnectors = staticConnectors;
       return this;
@@ -306,6 +323,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return discoveryGroupName;
    }
 
+   @BrokerProperty
    public ClusterConnectionConfiguration setDiscoveryGroupName(String discoveryGroupName) {
       this.discoveryGroupName = discoveryGroupName;
       return this;
@@ -318,6 +336,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param retryInterval the retryInterval to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setRetryInterval(long retryInterval) {
       this.retryInterval = retryInterval;
       return this;
@@ -327,6 +346,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return allowDirectConnectionsOnly;
    }
 
+   @BrokerProperty
    public ClusterConnectionConfiguration setAllowDirectConnectionsOnly(boolean allowDirectConnectionsOnly) {
       this.allowDirectConnectionsOnly = allowDirectConnectionsOnly;
       return this;
@@ -342,6 +362,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
    /**
     * @param minLargeMessageSize the minLargeMessageSize to set
     */
+   @BrokerProperty
    public ClusterConnectionConfiguration setMinLargeMessageSize(final int minLargeMessageSize) {
       this.minLargeMessageSize = minLargeMessageSize;
       return this;
@@ -354,6 +375,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return clusterNotificationInterval;
    }
 
+   @BrokerProperty(xmlName = "notification-interval")
    public ClusterConnectionConfiguration setClusterNotificationInterval(long clusterNotificationInterval) {
       this.clusterNotificationInterval = clusterNotificationInterval;
       return this;
@@ -363,6 +385,7 @@ public final class ClusterConnectionConfiguration implements Serializable {
       return clusterNotificationAttempts;
    }
 
+   @BrokerProperty(xmlName = "notification-attempts")
    public ClusterConnectionConfiguration setClusterNotificationAttempts(int clusterNotificationAttempts) {
       this.clusterNotificationAttempts = clusterNotificationAttempts;
       return this;

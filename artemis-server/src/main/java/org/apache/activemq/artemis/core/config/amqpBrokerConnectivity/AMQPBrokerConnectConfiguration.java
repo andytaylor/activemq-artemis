@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.core.config.brokerConnectivity.BrokerConnectConfiguration;
 import org.apache.activemq.artemis.uri.ConnectorTransportConfigurationParser;
 
@@ -54,6 +55,7 @@ public class AMQPBrokerConnectConfiguration extends BrokerConnectConfiguration {
       return this;
    }
 
+   @BrokerProperty(type = BrokerProperty.OBJECT, xmlName = "amqp-connection", mappedName = "NAME", propertyName = "connectionElements", xmlType = "amqp-connectionUriType", xmlSubType = "amqp-mirror-type", extraDocs = "Currently only mirror type is supported")
    public AMQPBrokerConnectConfiguration addConnectionElement(AMQPMirrorBrokerConnectionElement amqpBrokerConnectionElement) {
       return addElement(amqpBrokerConnectionElement);
    }

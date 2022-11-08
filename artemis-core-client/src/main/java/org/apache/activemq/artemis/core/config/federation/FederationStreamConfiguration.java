@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.activemq.artemis.api.config.BrokerProperty;
 import org.apache.activemq.artemis.api.core.ActiveMQBuffer;
 
 public abstract class FederationStreamConfiguration <T extends FederationStreamConfiguration<T>> implements Serializable {
@@ -52,11 +53,13 @@ public abstract class FederationStreamConfiguration <T extends FederationStreamC
       return (T) this;
    }
 
+
    public T addPolicyRef(String name) {
       policyRefs.add(name);
       return (T) this;
    }
 
+   @BrokerProperty
    public T addPolicyRefs(Collection<String> names) {
       policyRefs.addAll(names);
       return (T) this;
@@ -64,6 +67,11 @@ public abstract class FederationStreamConfiguration <T extends FederationStreamC
 
    public FederationConnectionConfiguration getConnectionConfiguration() {
       return connectionConfiguration;
+   }
+
+   @BrokerProperty(type = BrokerProperty.OBJECT, xmlType = "streamType")
+   public void setConnectionConfiguration(FederationConnectionConfiguration connectionConfiguration) {
+      this.connectionConfiguration = connectionConfiguration;
    }
 
    @Override
@@ -99,7 +107,7 @@ public abstract class FederationStreamConfiguration <T extends FederationStreamC
          policyRefs.add(buffer.readString());
       }
    }
-
+   @BrokerProperty
    public T setStaticConnectors(List<String> connectors) {
       connectionConfiguration.setStaticConnectors(connectors);
       return (T) this;
