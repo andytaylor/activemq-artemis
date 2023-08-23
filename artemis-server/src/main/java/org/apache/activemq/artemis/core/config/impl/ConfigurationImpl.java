@@ -781,7 +781,7 @@ public class ConfigurationImpl implements Configuration, Serializable {
             if (StoreConfiguration.StoreType.DATABASE.toString().equals(value)) {
                return (T) new DatabaseStorageConfiguration();
             }
-            throw ActiveMQMessageBundle.BUNDLE.unsupportedStorePropertyType();
+            throw ActiveMQMessageBundle.BUNDLE.unsupportedStorePropertyType((String) value);
          }
       }, StoreConfiguration.class);
 
