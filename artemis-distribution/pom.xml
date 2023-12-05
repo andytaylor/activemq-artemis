@@ -119,11 +119,6 @@
       </dependency>
       <dependency>
          <groupId>org.apache.activemq</groupId>
-         <artifactId>activemq-branding</artifactId>
-         <type>war</type>
-      </dependency>
-      <dependency>
-         <groupId>org.apache.activemq</groupId>
          <artifactId>artemis-plugin</artifactId>
          <type>war</type>
       </dependency>

@@ -55,9 +55,8 @@
     </dependencyManagement>
 
     <modules>
-        <module>activemq-branding</module>
-        <module>artemis-plugin</module>
         <module>artemis-console</module>
+        <module>artemis-plugin</module>
     </modules>
 
 </project>
