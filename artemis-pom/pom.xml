@@ -195,6 +195,21 @@
             <scope>compile</scope>
             <!-- License: Apache 2.0 -->
          </dependency>
+         <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-console-war</artifactId>
+            <type>war</type>
+            <version>${artemis-console-war-version}</version>
+         </dependency>
+         <!-- License: Apache 2.0 -->
+         <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>apache-artemis-console</artifactId>
+            <version>${artemis-console-war-version}</version>
+            <type>zip</type>
+            <classifier>bin</classifier>
+         </dependency>
+         <!-- License: Apache 2.0 -->
          <!-- ### End Build Time Dependencies ### -->
 
          <dependency>
@@ -525,7 +540,7 @@
          </dependency>
          <dependency>
             <groupId>org.eclipse.jetty.toolchain</groupId>
-            <artifactId>jetty-servlet-api</artifactId>
+            <artifactId>jetty-jakarta-servlet-api</artifactId>
             <version>${jetty-servlet-api.version}</version>
             <!-- License: (Joint): Apache 2.0 or EPL 2.0 -->
          </dependency>
