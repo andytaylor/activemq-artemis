@@ -20,23 +20,22 @@ import { Card,
     CardTitle, 
     Divider, 
     ExpandableSection, 
-    Text, 
     Grid, 
     GridItem, 
-    Title, 
     CardHeader, 
     TextList, 
     TextContent, 
     TextListItem, 
     TextListItemVariants,
-    TextVariants, 
     CardActions, 
     Dropdown, 
     KebabToggle, 
     DropdownItem, 
     Button, 
     Modal, 
-    ModalVariant} from "@patternfly/react-core"
+    ModalVariant,
+    Tooltip} from "@patternfly/react-core"
+import { ExclamationCircleIcon, OkIcon } from '@patternfly/react-icons'
 import { Attributes, eventService, Operations } from '@hawtio/react';
 import { useContext, useEffect, useState } from "react";
 import { Acceptors, artemisService, BrokerInfo, ClusterConnections } from "../artemis-service";
@@ -139,6 +138,7 @@ export const Status: React.FunctionComponent = () => {
                 <GridItem span={2} rowSpan={3}>
                     <Card isFullHeight={true} >
                         <CardHeader>
+                            <CardTitle>Broker Info</CardTitle>
                             <CardActions>
                                 <Dropdown
                                     onSelect={onBrokerInfoSelect}
@@ -150,19 +150,14 @@ export const Status: React.FunctionComponent = () => {
                                 />
                             </CardActions>
                         </CardHeader>
-                        <CardTitle>Broker Info</CardTitle>
                         <CardBody>
                             <Divider />
                             <TextContent>
                                 <TextList isPlain>
-                                    <TextListItem component={TextListItemVariants.dt}>version</TextListItem>
-                                    <TextListItem component={TextListItemVariants.dd}>{brokerInfo?.version}</TextListItem>
-                                    <TextListItem component={TextListItemVariants.dt}>uptime</TextListItem>
-                                    <TextListItem component={TextListItemVariants.dd}>{brokerInfo?.uptime}</TextListItem>
-                                    <TextListItem component={TextListItemVariants.dt}>started</TextListItem>
-                                    <TextListItem component={TextListItemVariants.dd}>{""+brokerInfo?.started}</TextListItem>
-                                    <TextListItem component={TextListItemVariants.dt}>HA Policy</TextListItem>
-                                    <TextListItem component={TextListItemVariants.dd}>{brokerInfo?.haPolicy}</TextListItem>
+                                    <TextListItem component={TextListItemVariants.dd}>Version: {brokerInfo?.version}</TextListItem>
+                                    <TextListItem component={TextListItemVariants.dd}>Uptime: {brokerInfo?.uptime}</TextListItem>
+                                    <TextListItem component={TextListItemVariants.dd}>Started: {""+brokerInfo?.started}</TextListItem>
+                                    <TextListItem component={TextListItemVariants.dd}>HA Policy: {brokerInfo?.haPolicy}</TextListItem>
                                 </TextList>
                             </TextContent>
                         </CardBody>
@@ -170,7 +165,9 @@ export const Status: React.FunctionComponent = () => {
                 </GridItem>
                 <GridItem span={3} rowSpan={3}>
                     <Card isFullHeight={true}>
-                        <CardTitle>Address Memory Used</CardTitle>
+                        <CardHeader>
+                            <CardTitle>Address Memory Used</CardTitle>
+                        </CardHeader>
                         <CardBody>
                             <Divider />
                             <ChartDonutUtilization
@@ -194,33 +191,16 @@ export const Status: React.FunctionComponent = () => {
                 </GridItem>
             </Grid>
             <ExpandableSection toggleTextExpanded="Acceptors" toggleTextCollapsed="Acceptors">
-                <Grid hasGutter span={12}>
+                <Grid hasGutter span={4}>
                     {
                         acceptors?.acceptors.map((acceptor, index) => (
                             <GridItem key={index}>
-                                <Card isFullHeight={true}>
+                                <Card isFullHeight={true} isFlat={true}>
 
-                                    <CardTitle>{acceptor.Name}</CardTitle>
+                                    <CardTitle>{acceptor.Name} ({acceptor.FactoryClassName.indexOf("Netty") === -1?"VM":"TCP"}): {acceptor.Started && <Tooltip content={"Acceptor is Started"}><OkIcon color="green" /></Tooltip>}{!acceptor.Started && <Tooltip content={"Acceptor is Stopped"}><ExclamationCircleIcon color="red"/></Tooltip>}</CardTitle>
                                     <CardBody>
-                                    <TableComposable variant="compact" aria-label="Column Management Table">
-                                        <Thead>
-                                            <Tr key={"acceptor-list-row-" + index}>
-                                                <Th key={"acceptor-list-param-key-name" + index}>name</Th>
-                                                <Th key={"acceptor-list-param-key-factory" + index}>factory</Th>
-                                                <Th key={"acceptor-list-param-key-started" + index}>started</Th>
-                                            </Tr>
-                                        </Thead>
-                                        <Tbody>
-                                            <Tr key={"acceptor-list-val-" + index}>
-                                                <Td key={"acceptor-list-value-key-name" + index}>{acceptor.Name}</Td>
-                                                <Td key={"acceptor-list-value-key-factory" + index}>{acceptor.FactoryClassName}</Td>
-                                                <Td key={"acceptor-list-value-key-started" + index}>{""+acceptor.Started}</Td>
-                                            </Tr>
-                                        </Tbody>
-                                    </TableComposable>
-                                    <Divider />
-                                    <Text component={TextVariants.h2}>Parameters</Text>
-                                    <TableComposable variant="compact" aria-label="Column Management Table">
+                                        <Divider />
+                                        <TableComposable variant="compact" aria-label="Column Management Table">
                                         <Thead>
                                             <Tr key={"acceptor-list-param-title"}>
                                                 <Th key={"acceptor-list-param-key" + index}>key</Th>
@@ -253,7 +233,7 @@ export const Status: React.FunctionComponent = () => {
                     {
                         clusterConnections?.clusterConnections.map((clusterConnection, index) => (
                                 <GridItem key={index} span={12}>
-                                    <Card>
+                                    <Card isFlat={true}>
                                         <CardTitle>{'Cluster(' + clusterConnection.Name + ')'}</CardTitle>
                                         <CardBody>
                                             <TableComposable variant="compact" aria-label="Coluster Table">
@@ -288,12 +268,11 @@ export const Status: React.FunctionComponent = () => {
                         ))
                     }
                 </Grid>
-                <Title headingLevel={"h4"}>Network</Title>
                 <Grid hasGutter>
                     {
                         brokerInfo?.networkTopology.brokers.map((broker, index) => (
-                            <GridItem key={index} span={4}>
-                                <Card>
+                            <GridItem key={index} span={3}>
+                                <Card isFlat={true}>
                                     <CardTitle>{broker.nodeID}</CardTitle>
                                     <TableComposable variant="compact" aria-label="Network Table">
                                         <Thead>

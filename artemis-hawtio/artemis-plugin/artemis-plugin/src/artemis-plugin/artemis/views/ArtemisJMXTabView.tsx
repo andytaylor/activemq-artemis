@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Tabs, Tab, TabTitleText, Button, Modal, ModalVariant } from '@patternfly/react-core';
 import { Attributes, Chart, MBeanNode, Operations } from '@hawtio/react';
 import { CreateQueue } from '../queues/CreateQueue';
@@ -26,6 +26,7 @@ import { Message, MessageView } from '../messages/MessageView';
 import { DeleteQueue } from '../queues/DeleteQueue';
 import { artemisService } from '../artemis-service';
 import { ArtemisContext } from '../context';
+import { log } from '../globals';
 
 
 export type JMXData = {
@@ -54,6 +55,10 @@ export const ArtemisJMXTabs: React.FunctionComponent<JMXData> = (data: JMXData) 
   const isAddress = isAnAddress(data.node)
   const isAQueue = isQueue(data.node);
   const { selectedNode, brokerNode } = useContext(ArtemisContext);
+
+  useEffect(() => {
+    log.info("foooooooo") 
+  }, [selectedNode])
 
   var prop = data.node.getProperty("routing-type");
   const routingType: string  = prop === undefined?'':prop;
@@ -117,12 +122,13 @@ export const ArtemisJMXTabs: React.FunctionComponent<JMXData> = (data: JMXData) 
           </Tab> 
         }
         { isAQueue && artemisService.checkCanBrowseQueue(selectedNode as MBeanNode) &&
-          <Tab eventKey={6} title={<TabTitleText>Browse</TabTitleText>} aria-label="">
+          <Tab eventKey={6} title={<TabTitleText>Browse Messages</TabTitleText>} aria-label="">
              {activeTabKey === 6 &&
              <><MessagesTable address={address} queue={queue} routingType={routingType} selectMessage={selectMessage} back={undefined} /><Modal
                 aria-label='message-view-modal'
                 variant={ModalVariant.medium}
                 isOpen={showMessageDialog}
+                onClose={() => setShowMessageDialog(false)}
                 actions={[
                   <Button key="close" variant="secondary" onClick={() => setShowMessageDialog(false)}>
                     Close

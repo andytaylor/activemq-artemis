@@ -96,7 +96,7 @@ export const SessionsTable: React.FunctionComponent<Navigate> = navigate => {
   const getRowActions = (row: any, rowIndex: number): IAction[] => {
     return [
       {
-        title: 'close',
+        title: 'Close',
         onClick: () => {
           console.log(`clicked on Some action, on row delete ` + row.id);
           setSessionToClose(row.id);

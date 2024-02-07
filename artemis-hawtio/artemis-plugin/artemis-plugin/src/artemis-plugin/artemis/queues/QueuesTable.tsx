@@ -161,7 +161,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
   const getRowActions = (row: any, rowIndex: number): IAction[] => {
     var actions: IAction[] =  [
       {
-        title: 'show in Artemis JMX',
+        title: 'Show in Artemis JMX',
         onClick: async () => {
           setAddress(row.name);
           const brokerObjectName = await artemisService.getBrokerObjectName();
@@ -171,7 +171,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
         }
       },
       {
-        title: 'attributes',
+        title: 'Attributes',
         onClick: async () => {
           setAddress(row.name);
           const brokerObjectName = await artemisService.getBrokerObjectName();
@@ -181,7 +181,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
         }
       },
       {
-        title: 'operations',
+        title: 'Operations',
         onClick: async () => {
           setAddress(row.name);
           const brokerObjectName = await artemisService.getBrokerObjectName();
@@ -196,7 +196,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
     if (canDeleteQueue) {
       actions.push(
         {
-          title: 'delete',
+          title: 'Delete',
           onClick: () => {
             setQueue(row.name);
             setShowDeleteDialog(true);
@@ -209,7 +209,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
     if (canSendMessage) {
       actions.push(
         {
-          title: 'send message',
+          title: 'Send Message',
           onClick: () => {
             setQueue(row.name);
             setAddress(row.address);
@@ -225,7 +225,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
     if (canPurgeQueue) {
       actions.push(
         {
-          title: 'purge',
+          title: 'Purge',
           onClick: () => {
             setQueue(row.name);
             setQueueToPurgeAddress(row.address);
@@ -240,7 +240,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
     if (canBrowseQueue) {
       actions.push(
         {
-          title: 'browse messages',
+          title: 'Browse Messages',
           onClick: () => {
             navigate.selectQueue(row.name, row.address, row.routingType);
           }
@@ -259,6 +259,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
       variant={ModalVariant.medium}
       title="Delete Queue?"
       isOpen={showDeleteDialog}
+      onClose={() => setShowDeleteDialog(false)}
       actions={[
         <Button key="confirm" variant="primary" onClick={() => deleteQueue(queue)}>
           Confirm
@@ -273,6 +274,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
         aria-label='attributes-modal'
         variant={ModalVariant.medium}
         isOpen={showAttributesDialog}
+        onClose={() => setShowAttributesDialog(false)}
         actions={[
           <Button key="close" variant="primary" onClick={() => setShowAttributesDialog(false)}>
             Close
@@ -284,6 +286,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
         aria-label='operations-modal'
         variant={ModalVariant.medium}
         isOpen={showOperationsDialog}
+        onClose={() => setShowOperationsDialog(false)}
         actions={[
           <Button key="close" variant="primary" onClick={() => setShowOperationsDialog(false)}>
             Close
@@ -296,6 +299,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
       variant={ModalVariant.medium}
       title="Purge Queue?"
       isOpen={showPurgeDialog}
+      onClose={() => setShowPurgeDialog(false)}
       actions={[
         <Button key="confirm" variant="primary" onClick={() => purgeQueue(queue, queueToPurgeAddress, queueToPurgeRoutingType)}>
           Confirm
@@ -310,6 +314,7 @@ export const QueuesTable: React.FunctionComponent<QueueNavigate> = navigate => {
         aria-label='queue-send-modal'
         variant={ModalVariant.medium}
         isOpen={showSendDialog}
+        onClose={() => setShowSendDialog(false)}
         actions={[
           <Button key="close" variant="secondary" onClick={closeSendDialog}>
             Cancel

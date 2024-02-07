@@ -186,7 +186,7 @@
           </modules>
           <systemProperties>
             <hawtio.authenticationEnabled>false</hawtio.authenticationEnabled>
-            <hawtio.disableProxy>true</hawtio.disableProxy>
+            <hawtio.disableProxy>false</hawtio.disableProxy>
           </systemProperties>
         </configuration>
       </plugin>

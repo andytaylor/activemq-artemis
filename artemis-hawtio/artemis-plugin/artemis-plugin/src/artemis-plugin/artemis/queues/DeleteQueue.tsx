@@ -90,6 +90,7 @@ export const DeleteQueue: React.FunctionComponent<DeleteQueueProps> = (props: De
       variant={ModalVariant.medium}
       title="Delete Queue?"
       isOpen={showDeleteModal}
+      onClose={() => setShowDeleteModal(false)}
       actions={[
         <Button key="confirm" variant="primary" onClick={() => deleteQueue(props.queue)}>
           Confirm
@@ -105,6 +106,7 @@ export const DeleteQueue: React.FunctionComponent<DeleteQueueProps> = (props: De
       variant={ModalVariant.medium}
       title="Purge Queue?"
       isOpen={showPurgeModal}
+      onClose={() => setShowPurgeModal(false)}
       actions={[
         <Button key="confirm" variant="primary" onClick={() => purgeQueue()}>
           Confirm

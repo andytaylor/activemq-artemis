@@ -28,7 +28,7 @@ export const ConnectHint: React.FunctionComponent<ConnectProps> = props => {
         displaySize='large'
         toggleContent={
           <Text>
-            <OutlinedQuestionCircleIcon /> Hint
+            <OutlinedQuestionCircleIcon />
           </Text>
             }
         >

@@ -143,7 +143,7 @@ export const MessageView: React.FunctionComponent<MessageProps> = props => {
         </Tr>
         <Tr id="durable">
           <Td>durable</Td>
-          <Td>{currentMessage.address}</Td>
+          <Td>{"" + currentMessage.durable}</Td>
         </Tr>
         <Tr id="exp">
           <Td>expiration</Td>

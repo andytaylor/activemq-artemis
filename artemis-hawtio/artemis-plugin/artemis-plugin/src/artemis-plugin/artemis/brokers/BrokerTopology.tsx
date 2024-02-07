@@ -26,16 +26,22 @@ import {
   DefaultEdge,
   DefaultGroup,
   DefaultNode,
+  DragObjectWithType,
+  Edge,
   EdgeModel,
   EdgeStyle,
   Graph,
   GraphComponent,
+  graphDropTargetSpec,
   GRAPH_LAYOUT_END_EVENT,
+  groupDropTargetSpec,
   Layout,
   LayoutFactory,
   Model,
   ModelKind,
   Node,
+  nodeDragSourceSpec,
+  nodeDropTargetSpec,
   NodeModel,
   NodeShape,
   NodeStatus,
@@ -45,14 +51,19 @@ import {
   Visualization,
   VisualizationProvider,
   VisualizationSurface,
+  withDndDrop,
+  WithDndDropProps,
   withDragNode,
   WithDragNodeProps,
-  withPanZoom
+  withPanZoom,
+  withSelection,
+  WithSelectionProps,
+  withTargetDrag
 } from '@patternfly/react-topology';
 import { useEffect, useState } from 'react';
 import { artemisService, BrokerInfo } from '../artemis-service';
 import { eventService } from '@hawtio/react';
-import { ToolbarItem, Select, SelectVariant, SelectOption } from '@patternfly/react-core';
+import { ToolbarItem, Select, SelectVariant, SelectOption, PageSection } from '@patternfly/react-core';
 
 
 const BadgeColors = [
@@ -109,19 +120,22 @@ type CustomNodeProps = {
   element: Node;
 } & WithDragNodeProps;
 
-const CustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => {
+const CustomNode: React.FC<CustomNodeProps & WithSelectionProps & WithDragNodeProps & WithDndDropProps> = ({ element, onSelect, selected, ...rest  }) => {
 
   const data = element.getData();
   const Icon = data.isAlternate ? Icon2 : Icon1;
   const badgeColors = BadgeColors.find(badgeColor => badgeColor.name === data.badge);
 
-  return (
+  return (  
     <DefaultNode
       element={element}
       showStatusDecorator
       badgeColor={badgeColors?.badgeColor}
       badgeTextColor={badgeColors?.badgeTextColor}
       badgeBorderColor={badgeColors?.badgeBorderColor} 
+      className="artemisBroker"
+      onSelect={onSelect}
+      selected={selected}
       {...rest}
     >
       <g transform={`translate(25, 25)`}>
@@ -131,7 +145,7 @@ const CustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => {
   );
 };
 
-const BrokerCustomNode: React.FC<CustomNodeProps> = observer(({ element, ...rest }) => {
+const BrokerCustomNode: React.FC<CustomNodeProps & WithSelectionProps & WithDragNodeProps & WithDndDropProps> = observer(({ element, onSelect, selected, ...rest }) => {
   const data = element.getData();
   const Icon = ClusterIcon;
   const badgeColors = BadgeColors.find(badgeColor => badgeColor.name === data.badge);
@@ -146,6 +160,9 @@ const BrokerCustomNode: React.FC<CustomNodeProps> = observer(({ element, ...rest
       badgeTextColor={badgeColors?.badgeTextColor}
       badgeBorderColor={badgeColors?.badgeBorderColor}
       showLabel={viewOptions.showLabels}
+      className="artemisBroker"
+      onSelect={onSelect}
+      selected={selected}
       {...rest}
     >
       <g transform={`translate(25, 25)`}>
@@ -155,7 +172,7 @@ const BrokerCustomNode: React.FC<CustomNodeProps> = observer(({ element, ...rest
   );
 });
 
-const AddressCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => {
+const AddressCustomNode: React.FC<CustomNodeProps & WithSelectionProps & WithDragNodeProps & WithDndDropProps> = ({ element, onSelect, selected, ...rest  }) => {
   const data = element.getData();
   const badgeColors = BadgeColors.find(badgeColor => badgeColor.name === data.badge);
   const { viewOptions } = element.getController().getState<ControllerState>();
@@ -169,13 +186,16 @@ const AddressCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => 
       badgeTextColor={badgeColors?.badgeTextColor}
       badgeBorderColor={badgeColors?.badgeBorderColor} 
       showLabel={viewOptions.showLabels}
+      onSelect={onSelect}
+      selected={selected}
+      className="artemisAddress"
       {...rest}
     >
     </DefaultNode>
   );
 };
 
-const InternalAddressCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => {
+const InternalAddressCustomNode: React.FC<CustomNodeProps & WithSelectionProps & WithDragNodeProps & WithDndDropProps> = ({ element, onSelect, selected, ...rest  }) => {
   const data = element.getData();
   const badgeColors = BadgeColors.find(badgeColor => badgeColor.name === data.badge);
   const { viewOptions } = element.getController().getState<ControllerState>();
@@ -189,6 +209,9 @@ const InternalAddressCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest
       badgeTextColor={badgeColors?.badgeTextColor}
       badgeBorderColor={badgeColors?.badgeBorderColor} 
       showLabel={viewOptions.showLabels}
+      className="artemisInternalAddress"
+      onSelect={onSelect}
+      selected={selected}
       {...rest}
     >
     </DefaultNode>
@@ -196,9 +219,8 @@ const InternalAddressCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest
 };
 
 
-const QueueCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => {
+const QueueCustomNode: React.FC<CustomNodeProps & WithSelectionProps & WithDragNodeProps & WithDndDropProps> = ({ element, onSelect, selected, ...rest  }) => {
   const data = element.getData();
-  const Icon = ClusterIcon;
   const badgeColors = BadgeColors.find(badgeColor => badgeColor.name === data.badge);
   const { viewOptions } = element.getController().getState<ControllerState>();
 
@@ -210,16 +232,18 @@ const QueueCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => {
       badgeColor={badgeColors?.badgeColor}
       badgeTextColor={badgeColors?.badgeTextColor}
       badgeBorderColor={badgeColors?.badgeBorderColor}
-      showLabel={viewOptions.showLabels}
+      showLabel={viewOptions.showLabels} 
+      className="artemisQueue"
+      onSelect={onSelect}
+      selected={selected}
       {...rest}
     >
     </DefaultNode>
   );
 };
 
-const InternalQueueCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  }) => {
+const InternalQueueCustomNode: React.FC<CustomNodeProps & WithSelectionProps & WithDragNodeProps & WithDndDropProps> = ({ element, onSelect, selected, ...rest  }) => {
   const data = element.getData();
-  const Icon = ClusterIcon;
   const badgeColors = BadgeColors.find(badgeColor => badgeColor.name === data.badge);
   const { viewOptions } = element.getController().getState<ControllerState>();
 
@@ -231,7 +255,10 @@ const InternalQueueCustomNode: React.FC<CustomNodeProps> = ({ element, ...rest  
       badgeColor={badgeColors?.badgeColor}
       badgeTextColor={badgeColors?.badgeTextColor}
       badgeBorderColor={badgeColors?.badgeBorderColor}
-      showLabel={viewOptions.showLabels}
+      showLabel={viewOptions.showLabels} 
+      className="artemisInternalQueue"
+      onSelect={onSelect}
+      selected={selected}
       {...rest}
     >
     </DefaultNode>
@@ -243,35 +270,69 @@ const customLayoutFactory: LayoutFactory = (type: string, graph: Graph): Layout 
     case 'Cola':
       return new ColaLayout(graph);
     default:
-      return new ColaLayout(graph, { layoutOnDrag: false });
+      return new ColaLayout(graph, { layoutOnDrag: true });
   }
 };
 
-const customComponentFactory: ComponentFactory = (kind: ModelKind, type: string) => {
+const CONNECTOR_TARGET_DROP = 'connector-target-drop';
+
+const customComponentFactory: ComponentFactory = (kind: ModelKind, type: string): any => {
   switch (type) {
     case 'group':
-      return DefaultGroup;
+      return withDndDrop(groupDropTargetSpec)(withDragNode(nodeDragSourceSpec('group'))(withSelection()(DefaultGroup)));
     default:
       switch (kind) {
         case ModelKind.graph:
-          return GraphComponent;
+          return withDndDrop(graphDropTargetSpec())(withPanZoom()(GraphComponent));
         case ModelKind.node:
           switch(type) {
             case 'broker':
-              return withDragNode()(BrokerCustomNode);
+              return withDndDrop(nodeDropTargetSpec([CONNECTOR_TARGET_DROP]))(
+                withDragNode(nodeDragSourceSpec('node', true, true))(BrokerCustomNode));
             case 'address':
-              return withDragNode()(AddressCustomNode);
+              return withDndDrop(nodeDropTargetSpec([CONNECTOR_TARGET_DROP]))(
+                withDragNode(nodeDragSourceSpec('node', true, true))(AddressCustomNode));
             case 'queue':
-              return withDragNode()(QueueCustomNode);
+              return withDndDrop(nodeDropTargetSpec([CONNECTOR_TARGET_DROP]))(
+                withDragNode(nodeDragSourceSpec('node', true, true))(QueueCustomNode));
             case 'internalAddress':
-              return withDragNode()(InternalAddressCustomNode);
+              return withDndDrop(nodeDropTargetSpec([CONNECTOR_TARGET_DROP]))(
+                withDragNode(nodeDragSourceSpec('node', true, true))(InternalAddressCustomNode));
             case 'internalQueue':
-              return withDragNode()(InternalQueueCustomNode);
+              return withDndDrop(nodeDropTargetSpec([CONNECTOR_TARGET_DROP]))(
+                withDragNode(nodeDragSourceSpec('node', true, true))(InternalQueueCustomNode));
             default:
-              return withDragNode()(CustomNode);
+              return withDndDrop(nodeDropTargetSpec([CONNECTOR_TARGET_DROP]))(
+                withDragNode(nodeDragSourceSpec('node', true, true))(CustomNode));
           }
         case ModelKind.edge:
-          return DefaultEdge;
+          return withTargetDrag<
+            DragObjectWithType,
+            Node,
+            { dragging?: boolean },
+            {
+              element: Edge;
+            }
+          >({
+            item: { type: CONNECTOR_TARGET_DROP },
+            begin: (monitor, props) => {
+              props.element.raise();
+              return props.element;
+            },
+            drag: (event, monitor, props) => {
+              props.element.setEndPoint(event.x, event.y);
+            },
+            end: (dropResult, monitor, props) => {
+              if (monitor.didDrop() && dropResult && props) {
+                props.element.setTarget(dropResult);
+              }
+              props.element.setEndPoint();
+            },
+            collect: monitor => ({
+              dragging: monitor.isDragging()
+            })
+            // @ts-ignore
+          })(DefaultEdge);
         default:
           return undefined;
       }
@@ -314,9 +375,8 @@ export const BrokerTopology: React.FunctionComponent = () => {
   const [ brokerNodes, setBrokerNodes] = React.useState<NodeModel[]>([]);
   const [viewOptionsOpen, setViewOptionsOpen] = useState<boolean>(false);
   const [viewOptions, setViewOptions] = React.useState<ViewOptions>(DefaultViewOptions);
-  const [ controller, setController ] = useState<Visualization>(new Visualization())
 
-  useEffect(() => {
+  const controller = React.useMemo(() => {
     const model: Model = {
       nodes: brokerNodes,
       edges: brokerEdges,
@@ -339,7 +399,7 @@ export const BrokerTopology: React.FunctionComponent = () => {
     });
 
     newController.fromModel(model, false);
-    setController(newController);
+    return newController;
   }, []);
 
   useEffect(() => {
@@ -367,7 +427,7 @@ export const BrokerTopology: React.FunctionComponent = () => {
                 newBrokerNodes.push(brokerNode);
 
                 brokerInfo.networkTopology.brokers.forEach(broker => {
-                  if (brokerInfo.nodeID != broker.nodeID) {
+                  if (brokerInfo.nodeID !== broker.nodeID) {
                     var brokerNode: NodeModel = {
                       id: broker.nodeID,
                       type: 'broker',
@@ -402,7 +462,7 @@ export const BrokerTopology: React.FunctionComponent = () => {
                   graph: {
                     id: 'g1',
                     type: 'graph',
-                    layout: 'Force'
+                    layout: 'Cola'
                   }
                 };
                 artemisService.getAllAddresses()
@@ -440,7 +500,7 @@ export const BrokerTopology: React.FunctionComponent = () => {
     }
     getBrokerTopology();
 
-  }, [viewOptions])
+  }, [viewOptions, controller])
 
 
 

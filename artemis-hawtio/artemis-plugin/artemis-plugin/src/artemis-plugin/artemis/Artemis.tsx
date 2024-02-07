@@ -16,7 +16,7 @@
  */
 import React from 'react'
 import { ArtemisTabs } from './views/ArtemisTabView';
-import { PageSection, TextContent, Text, PageSectionVariants } from '@patternfly/react-core';
+import { PageSection, TextContent, Text, PageSectionVariants, Page } from '@patternfly/react-core';
 import { Grid } from '@patternfly/react-core';
 import { GridItem } from '@patternfly/react-core';
 
@@ -24,23 +24,22 @@ import { GridItem } from '@patternfly/react-core';
 
 export const Artemis: React.FunctionComponent = () => {
 
+
   return ( 
-    <React.Fragment>
-      <PageSection variant={PageSectionVariants.light}>
-        <Grid >
-          <GridItem span={2}>
+  <Page>
+    <PageSection variant={PageSectionVariants.light}>
+      <Grid >
+        <GridItem span={2}>
           <TextContent>
             <Text component="h1">Broker</Text>
-            </TextContent>
-          </GridItem>
+          </TextContent>
+        </GridItem>
       </Grid>
     </PageSection>
-    <PageSection>
+    <PageSection isFilled>
+      <ArtemisTabs/>
     </PageSection>
-        <PageSection isFilled>
-          <ArtemisTabs/>
-        </PageSection>
-    </React.Fragment>
+  </Page>
   )
 }
 

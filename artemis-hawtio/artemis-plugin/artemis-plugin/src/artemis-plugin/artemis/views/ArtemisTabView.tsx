@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 import React, { useEffect, useState } from 'react'
-import { Tabs, Tab, TabTitleText } from '@patternfly/react-core';
+import { Tabs, Tab, TabTitleText, Stack, PageSection, TabContent } from '@patternfly/react-core';
 import { ProducerTable } from '../producers/ProducerTable';
 import { ConsumerTable } from '../consumers/ConsumerTable';
 import { ConnectionsTable } from '../connections/ConnectionsTable';
@@ -25,6 +25,7 @@ import { ArtemisContext, useArtemisTree } from '../context';
 import { Status } from '../status/Status';
 import { Filter } from '../table/ArtemisTable';
 import { QueuesView } from '../queues/QueuesView';
+import { BrokerTopology } from '../brokers/BrokerTopology';
 
 
 export type Broker = {
@@ -58,47 +59,61 @@ export const ArtemisTabs: React.FunctionComponent = () => {
 
   }, [searchFilter, activeTabKey])
 
+  // The BrokerTopology needs to be in it's own Page Section outside of the Tabs, it wont resize the tab content otherwise
   return (
     <ArtemisContext.Provider value={{ tree, selectedNode, brokerNode, setSelectedNode, findAndSelectNode }}>
-        <Tabs activeKey={activeTabKey}
-          onSelect={handleTabClick}
-          aria-label="artemistabs" height={100}>
-          <Tab eventKey={0} title={<TabTitleText>Status</TabTitleText>} aria-label="connections">
-            {activeTabKey === 0 &&
-              <Status/>
+        <Stack>
+          <PageSection type="tabs">
+            <Tabs activeKey={activeTabKey}
+              onSelect={handleTabClick}
+              aria-label="artemistabs">
+              <Tab eventKey={0} title={<TabTitleText>Status</TabTitleText>} aria-label="connections">
+                {activeTabKey === 0 &&
+                  <Status/>
+                }
+              </Tab>
+              <Tab eventKey={1} title={<TabTitleText>Connections</TabTitleText>} aria-label="connections">
+                {activeTabKey === 1 &&
+                  <ConnectionsTable search={handleSearch} filter={searchFilter}/>
+                }
+              </Tab>
+              <Tab eventKey={2} title={<TabTitleText>Sessions</TabTitleText>} aria-label="sessions">
+                {activeTabKey === 2 &&
+                  <SessionsTable search={handleSearch} filter={searchFilter}/>
+                }
+              </Tab>
+              <Tab eventKey={3} title={<TabTitleText>Producers</TabTitleText>} aria-label="producers">
+                {activeTabKey === 3 &&
+                  <ProducerTable search={handleSearch} filter={searchFilter}/>
+                }
+              </Tab>
+              <Tab eventKey={4} title={<TabTitleText>Consumers</TabTitleText>} aria-label="consumers">
+                {activeTabKey === 4 &&
+                  <ConsumerTable search={handleSearch} filter={searchFilter}/>
+                }
+              </Tab>
+              <Tab eventKey={5} title={<TabTitleText>Addresses</TabTitleText>} aria-label="addresses">
+                {activeTabKey === 5 &&
+                  <AddressesTable search={handleSearch} filter={searchFilter}/>
+                }
+              </Tab>
+              <Tab eventKey={6} title={<TabTitleText>Queues</TabTitleText>} aria-label="consumers">
+                {activeTabKey === 6 &&
+                  <QueuesView search={handleSearch} filter={searchFilter}/>
+                }
+              </Tab>
+              <Tab eventKey={7} title={<TabTitleText>Broker Diagram</TabTitleText>} aria-label="broker-diagram">
+              </Tab>
+          </Tabs>
+        </PageSection>
+        <PageSection padding={{ default: 'noPadding' }}>
+            <TabContent key={7} eventKey={7} id={`tabContent${7}`} activeKey={activeTabKey} hidden={7 !== activeTabKey}  style={{height: "100%"}}>
+            {activeTabKey === 7 && 
+              <BrokerTopology />   
             }
-          </Tab>
-          <Tab eventKey={1} title={<TabTitleText>Connections</TabTitleText>} aria-label="connections">
-            {activeTabKey === 1 &&
-              <ConnectionsTable search={handleSearch} filter={searchFilter}/>
-            }
-          </Tab>
-          <Tab eventKey={2} title={<TabTitleText>Sessions</TabTitleText>} aria-label="sessions">
-            {activeTabKey === 2 &&
-              <SessionsTable search={handleSearch} filter={searchFilter}/>
-            }
-          </Tab>
-          <Tab eventKey={3} title={<TabTitleText>Producers</TabTitleText>} aria-label="producers">
-            {activeTabKey === 3 &&
-              <ProducerTable search={handleSearch} filter={searchFilter}/>
-            }
-          </Tab>
-          <Tab eventKey={4} title={<TabTitleText>Consumers</TabTitleText>} aria-label="consumers">
-            {activeTabKey === 4 &&
-              <ConsumerTable search={handleSearch} filter={searchFilter}/>
-            }
-          </Tab>
-          <Tab eventKey={5} title={<TabTitleText>Addresses</TabTitleText>} aria-label="addresses">
-            {activeTabKey === 5 &&
-              <AddressesTable search={handleSearch} filter={searchFilter}/>
-            }
-          </Tab>
-          <Tab eventKey={6} title={<TabTitleText>Queues</TabTitleText>} aria-label="consumers">
-            {activeTabKey === 6 &&
-              <QueuesView search={handleSearch} filter={searchFilter}/>
-            }
-          </Tab>
-        </Tabs>
+            </TabContent>
+        </PageSection>
+      </Stack>
     </ArtemisContext.Provider>
   )
 

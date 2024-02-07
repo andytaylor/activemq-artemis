@@ -59,6 +59,7 @@ export const DeleteAddress: React.FunctionComponent<DeleteAddressProps> = (props
       aria-label='delete-address-modal'
       variant={ModalVariant.medium}
       isOpen={showDeleteModal}
+      onClose={() => setShowDeleteModal(false)}
       actions={[
         <Button key="cancel" variant="secondary" onClick={() => handleDeleteAddress()}>
           Cancel

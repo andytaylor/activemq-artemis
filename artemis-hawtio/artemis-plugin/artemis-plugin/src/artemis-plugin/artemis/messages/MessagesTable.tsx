@@ -112,20 +112,20 @@ export const MessagesTable: React.FunctionComponent<MessageProps> = props => {
   const getRowActions = (row: any, rowIndex: number): IAction[] => {
     return [
       {
-        title: 'delete',
+        title: 'Delete',
         onClick: () => {
           setSelectedMessages([row.messageID]);
           setShowDeleteMessagesModal(true);
         }
       },
       {
-        title: 'view',
+        title: 'View',
         onClick: () => {
           if (props.selectMessage) { props.selectMessage(row); }
         }
       },
       {
-        title: 'resend',
+        title: 'Resend',
         onClick: () => {
           if (props.selectMessage) { 
             setResendMessage(row);
@@ -322,6 +322,7 @@ export const MessagesTable: React.FunctionComponent<MessageProps> = props => {
         aria-label='delete-message-modal'
         variant={ModalVariant.medium}
         isOpen={showDeleteMessagesModal}
+        onClose={() => setShowDeleteMessagesModal(false)}
         actions={[
           <Button key="cancel" variant="secondary" onClick={() => setShowDeleteMessagesModal(false)}>
             Cancel

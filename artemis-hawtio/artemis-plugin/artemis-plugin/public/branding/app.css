@@ -23,13 +23,185 @@
   background-size: cover;
 }
 
+.pf-c-login__container {
+  justify-content: left;
+}
+.pf-c-login__main {
+  background-color: transparent;
+}
+
+.pf-c-login__main-body label {
+  color: white;
+}
+
+.pf-c-expandable-section__toggle {
+  display: flex;
+  padding: var(--pf-c-expandable-section__toggle--PaddingTop) var(--pf-c-expandable-section__toggle--PaddingRight) var(--pf-c-expandable-section__toggle--PaddingBottom) var(--pf-c-expandable-section__toggle--PaddingLeft);
+  margin-top: var(--pf-c-expandable-section__toggle--MarginTop);
+  color: var(--artemis-global--primary-color--100);
+  border: none;
+}
+
+/*Uses ActiveMQ colors in broker diagram*/
+svg text {
+  font-family: PatternFlyIcons-webfont;
+}
+
+.pf-topology__node.artemisBroker.pf-m-info .pf-topology__node__background {
+  stroke: #801944;
+  fill: #c12766;
+}
+
+
+.pf-topology__node.artemisAddress.pf-m-info .pf-topology__node__background {
+  stroke:  #2b326e;
+  fill: #3e489f;
+}
+
+.pf-topology__node.artemisQueue.pf-m-info .pf-topology__node__background {
+  stroke:  #50621d;
+  fill: #78932c;
+}
+
+.pf-topology__node.artemisInternalAddress.pf-m-info .pf-topology__node__background {
+  stroke:  #2b326e;
+  fill: #fff;
+}
+
+
+.pf-topology__node.artemisInternalAddress.pf-m-info .pf-topology__node__background {
+  stroke:  #50621d;
+  fill: #fff;
+}
+
+.pf-c-button.pf-m-primary {
+  background-color: var(--artemis-global--primary-color--100);
+}
+
+.pf-c-button.pf-m-primary.pf-m-hover, .pf-c-button.pf-m-primary:hover {
+  background-color: var(--artemis-global--primary-color--100);
+  background-image: linear-gradient(to bottom,var(--artemis-global--primary-color--100) 0,#B24E78 100%);
+  background: var(--artemis-global--primary-color-dark);
+  border-color: var(--artemis-global--primary-color--100);
+}
+
+.pf-c-title.pf-m-3xl {
+  color: white;
+}
+
+.btn-primary {
+  background-color: var(--artemis-global--primary-color--100);
+  background-image: linear-gradient(to bottom,var(--artemis-global--primary-color--100) 0,var(--artemis-global--primary-color--100) 100%);
+  background-repeat: repeat-x;
+  border-color: var(--artemis-global--primary-color--100);
+  color: #fff;
+}
+.btn-primary.active.focus,
+.btn-primary.active:focus,
+.btn-primary.active:hover, .btn-primary:active.focus,
+.btn-primary:active:focus,
+.btn-primary:active:hover,
+.open .dropdown-toggle.btn-primary.focus,
+.open .dropdown-toggle.btn-primary:focus,
+.open .dropdown-toggle.btn-primary:hover {
+  background-color: var(--artemis-global--primary-color--100);
+  border-color: var(--artemis-global--primary-color-dark);
+}
+
+/*These change the row ina table when hovered over*/
+.table-hover>tbody>tr:hover {
+  background-color: var(--artemis-global--primary-color--100);
+}
+
+.table-hover>tbody>tr:hover td {
+  background-color: var(--artemis-global--primary-color--100);
+}
+
+select>option:hover,
+select>option:active {
+  background: var(--artemis-global--primary-color--100);
+  background-color: var(--artemis-global--primary-color--100);
+}
+
+tbody>tr:hover {
+  background-color: var(--artemis-global--primary-color--100);
+}
+
+/*This controls the color of the buttons when clicked, hovered or visited*/
+.btn-primary:hover,
+.btn-primary.hover
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:visited,
+.btn-primary.visited{
+  background-color: var(--artemis-global--primary-color--100);
+  background-image: linear-gradient(to bottom,var(--artemis-global--primary-color--100) 0,var(--artemis-global--primary-color--100) 100%);
+  background: var(--artemis-global--primary-color-dark);
+  border-color: var(--artemis-global--primary-color--100);
+}
+
+/*This changes the color of the hover item in the JMX Tree*/
+.treeview-pf-hover .list-group-item:hover {
+  background-color: var(--artemis-global--primary-color--100)!important;
+  border-color: var(--artemis-global--primary-color--100)!important;
+}
+
+/*This changes the color of the chosen selection in the JMX Tree*/
+.treeview-pf-select .list-group-item.node-selected {
+  background: var(--artemis-global--primary-color--100)!important;
+  border-color: var(--artemis-global--primary-color--100)!important;
+  color: #fff!important;
+}
+
+/* This changes the color of the underline in the main left menuLeft hand menu tab underline*/
+.pf-c-nav__list .pf-m-current.pf-c-nav__link::after, .pf-c-nav__list .pf-m-current>.pf-c-nav__link::after {
+  background-color: var(--artemis-global--primary-color--100);
+}
+
+.pf-c-nav__list .pf-c-nav__link.pf-m-hover::after, .pf-c-nav__list .pf-c-nav__link:hover::after {
+  background-color: var(--artemis-global--primary-color--100);
+}
+
+.card-pf.card-pf-accented {
+  border-top-color: var(--artemis-global--primary-color--100);
+}
+
+/*This changes the hover color in all the tables*/
+.table-hover tbody tr:hover td.focus {
+background-color: var(--artemis-global--primary-color--100);
+}
+
+/*This changes the color of the sort column header*/
+table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
+  color: var(--artemis-global--primary-color--100)!important;
+  position: relative;
+}
+
 :root {
-  --pf-global--active-color--100: #B21054;
-  --pf-global--active-color--200: #B24E78;
-  --pf-global--active-color--300: #2b9af3;
-  --pf-global--active-color--400: #73bcf7;
-  --pf-global--link--Color: #B21054;
-  --pf-global--link--Color--hover: #B24E78;
-  --pf-v5-global--primary-color--100: #B21054;
-  --pf-v5-global--primary-color--200: #B24E78;
+  --artemis-global--primary-color--100: #B21054;
+  --artemis-global--primary-color--200: #B24E78; 
+  --artemis-global--primary-color--300: #c77e9c; 
+  --artemis-global--primary-color--400: #c77e9c; 
+  --artemis-global--primary-color-dark: #B21054;
+}
+
+body {
+  --pf-global--primary-color--100: var(--artemis-global--primary-color--100);
+  --pf-global--primary-color--200: var(--artemis-global--primary-color--200); 
+  --pf-global--primary-color--light-100: var(--artemis-global--primary-color--100);
+  --pf-global--primary-color--dark-100: var(--artemis-global--primary-color--100);
+  --pf-global--active-color--100: var(--artemis-global--primary-color--100);
+  --pf-global--active-color--200:var(--artemis-global--primary-color--100);
+  --pf-global--active-color--300: var(--artemis-global--primary-color--100);
+  --pf-global--active-color--400: var(--artemis-global--primary-color--100);
+  --pf-global--link--Color--hover: var(--artemis-global--primary-color--100);
+  --pf-global--link--Color: var(--artemis-global--primary-color--200);
+  --pf-global--link--Color--dark: var(--artemis-global--primary-color--100);
+  --pf-global--link--Color--hover: var(--artemis-global--primary-color--200);
+  --pf-global--link--Color--light: var(--artemis-global--primary-color--300);;
+  --pf-global--link--Color--light--hover: var(--artemis-global--primary-color--400);;
+  /** icon inside broker diagram */
+  --pf-topology__node--Color: var(--artemis-global--primary-color--100)
 }

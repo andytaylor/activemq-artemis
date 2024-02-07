@@ -77,7 +77,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
   const getRowActions = (row: any, rowIndex: number): IAction[] => {
     var actions: IAction[] = [
       {
-        title: 'show in Artemis JMX',
+        title: 'Show in Artemis JMX',
         onClick: async () => {
           setAddress(row.name);
           const brokerObjectName = await artemisService.getBrokerObjectName();
@@ -87,7 +87,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
         }
       },
       {
-        title: 'attributes',
+        title: 'Attributes',
         onClick: async () => {
           setAddress(row.name);
           const brokerObjectName = await artemisService.getBrokerObjectName();
@@ -97,7 +97,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
         }
       },
       {
-        title: 'operations',
+        title: 'Operations',
         onClick: async () => {
           setAddress(row.name);
           const brokerObjectName = await artemisService.getBrokerObjectName();
@@ -113,7 +113,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
     if (canDeleteAddress) {
       actions.push(
         {
-          title: 'delete address',
+          title: 'Delete Address',
           onClick: () => {
             setAddress(row.name);
             setShowDeleteDialog(true);
@@ -126,7 +126,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
     if (canSendMessage) {
       actions.push(
         {
-          title: 'send message',
+          title: 'Send Message',
           onClick: () => {
             setAddress(row.name);
             setShowSendDialog(true);
@@ -137,7 +137,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
     }
     if (canCreateQueue) {
       actions.push({
-        title: 'create queue',
+        title: 'Create Queue',
         onClick: () => {
           setAddress(row.name);
           setShowCreateDialog(true);
@@ -174,6 +174,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
         aria-label='create-queue-modal'
         variant={ModalVariant.medium}
         isOpen={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
         actions={[
           <Button key="close" variant="primary" onClick={() => setShowCreateDialog(false)}>
             Close
@@ -185,6 +186,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
         aria-label='delete-address-modal'
         variant={ModalVariant.medium}
         isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
         actions={[
           <Button key="cancel" variant="secondary" onClick={() => setShowDeleteDialog(false)}>
             Cancel
@@ -235,6 +237,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
         aria-label='create=address-modal'
         variant={ModalVariant.medium}
         isOpen={showCreateAddressDialog}
+        onClose={() => setShowCreateAddressDialog(false)}
         actions={[
           <Button key="close" variant="primary" onClick={() => setShowCreateAddressDialog(false)}>
             Close
@@ -246,6 +249,7 @@ export const AddressesTable: React.FunctionComponent<Navigate> = (navigate) => {
         aria-label='send-modal'
         variant={ModalVariant.medium}
         isOpen={showSendDialog}
+        onClose={() => setShowSendDialog(false)}
         actions={[
           <Button key="close" variant="secondary" onClick={() => setShowSendDialog(false)}>
             Cancel
