@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- import { HawtioPlugin, configManager } from '@hawtio/react'
+import { HawtioPlugin, configManager } from '@hawtio/react'
 import { artemis } from './artemis'
 
 /**
@@ -38,6 +38,7 @@ export const plugin: HawtioPlugin = () => {
 
 // Register the custom plugin version to Hawtio
 // See package.json "replace-version" script for how to replace the version placeholder with a real version
+configManager.addProductInfo('Artemis', '${project.version}')
 configManager.addProductInfo('Artemis Plugin', '__PACKAGE_VERSION_PLACEHOLDER__')
 
 // Branding and styles can be customised from a plugin as follows
@@ -57,13 +58,13 @@ configManager.configure(config => {
     ],
   }
   config.about = {
-    title: 'ActiveMQ Artemis Management Console',
-    description: '',
-    productInfo: [
-      { name: 'Artemis', value: '${project.version}' },
-    ],
-    copyright: 'ActiveMQ',
-    imgSrc: '/artemis-plugin/branding/activemq.png',
+    ...config.about,
+    ...{
+      title: 'ActiveMQ Artemis Management Console',
+      description: '',
+      copyright: 'ActiveMQ',
+      imgSrc: '/artemis-plugin/branding/activemq.png',
+    }
   }
   // If you want to disable specific plugins, you can specify the paths to disable them.
   //config.disabledRoutes = ['/simple-plugin']
