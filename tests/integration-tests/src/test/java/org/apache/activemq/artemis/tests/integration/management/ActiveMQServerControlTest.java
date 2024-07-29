@@ -2647,11 +2647,13 @@ public class ActiveMQServerControlTest extends ManagementTestBase {
       assertTrue(first.getString("clientAddress").length() > 0);
       assertTrue(first.getJsonNumber("creationTime").longValue() > 0);
       assertEquals(0, first.getJsonNumber("sessionCount").longValue());
+      assertEquals("", first.getString("principal"));
 
       assertTrue(second.getString("connectionID").length() > 0);
       assertTrue(second.getString("clientAddress").length() > 0);
       assertTrue(second.getJsonNumber("creationTime").longValue() > 0);
       assertEquals(1, second.getJsonNumber("sessionCount").longValue());
+      assertEquals("guest", second.getString("principal"));
    }
 
    @TestTemplate

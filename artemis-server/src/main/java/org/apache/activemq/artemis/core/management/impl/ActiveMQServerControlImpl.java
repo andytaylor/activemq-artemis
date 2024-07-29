@@ -30,6 +30,7 @@ import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.nio.file.Path;
+import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -145,6 +146,7 @@ import org.apache.activemq.artemis.marker.WebServerComponentMarker;
 import org.apache.activemq.artemis.spi.core.protocol.RemotingConnection;
 import org.apache.activemq.artemis.spi.core.security.ActiveMQBasicSecurityManager;
 import org.apache.activemq.artemis.spi.core.security.jaas.PropertiesLoginModuleConfigurator;
+import org.apache.activemq.artemis.spi.core.security.jaas.UserPrincipal;
 import org.apache.activemq.artemis.utils.JsonLoader;
 import org.apache.activemq.artemis.utils.ListUtil;
 import org.apache.activemq.artemis.utils.PasswordMaskingUtil;
@@ -2651,7 +2653,16 @@ public class ActiveMQServerControlImpl extends AbstractControl implements Active
          Set<RemotingConnection> connections = server.getRemotingService().getConnections();
 
          for (RemotingConnection connection : connections) {
-            JsonObjectBuilder obj = JsonLoader.createObjectBuilder().add("connectionID", connection.getID().toString()).add("clientAddress", connection.getRemoteAddress()).add("creationTime", connection.getCreationTime()).add("implementation", connection.getClass().getSimpleName()).add("sessionCount", server.getSessions(connection.getID().toString()).size());
+            String userName = "";
+            if (connection.getSubject() != null) {
+               Set<Principal> principals = connection.getSubject().getPrincipals();
+               for (Principal principal : principals) {
+                  if (principal instanceof UserPrincipal) {
+                     userName = principal.getName();
+                  }
+               }
+            }
+            JsonObjectBuilder obj = JsonLoader.createObjectBuilder().add("connectionID", connection.getID().toString()).add("clientAddress", connection.getRemoteAddress()).add("creationTime", connection.getCreationTime()).add("implementation", connection.getClass().getSimpleName()).add("sessionCount", server.getSessions(connection.getID().toString()).size()).add("principal", userName);
             array.add(obj);
          }
          return array.build().toString();
