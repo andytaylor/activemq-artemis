@@ -26,6 +26,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.NoSuchElementException;
 
+import static org.junit.Assert.fail;
+
 //Parameters set in super class
 @RunWith(Parameterized.class)
 public class TabsTest extends ArtemisTest {

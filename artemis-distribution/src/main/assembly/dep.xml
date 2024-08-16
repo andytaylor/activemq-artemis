@@ -73,7 +73,7 @@
          </includes>
          <outputDirectory>web</outputDirectory>
          <unpack>false</unpack>
-         <outputFileNameMapping>hawtio.war</outputFileNameMapping>
+         <outputFileNameMapping>console.war</outputFileNameMapping>
          <useProjectArtifact>false</useProjectArtifact>
          <directoryMode>0755</directoryMode>
          <fileMode>0644</fileMode>

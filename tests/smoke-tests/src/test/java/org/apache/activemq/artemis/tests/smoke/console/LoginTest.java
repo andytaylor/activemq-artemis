@@ -24,6 +24,7 @@ import org.openqa.selenium.MutableCapabilities;
 
 import static org.apache.activemq.artemis.tests.smoke.console.PageConstants.DEFAULT_CONSOLE_LOGIN_BRAND_IMAGE;
 import static org.apache.activemq.artemis.tests.smoke.console.PageConstants.WEB_URL_PATH;
+import static org.junit.Assert.assertEquals;
 
 
 public class LoginTest extends ConsoleTest {

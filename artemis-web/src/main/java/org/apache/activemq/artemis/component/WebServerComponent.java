@@ -33,10 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.ServletContextEvent;
-import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.ServletRequestEvent;
-import jakarta.servlet.ServletRequestListener;
 import org.apache.activemq.artemis.ActiveMQWebLogger;
 import org.apache.activemq.artemis.api.core.Pair;
 import org.apache.activemq.artemis.components.ExternalComponent;

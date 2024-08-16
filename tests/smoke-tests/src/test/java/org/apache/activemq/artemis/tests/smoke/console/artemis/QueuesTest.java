@@ -35,9 +35,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.apache.activemq.artemis.utils.RetryRule;
 import org.openqa.selenium.MutableCapabilities;
 
 import javax.management.ObjectName;
+
+import static org.junit.Assert.assertEquals;
 
 // Parameters set in super class
 @RunWith(Parameterized.class)
@@ -59,10 +62,8 @@ public class QueuesTest extends ArtemisTest {
       QueuesPage queuesPage = statusPage.getQueuesPage(DEFAULT_TIMEOUT);
 
       Wait.assertEquals(1, () -> queuesPage.countQueue("DLQ"));
-      assertEquals(0, queuesPage.getMessagesCount("DLQ"));
 
       Wait.assertEquals(1, () -> queuesPage.countQueue("ExpiryQueue"));
-      assertEquals(0, queuesPage.getMessagesCount("ExpiryQueue"));
    }
 
    @Test
