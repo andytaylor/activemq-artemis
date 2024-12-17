@@ -34,6 +34,9 @@ public class AppDTO {
    @XmlAttribute
    public String war;
 
+   @XmlAttribute
+   public  Boolean jakartaRequired;
+
    public String getName() {
       if (name == null) {
          return url;
@@ -60,5 +63,13 @@ public class AppDTO {
 
    public void setWar(String war) {
       this.war = war;
+   }
+
+   public void setJakartaRequired(Boolean jakartaRequired) {
+      this.jakartaRequired = jakartaRequired;
+   }
+
+   public Boolean getJakartaRequired() {
+      return jakartaRequired;
    }
 }

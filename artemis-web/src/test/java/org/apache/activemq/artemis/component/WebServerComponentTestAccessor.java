@@ -18,11 +18,9 @@ package org.apache.activemq.artemis.component;
 
 import java.nio.file.Path;
 
-import org.eclipse.jetty.ee8.webapp.WebAppContext;
-
 public class WebServerComponentTestAccessor {
 
-   public static WebAppContext createWebAppContext(WebServerComponent webServerComponent, String url, String warFile, Path warDirectory, String virtualHost) {
-      return webServerComponent.createWebAppContext(url, warFile, warDirectory, virtualHost);
+   public static WebContext createWebAppContext(WebServerComponent webServerComponent, String url, String warFile, Path warDirectory, String virtualHost) {
+      return webServerComponent.createWebAppContext(url, warFile, warDirectory, virtualHost, false);
    }
 }

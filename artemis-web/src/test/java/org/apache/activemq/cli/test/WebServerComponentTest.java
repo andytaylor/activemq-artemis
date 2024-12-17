@@ -71,6 +71,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.util.CharsetUtil;
 import org.apache.activemq.artemis.api.core.Pair;
 import org.apache.activemq.artemis.cli.factory.xml.XmlBrokerFactoryHandler;
+import org.apache.activemq.artemis.component.JavaxWebContext;
 import org.apache.activemq.artemis.component.WebServerComponent;
 import org.apache.activemq.artemis.component.WebServerComponentTestAccessor;
 import org.apache.activemq.artemis.core.remoting.impl.ssl.SSLSupport;
@@ -771,7 +772,7 @@ public class WebServerComponentTest extends ArtemisTestCase {
       assertFalse(webServerComponent.isStarted());
       testedComponents.add(webServerComponent);
       webServerComponent.configure(webServerDTO, "./target", "./target");
-      WebAppContext ctxt = WebServerComponentTestAccessor.createWebAppContext(webServerComponent, url, warName, Paths.get(".").resolve("target").toAbsolutePath(), null);
+      WebAppContext ctxt = ((JavaxWebContext) WebServerComponentTestAccessor.createWebAppContext(webServerComponent, url, warName, Paths.get(".").resolve("target").toAbsolutePath(), null)).getWebContext();
       webServerComponent.getWebContextData().add(new Pair(ctxt, null));
 
       WebInfConfiguration cfg = new WebInfConfiguration();
@@ -799,7 +800,7 @@ public class WebServerComponentTest extends ArtemisTestCase {
       assertFalse(webServerComponent.isStarted());
       testedComponents.add(webServerComponent);
       webServerComponent.configure(webServerDTO, "./target", "./target");
-      WebAppContext ctxt = WebServerComponentTestAccessor.createWebAppContext(webServerComponent, url, warName, Paths.get(".").resolve("target").toAbsolutePath(), null);
+      WebAppContext ctxt = ((JavaxWebContext) WebServerComponentTestAccessor.createWebAppContext(webServerComponent, url, warName, Paths.get(".").resolve("target").toAbsolutePath(), null)).getWebContext();
       webServerComponent.getWebContextData().add(new Pair(ctxt, null));
 
       if (!Files.exists(Paths.get(ctxt.getTempDirectory().getAbsolutePath()))) {
@@ -824,7 +825,7 @@ public class WebServerComponentTest extends ArtemisTestCase {
       WebServerDTO webServerDTO = createDefaultWebServerDTO(warName, url);
       WebServerComponent webServerComponent = new WebServerComponent();
       webServerComponent.configure(webServerDTO, "./target", "./target");
-      WebAppContext ctxt = WebServerComponentTestAccessor.createWebAppContext(webServerComponent, url, warName, Paths.get(".").resolve("target").toAbsolutePath(), null);
+      WebAppContext ctxt = ((JavaxWebContext) WebServerComponentTestAccessor.createWebAppContext(webServerComponent, url, warName, Paths.get(".").resolve("target").toAbsolutePath(), null)).getWebContext();
       testedComponents.add(webServerComponent);
 
       assertFalse(webServerComponent.isStarted());

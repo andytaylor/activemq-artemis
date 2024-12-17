@@ -16,11 +16,7 @@
  */
 package org.apache.activemq.artemis.component;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,7 +29,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,13 +41,9 @@ import org.apache.activemq.artemis.dto.AppDTO;
 import org.apache.activemq.artemis.dto.BindingDTO;
 import org.apache.activemq.artemis.dto.ComponentDTO;
 import org.apache.activemq.artemis.dto.WebServerDTO;
-import org.apache.activemq.artemis.logs.AuditLogger;
 import org.apache.activemq.artemis.marker.WebServerComponentMarker;
 import org.apache.activemq.artemis.utils.ClassloadingUtil;
 import org.apache.activemq.artemis.utils.PemConfigUtil;
-import org.eclipse.jetty.ee8.security.DefaultAuthenticatorFactory;
-import org.eclipse.jetty.ee8.servlet.FilterHolder;
-import org.eclipse.jetty.ee8.webapp.WebAppContext;
 import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.CustomRequestLog;
 import org.eclipse.jetty.server.Handler;
@@ -78,10 +69,6 @@ import static org.apache.activemq.artemis.core.remoting.impl.ssl.SSLSupport.chec
 public class WebServerComponent implements ExternalComponent, WebServerComponentMarker {
 
    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-   // this should match the value of <display-name> in the console war's WEB-INF/web.xml
-   public static final String WEB_CONSOLE_DISPLAY_NAME = System.getProperty("org.apache.activemq.artemis.webConsoleDisplayName", "hawtio");
-
    public static final boolean DEFAULT_SNI_HOST_CHECK_VALUE = true;
 
    public static final boolean DEFAULT_SNI_REQUIRED_VALUE = false;
@@ -95,7 +82,7 @@ public class WebServerComponent implements ExternalComponent, WebServerComponent
    private WebServerDTO webServerConfig;
    private final List<String> consoleUrls = new ArrayList<>();
    private final List<String> jolokiaUrls = new ArrayList<>();
-   private final List<Pair<WebAppContext, String>> webContextData = new ArrayList<>();
+   private final List<Pair<WebContext, String>> webContextData = new ArrayList<>();
    private ServerConnector[] connectors;
    private Path artemisHomePath;
    private Path temporaryWarDir;
@@ -177,22 +164,10 @@ public class WebServerComponent implements ExternalComponent, WebServerComponent
                if (new File(instanceWarDir.toFile() + File.separator + app.war).exists()) {
                   dirToUse = instanceWarDir;
                }
-               WebAppContext webContext = createWebAppContext(app.url, app.war, dirToUse, virtualHosts[i]);
-               handlers.addHandler(webContext);
-               webContext.getSessionHandler().getSessionCookieConfig().setComment("__SAME_SITE_STRICT__");
-               webContext.addEventListener(new ServletContextListener() {
-                  @Override
-                  public void contextInitialized(ServletContextEvent sce) {
-                     sce.getServletContext().addListener(new ServletRequestListener() {
-                        @Override
-                        public void requestDestroyed(ServletRequestEvent sre) {
-                           ServletRequestListener.super.requestDestroyed(sre);
-                           AuditLogger.currentCaller.remove();
-                           AuditLogger.remoteAddress.remove();
-                        }
-                     });
-                  }
-               });
+               WebContext webContext = createWebAppContext(app.url, app.war, dirToUse, virtualHosts[i], app.jakartaRequired);
+               webContext.addHandler(handlers);
+               webContext.setStrict();
+               webContext.addEventListener();
                webContextData.add(new Pair(webContext, binding.uri));
             }
          }
@@ -253,11 +228,8 @@ public class WebServerComponent implements ExternalComponent, WebServerComponent
                                                    .collect(Collectors.joining(", ")));
 
       // the web server has to start before the war's web.xml will be parsed
-      for (Pair<WebAppContext, String> data : webContextData) {
-         if (WEB_CONSOLE_DISPLAY_NAME.equals(data.getA().getDisplayName())) {
-            consoleUrls.add(data.getB() + data.getA().getContextPath());
-            jolokiaUrls.add(data.getB() + data.getA().getContextPath() + "/jolokia");
-         }
+      for (Pair<WebContext, String> data : webContextData) {
+         data.getA().checkConsole(data.getB(), consoleUrls, jolokiaUrls);
       }
       if (!jolokiaUrls.isEmpty()) {
          ActiveMQWebLogger.LOGGER.jolokiaAvailable(String.join(", ", jolokiaUrls));
@@ -477,29 +449,8 @@ public class WebServerComponent implements ExternalComponent, WebServerComponent
       return -1;
    }
 
-   protected WebAppContext createWebAppContext(String url, String warFile, Path warDirectory, String virtualHost) {
-      WebAppContext webapp = new WebAppContext();
-      if (url.startsWith("/")) {
-         webapp.setContextPath(url);
-      } else {
-         webapp.setContextPath("/" + url);
-      }
-      //add the filters needed for audit logging
-      webapp.addFilter(new FilterHolder(JolokiaFilter.class), "/*", EnumSet.of(DispatcherType.INCLUDE, DispatcherType.REQUEST));
-      webapp.addFilter(new FilterHolder(AuthenticationFilter.class), "/auth/login/*", EnumSet.of(DispatcherType.REQUEST));
-
-      webapp.setWar(warDirectory.resolve(warFile).toString());
-
-      String baseTempDir = temporaryWarDir.toFile().getAbsolutePath();
-      webapp.setAttribute("org.eclipse.jetty.webapp.basetempdir", baseTempDir);
-      webapp.setTempDirectory(new File(baseTempDir + File.separator + warFile));
-
-      // Set the default authenticator factory to avoid NPE due to the following commit:
-      // https://github.com/eclipse/jetty.project/commit/7e91d34177a880ecbe70009e8f200d02e3a0c5dd
-      webapp.getSecurityHandler().setAuthenticatorFactory(new DefaultAuthenticatorFactory());
-
-      webapp.setVirtualHosts(new String[]{virtualHost});
-
+   protected WebContext createWebAppContext(String url, String warFile, Path warDirectory, String virtualHost, Boolean jakartaRequired) {
+      WebContext webapp = WebContext.createContext(jakartaRequired != null ? jakartaRequired : false, url, warDirectory, warFile, temporaryWarDir, virtualHost);
       return webapp;
    }
 
@@ -525,7 +476,7 @@ public class WebServerComponent implements ExternalComponent, WebServerComponent
       }
    }
 
-   public List<Pair<WebAppContext, String>> getWebContextData() {
+   public List<Pair<WebContext, String>> getWebContextData() {
       return this.webContextData;
    }
 
